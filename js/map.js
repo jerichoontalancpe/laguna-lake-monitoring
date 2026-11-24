@@ -83,7 +83,7 @@ function createMarker(feature, filterMode) {
   if (filterMode === "overall") {
     const sc = getStatusClass(props.overallStatus);
     const label = props.name.replace("Station ", "");
-    iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}" style="width:32px;height:32px;">
+    iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}">
       <span class="wq-marker-label">${label}</span></div>`;
     iconSize = [32, 32];
   } else {
@@ -91,7 +91,7 @@ function createMarker(feature, filterMode) {
     const pc = PARAMETERS[filterMode];
     if (!pd || !pc) {
       const sc = getStatusClass(props.overallStatus);
-      iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}" style="width:32px;height:32px;min-width:32px;min-height:32px;">
+      iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}">
         <span class="wq-marker-label">${props.name.replace("Station ", "")}</span></div>`;
       iconSize = [32, 32];
     } else {
