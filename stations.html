@@ -206,7 +206,7 @@
     }
 
     function renderArchivedGrid() {
-      const archivedStations = allStations.filter(f => f.properties.archived);
+      const archivedStations = allFeaturesRaw.filter(f => f.properties.archived);
       document.getElementById('archived-count').textContent = archivedStations.length;
       const grid = document.getElementById('archived-card-grid');
       if (!grid) return;
