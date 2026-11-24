@@ -262,90 +262,95 @@ function showOverview() {
 
   const lastUpdated = stationMetadata?.lastUpdated || "Unknown";
 
-  document.getElementById("sidebar-content").innerHTML = `
-    <div class="p-4 fade-in">
-      <div class="mb-4">
-        <h3 class="font-bold text-base-content text-base">Laguna de Bay</h3>
-        <p class="text-xs opacity-50">Lake-Wide Overview</p>
-      </div>
+  const SC = {
+    Good: { bg:"#dcfce7", border:"#16a34a", text:"#15803d", badge:"#16a34a" },
+    Fair: { bg:"#fef3c7", border:"#d97706", text:"#b45309", badge:"#d97706" },
+    Poor: { bg:"#fee2e2", border:"#dc2626", text:"#b91c1c", badge:"#dc2626" }
+  };
 
-      <div class="overview-stats-row mb-4">
-        <div class="overview-stat-card bg-success/10 border-success/20 text-center">
-          <div class="text-2xl font-black text-success">${good}</div>
-          <div class="text-xs font-semibold text-success/80 uppercase tracking-wide mt-0.5">Good</div>
-        </div>
-        <div class="overview-stat-card bg-warning/10 border-warning/20 text-center">
-          <div class="text-2xl font-black text-warning">${fair}</div>
-          <div class="text-xs font-semibold text-warning/80 uppercase tracking-wide mt-0.5">Fair</div>
-        </div>
-        <div class="overview-stat-card bg-error/10 border-error/20 text-center">
-          <div class="text-2xl font-black text-error">${poor}</div>
-          <div class="text-xs font-semibold text-error/80 uppercase tracking-wide mt-0.5">Poor</div>
-        </div>
-      </div>
+  const flipCards = stationData.features.map(f => {
+    const p = f.properties;
+    const c = SC[p.overallStatus] || SC.Good;
+    const params = Object.entries(p.parameters);
 
-      <div class="section-divider"></div>
+    const front = [
+      '<div style="background:' + c.bg + ';border:2px solid ' + c.border + ';border-radius:0.75rem;padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;">',
+      '<div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:' + c.text + ';margin-bottom:0.3rem;">' + p.bay + '</div>',
+      '<div style="font-size:1rem;font-weight:800;color:#1e293b;line-height:1.2;margin-bottom:0.6rem;">' + p.name + '</div>',
+      '<span style="background:' + c.badge + ';color:#fff;padding:0.2rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;">' + p.overallStatus + '</span>',
+      '<div style="margin-top:0.75rem;font-size:0.62rem;color:#64748b;">Hover to see parameters</div>',
+      '</div>'
+    ].join("");
 
-      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-3">Lake-Wide Averages</p>
-      <div class="overview-avg-grid mb-4">
-        <div class="overview-avg-item">
-          <div class="overview-avg-label">Dissolved Oxygen</div>
-          <div class="overview-avg-value">${(doSum/n).toFixed(1)} <span class="overview-avg-unit">mg/L</span></div>
-          <div class="overview-avg-threshold">&gt;= 5.0 mg/L</div>
-        </div>
-        <div class="overview-avg-item">
-          <div class="overview-avg-label">BOD</div>
-          <div class="overview-avg-value">${(bodSum/n).toFixed(1)} <span class="overview-avg-unit">mg/L</span></div>
-          <div class="overview-avg-threshold">&lt;= 7.0 mg/L</div>
-        </div>
-        <div class="overview-avg-item">
-          <div class="overview-avg-label">pH</div>
-          <div class="overview-avg-value">${(phSum/n).toFixed(1)}</div>
-          <div class="overview-avg-threshold">6.5 &ndash; 9.0</div>
-        </div>
-        <div class="overview-avg-item">
-          <div class="overview-avg-label">Temperature</div>
-          <div class="overview-avg-value">${(tempSum/n).toFixed(1)} <span class="overview-avg-unit">°C</span></div>
-          <div class="overview-avg-threshold">25 &ndash; 31 °C</div>
-        </div>
-      </div>
+    const paramRows = params.map(function(entry) {
+      const k = entry[0], v = entry[1];
+      const sc = v.status === "Pass" ? "#16a34a" : v.status === "Fail" ? "#b91c1c" : "#d97706";
+      return '<div style="text-align:center;padding:0.3rem 0.15rem;">' +
+        '<div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;color:#64748b;">' + k.toUpperCase() + '</div>' +
+        '<div style="font-size:0.85rem;font-weight:800;color:' + sc + ';">' + v.value + '</div>' +
+        '<div style="font-size:0.5rem;color:#94a3b8;">' + (v.unit || "—") + '</div>' +
+        '</div>';
+    }).join("");
 
-      <div class="section-divider"></div>
+    const back = [
+      '<div style="background:#fff;border:2px solid ' + c.border + ';border-radius:0.75rem;padding:0.65rem;display:flex;flex-direction:column;justify-content:center;height:100%;">',
+      '<div style="font-size:0.65rem;font-weight:700;color:#1e293b;margin-bottom:0.4rem;text-align:center;">' + p.name + '</div>',
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.2rem;border:1px solid #f1f5f9;border-radius:0.4rem;overflow:hidden;background:#f8fafc;">' + paramRows + '</div>',
+      '<div style="text-align:center;margin-top:0.4rem;font-size:0.58rem;color:#94a3b8;">Click to open station</div>',
+      '</div>'
+    ].join("");
 
-      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-3">Monitoring Stations</p>
-      <div class="overview-station-list" role="list">
-        ${stationData.features.map(f => {
-          const p  = f.properties;
-          const sc = getStatusClass(p.overallStatus);
-          const dot = sc === "good" ? "pass" : sc === "fair" ? "alert" : "fail";
-          return `<div class="overview-station-item" role="button" tabindex="0"
-              data-id="${p.id}" aria-label="View ${p.name}">
-            <span class="param-status-dot ${dot}"></span>
-            <span class="overview-station-name">${p.name}</span>
-            <span class="overview-station-bay">${p.bay}</span>
-          </div>`;
-        }).join("")}
-      </div>
+    return [
+      '<div class="station-flip-card" data-id="' + p.id + '"',
+      ' tabindex="0" role="button" aria-label="' + p.name + '"',
+      ' style="height:140px;cursor:pointer;perspective:800px;position:relative;"',
+      ' onmouseenter="this.querySelector(\'.flip-inner\').style.transform=\'rotateY(180deg)\'"',
+      ' onmouseleave="this.querySelector(\'.flip-inner\').style.transform=\'rotateY(0deg)\'">',
+      '<div class="flip-inner" style="position:relative;width:100%;height:100%;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);transform-style:preserve-3d;">',
+      '<div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;">' + front + '</div>',
+      '<div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);">' + back + '</div>',
+      '</div></div>'
+    ].join("");
+  }).join("");
 
-      <div class="section-divider"></div>
-      <div class="text-xs opacity-40 leading-relaxed pb-1">
-        <span class="font-semibold opacity-60">Last Updated:</span> ${lastUpdated}<br/>
-        Representative data for WITM 101 educational purposes.
-      </div>
+  document.getElementById("sidebar-content").innerHTML =
+    '<div class="p-4 fade-in">' +
+    '<div class="mb-3"><h3 class="font-bold text-base-content text-base">Laguna de Bay</h3><p class="text-xs opacity-50">Lake-Wide Water Quality Overview</p></div>' +
 
-      <div class="text-center text-xs opacity-40 mt-3 pb-2">
-        Click a station marker to view full details.
-      </div>
-    </div>`;
+    '<div style="display:flex;gap:0.4rem;margin-bottom:0.9rem;">' +
+    '<div style="flex:1;text-align:center;padding:0.5rem 0.3rem;background:#dcfce7;border:1px solid #16a34a;border-radius:0.5rem;">' +
+      '<div style="font-size:1.5rem;font-weight:900;color:#15803d;line-height:1;">' + good + '</div>' +
+      '<div style="font-size:0.58rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem;">Good</div></div>' +
+    '<div style="flex:1;text-align:center;padding:0.5rem 0.3rem;background:#fef3c7;border:1px solid #d97706;border-radius:0.5rem;">' +
+      '<div style="font-size:1.5rem;font-weight:900;color:#b45309;line-height:1;">' + fair + '</div>' +
+      '<div style="font-size:0.58rem;font-weight:700;color:#b45309;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem;">Fair</div></div>' +
+    '<div style="flex:1;text-align:center;padding:0.5rem 0.3rem;background:#fee2e2;border:1px solid #dc2626;border-radius:0.5rem;">' +
+      '<div style="font-size:1.5rem;font-weight:900;color:#b91c1c;line-height:1;">' + poor + '</div>' +
+      '<div style="font-size:0.58rem;font-weight:700;color:#b91c1c;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem;">Poor</div></div>' +
+    '</div>' +
 
-  // Wire station list items
-  document.querySelectorAll(".overview-station-item").forEach(item => {
-    const activate = () => {
-      const m = stationMarkers.find(x => x._id === item.dataset.id);
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;margin-bottom:0.9rem;">' +
+    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. DO</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (doSum/n).toFixed(1) + ' <span style="font-size:0.6rem;color:#94a3b8;">mg/L</span></div><div style="font-size:0.58rem;color:#94a3b8;">&gt;= 5.0 mg/L</div></div>' +
+    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. BOD</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (bodSum/n).toFixed(1) + ' <span style="font-size:0.6rem;color:#94a3b8;">mg/L</span></div><div style="font-size:0.58rem;color:#94a3b8;">&lt;= 7.0 mg/L</div></div>' +
+    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. pH</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (phSum/n).toFixed(1) + '</div><div style="font-size:0.58rem;color:#94a3b8;">6.5 &ndash; 9.0</div></div>' +
+    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. Temp</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (tempSum/n).toFixed(1) + ' <span style="font-size:0.6rem;color:#94a3b8;">°C</span></div><div style="font-size:0.58rem;color:#94a3b8;">25 &ndash; 31 °C</div></div>' +
+    '</div>' +
+
+    '<div class="section-divider"></div>' +
+    '<p style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.5rem;">Monitoring Stations <span style="font-size:0.58rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:0.7;">&mdash; hover to see readings, click to open</span></p>' +
+    '<div style="display:flex;flex-direction:column;gap:0.5rem;">' + flipCards + '</div>' +
+
+    '<div class="section-divider"></div>' +
+    '<div style="font-size:0.6rem;opacity:0.4;line-height:1.5;padding-bottom:0.5rem;"><strong style="opacity:0.7;">Last Updated:</strong> ' + lastUpdated + ' &bull; Representative data for WITM 101.</div>' +
+    '</div>';
+
+  document.querySelectorAll(".station-flip-card").forEach(function(card) {
+    function activate() {
+      const m = stationMarkers.find(function(x) { return x._id === card.dataset.id; });
       if (m) selectStation(m);
-    };
-    item.addEventListener("click", activate);
-    item.addEventListener("keydown", e => {
+    }
+    card.addEventListener("click", activate);
+    card.addEventListener("keydown", function(e) {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); }
     });
   });
