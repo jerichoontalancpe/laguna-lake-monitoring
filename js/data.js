@@ -310,12 +310,12 @@ export function geoJSONToLatLng(coords) {
  */
 export function getStatusColor(status) {
   const colors = {
-    Good: "#16a34a",
-    Fair: "#92400e",
-    Poor: "#b91c1c",
-    Pass: "#16a34a",
-    Alert: "#92400e",
-    Fail: "#b91c1c"
+    Good: "#22c55e",
+    Fair: "#f59e0b",
+    Poor: "#ef4444",
+    Pass: "#22c55e",
+    Alert: "#f59e0b",
+    Fail: "#ef4444"
   };
   return colors[status] || "#64748b";
 }

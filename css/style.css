@@ -138,9 +138,9 @@
 
 @keyframes growBar { from { width: 0 !important; } }
 
-.param-bar-fill.pass  { background: #16a34a; }
-.param-bar-fill.alert { background: #92400e; }
-.param-bar-fill.fail  { background: #b91c1c; }
+.param-bar-fill.pass  { background: #22c55e; }
+.param-bar-fill.alert { background: #f59e0b; }
+.param-bar-fill.fail  { background: #ef4444; }
 
 .param-bar-labels {
   display: flex;
@@ -160,9 +160,9 @@
   box-shadow: 0 0 0 1.5px rgba(0,0,0,0.12);
 }
 
-.param-status-dot.pass  { background: #16a34a; }
-.param-status-dot.alert { background: #92400e; }
-.param-status-dot.fail  { background: #b91c1c; }
+.param-status-dot.pass  { background: #22c55e; }
+.param-status-dot.alert { background: #f59e0b; }
+.param-status-dot.fail  { background: #ef4444; }
 
 .param-bar-threshold-marker {
   position: absolute;
