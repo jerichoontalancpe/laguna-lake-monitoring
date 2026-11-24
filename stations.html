@@ -77,6 +77,10 @@
       <button role="tab" class="tab font-semibold" id="tab-cards" onclick="showTab('cards')">
         <i data-lucide="layout-grid" class="w-4 h-4 mr-1"></i> Station Cards
       </button>
+      <button role="tab" class="tab font-semibold" id="tab-archived" onclick="showTab('archived')">
+        <i data-lucide="archive" class="w-4 h-4 mr-1"></i> Archived
+        <span class="badge badge-neutral badge-xs ml-1" id="archived-count">3</span>
+      </button>
     </div>
 
     <!-- TABLE VIEW -->
@@ -135,6 +139,21 @@
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="station-card-grid"></div>
     </div>
 
+    <!-- ARCHIVED VIEW -->
+    <div id="view-archived" class="hidden">
+      <div class="card bg-base-100 border border-base-300 shadow-sm p-6 mb-4">
+        <div class="flex items-start gap-3">
+          <i data-lucide="info" class="w-5 h-5 text-base-content/40 flex-shrink-0 mt-0.5"></i>
+          <p class="text-sm text-base-content/60">
+            Archived stations were previously active monitoring points that have been decommissioned or replaced
+            in the LLDA's expanded monitoring network. They are retained here for historical reference.
+            No recent water quality readings are available from these stations.
+          </p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="archived-card-grid"></div>
+    </div>
+
   </div>
   </div>
 
@@ -171,32 +190,66 @@
     const STATUS_ICON  = { Good: 'check-circle', Fair: 'alert-triangle', Poor: 'x-circle' };
 
     let allStations = [];
+    let allFeaturesRaw = [];
     let sortKey = null;
     let sortAsc = true;
 
     async function init() {
       const data = await loadStations();
-      allStations = data.features;
+      allFeaturesRaw = data.features;
+      allStations = data.features.filter(f => !f.properties.archived);
       renderSummary();
       renderTable();
       renderCardGrid();
+      renderArchivedGrid();
+      lucide.createIcons();
+    }
+
+    function renderArchivedGrid() {
+      const archivedStations = allStations.filter(f => f.properties.archived);
+      document.getElementById('archived-count').textContent = archivedStations.length;
+      const grid = document.getElementById('archived-card-grid');
+      if (!grid) return;
+      grid.innerHTML = archivedStations.map(f => {
+        const p = f.properties;
+        return `
+          <div class="card bg-base-200 border border-base-300 shadow-sm opacity-75">
+            <div class="card-body p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="font-bold text-base-content">${p.name}</h3>
+                  <p class="text-xs text-base-content/50 mt-0.5">${p.bay}</p>
+                </div>
+                <span class="badge badge-neutral font-semibold gap-1">
+                  <i data-lucide="archive" class="w-3 h-3"></i>
+                  Archived
+                </span>
+              </div>
+              <p class="text-xs text-base-content/50 mb-3 italic">${p.note || "No recent readings available"}</p>
+              <div class="text-xs text-base-content/40 border-t border-base-300 pt-2 mt-1">
+                Last recorded readings shown for reference only.
+              </div>
+            </div>
+          </div>`;
+      }).join('');
       lucide.createIcons();
     }
 
     function renderSummary() {
       let good = 0, fair = 0, poor = 0;
-      allStations.forEach(f => {
+      allStations.forEach(f => {   // allStations already filtered to active only
         const s = f.properties.overallStatus;
         if (s === 'Good') good++;
         else if (s === 'Fair') fair++;
         else poor++;
       });
+      const totalArchived = allFeaturesRaw.filter(f => f.properties.archived).length;
       const el = document.getElementById('summary-stats');
       el.innerHTML = [
-        { icon: 'map-pin',      val: allStations.length, label: 'Total Stations', color: 'primary' },
-        { icon: 'check-circle', val: good,                label: 'Good Quality',  color: 'success' },
-        { icon: 'alert-triangle',val: fair,               label: 'Fair Quality',  color: 'warning' },
-        { icon: 'x-circle',     val: poor,                label: 'Poor Quality',  color: 'error'   },
+        { icon: 'map-pin',      val: allStations.length, label: 'Active Stations', color: 'primary' },
+        { icon: 'check-circle', val: good,                label: 'Good Quality',   color: 'success' },
+        { icon: 'alert-triangle',val: fair,               label: 'Fair Quality',   color: 'warning' },
+        { icon: 'archive',      val: typeof totalArchived !== "undefined" ? totalArchived : 3, label: 'Archived', color: 'neutral' },
       ].map(s => `
         <div class="card bg-base-100 border border-base-300 shadow-sm p-4">
           <div class="flex items-center gap-3">
@@ -304,10 +357,10 @@
     }
 
     window.showTab = function(tab) {
-      document.getElementById('view-table').classList.toggle('hidden', tab !== 'table');
-      document.getElementById('view-cards').classList.toggle('hidden', tab !== 'cards');
-      document.getElementById('tab-table').classList.toggle('tab-active', tab === 'table');
-      document.getElementById('tab-cards').classList.toggle('tab-active', tab === 'cards');
+      ['table','cards','archived'].forEach(t => {
+        document.getElementById('view-'+t)?.classList.toggle('hidden', t !== tab);
+        document.getElementById('tab-'+t)?.classList.toggle('tab-active', t === tab);
+      });
       lucide.createIcons();
     };
 

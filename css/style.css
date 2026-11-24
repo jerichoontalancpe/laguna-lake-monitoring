@@ -235,6 +235,12 @@
 .wq-marker-good { background: #16a34a; border-color: #15803d; }
 .wq-marker-fair { background: #f59e0b; border-color: #d97706; }
 .wq-marker-poor { background: #dc2626; border-color: #b91c1c; }
+.wq-marker-archived {
+  background: #94a3b8;
+  border-color: #64748b;
+  opacity: 0.6;
+}
+.wq-marker-archived .wq-marker-label { color: #fff; }
 
 .wq-marker-label {
   font-size: 11px;

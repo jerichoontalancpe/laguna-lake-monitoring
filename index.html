@@ -83,9 +83,14 @@
       <div style="max-width:520px;background:rgba(255,255,255,0.82);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.7);border-radius:1.25rem;padding:2.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.1);">
 
         <!-- Live badge -->
-        <div style="display:inline-flex;align-items:center;gap:0.4rem;background:#15803d;color:#fff;padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.68rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:1.1rem;">
-          <span style="width:6px;height:6px;border-radius:50%;background:#7dd3fc;display:inline-block;animation:blink 1.8s ease-in-out infinite;"></span>
-          LLDA &bull; DENR DAO 2016-08 Class C
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.1rem;">
+          <div style="display:inline-flex;align-items:center;gap:0.4rem;background:#15803d;color:#fff;padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.68rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#7dd3fc;display:inline-block;animation:blink 1.8s ease-in-out infinite;"></span>
+            LLDA &bull; DENR DAO 2016-08 Class C
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.85);color:#15803d;padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;border:1px solid rgba(21,128,61,0.3);">
+            Q2 2026 &mdash; April &ndash; June 2026
+          </div>
         </div>
 
         <h1 style="font-size:clamp(1.9rem,3.5vw,3rem);font-weight:900;line-height:1.1;color:#0c4a6e;margin:0 0 0.9rem 0;letter-spacing:-0.02em;">
@@ -295,9 +300,11 @@
       try { data = await loadStations(); } catch { return; }
 
       const features = data.features;
+      const activeFe= features.filter(f => !f.properties.archived);
+      const archivedFe= features.filter(f =>  f.properties.archived);
       let good = 0, fair = 0, poor = 0;
       let doSum = 0, bodSum = 0;
-      features.forEach(f => {
+      activeFe.forEach(f => {
         const s = f.properties.overallStatus;
         if (s === 'Good') good++;
         else if (s === 'Fair') fair++;
@@ -309,10 +316,10 @@
       // ── Stat cards
       const statEl = document.getElementById('stat-cards');
       const stats = [
-        { icon: 'map-pin',        value: features.length,            label: 'Active Stations',  color: 'primary'  },
+        { icon: 'map-pin',        value: activeFeatures.length,       label: 'Active Stations',  color: 'primary'  },
         { icon: 'check-circle',   value: good,                       label: 'Good Quality',     color: 'success'  },
-        { icon: 'droplets',       value: (doSum/features.length).toFixed(1) + ' mg/L', label: 'Avg. DO Level', color: 'info' },
-        { icon: 'activity',       value: (bodSum/features.length).toFixed(1) + ' mg/L', label: 'Avg. BOD Level', color: 'warning' },
+        { icon: 'droplets',       value: (doSum/activeFeatures.length).toFixed(1) + ' mg/L', label: 'Avg. DO Level', color: 'info' },
+        { icon: 'activity',       value: (bodSum/ activeFeatures.length).toFixed(1) + ' mg/L', label: 'Avg. BOD Level', color: 'warning' },
       ];
       statEl.innerHTML = stats.map(s => `
         <div class="card bg-base-100 border border-base-300 shadow-sm animate__animated animate__fadeInUp">
@@ -327,7 +334,7 @@
 
       // ── Station cards
       const cardsEl = document.getElementById('station-cards');
-      cardsEl.innerHTML = features.map((f, i) => {
+      cardsEl.innerHTML = activeFeatures.map((f, i) => {
         const p = f.properties;
         const sc = STATUS_COLOR[p.overallStatus] || 'neutral';
         const icon = STATUS_ICON[p.overallStatus] || 'help-circle';

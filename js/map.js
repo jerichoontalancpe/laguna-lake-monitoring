@@ -93,10 +93,15 @@ function createMarker(feature, filterMode) {
   let iconHtml, iconSize;
 
   if (filterMode === "overall") {
-    const sc = getStatusClass(props.overallStatus);
     const label = props.name.replace("Station ", "");
-    iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}">
-      <span class="wq-marker-label">${label}</span></div>`;
+    if (props.archived) {
+      iconHtml = `<div class="wq-marker wq-marker-archived" data-id="${props.id}" title="${props.name} — Archived">
+        <span class="wq-marker-label">${label}</span></div>`;
+    } else {
+      const sc = getStatusClass(props.overallStatus);
+      iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}">
+        <span class="wq-marker-label">${label}</span></div>`;
+    }
     iconSize = [32, 32];
   } else {
     const pd = props.parameters[filterMode];
@@ -138,8 +143,9 @@ function createMarker(feature, filterMode) {
 function buildPopup(props) {
   const color = getStatusColor(props.overallStatus);
   const dc    = DAISY_COLOR[props.overallStatus] || "neutral";
+  const isNew = props.id === "stn-xxiv";
   return `<div class="popup-inner">
-    <div class="popup-name">${props.name}</div>
+    <div class="popup-name">${props.name}${isNew ? ' <span style="background:#15803d;color:#fff;font-size:0.58rem;padding:0.1rem 0.4rem;border-radius:9999px;font-weight:700;vertical-align:middle;margin-left:0.3rem;">NEW</span>' : ''}</div>
     <div class="popup-bay">${props.bay}</div>
     <span class="badge badge-${dc} badge-sm font-semibold">${props.overallStatus}</span>
   </div>`;
@@ -170,6 +176,10 @@ function selectStation(marker) {
   map.panTo(marker.getLatLng());
 
   const props = marker._props;
+  if (props.archived) {
+    showArchivedStation(props);
+    return;
+  }
   updateSidebar(props);
   setCurrentStation(props);
 
@@ -251,6 +261,34 @@ function updateSidebar(props) {
   if (typeof lucide !== "undefined") lucide.createIcons();
 }
 
+
+// ── Archived station sidebar view ────────────
+function showArchivedStation(props) {
+  document.getElementById("sidebar-content").innerHTML = `
+    <div class="p-4 fade-in">
+      <button class="back-to-overview" id="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Overview
+      </button>
+      <div style="text-align:center;padding:2rem 1rem;">
+        <div style="width:48px;height:48px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="#64748b" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 style="font-weight:700;color:#1e293b;margin-bottom:0.3rem;">${props.name}</h3>
+        <p style="font-size:0.8rem;color:#64748b;margin-bottom:0.75rem;">${props.bay}</p>
+        <span style="display:inline-block;background:#f1f5f9;color:#64748b;padding:0.2rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;">Archived Station</span>
+        <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-bottom:0.75rem;">${props.note || "This station is no longer actively monitored in the current reporting period."}</p>
+        <p style="font-size:0.75rem;color:#94a3b8;line-height:1.5;">Archived stations are retained on the map for historical reference. No recent water quality readings are available. Last data recorded prior to decommissioning is shown below for reference.</p>
+      </div>
+      <div class="section-divider"></div>
+      <p style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.5rem;">Last Recorded Readings</p>
+      ${renderParameterBars(props.parameters)}
+    </div>`;
+  document.getElementById("back-btn")?.addEventListener("click", deselectStation);
+}
+
 function showOverview() {
   if (!stationData) return;
 
@@ -258,7 +296,8 @@ function showOverview() {
   let doSum = 0, bodSum = 0, phSum = 0, tempSum = 0;
   const n = stationData.features.length;
 
-  stationData.features.forEach(f => {
+  const activeFeatures = stationData.features.filter(f => !f.properties.archived);
+  activeFeatures.forEach(f => {
     const p = f.properties;
     if (p.overallStatus === "Good") good++;
     else if (p.overallStatus === "Fair") fair++;
@@ -268,6 +307,7 @@ function showOverview() {
     phSum   += p.parameters.ph.value;
     tempSum += p.parameters.temperature.value;
   });
+  const n = activeFeatures.length;
 
   const lastUpdated = stationMetadata?.lastUpdated || "Unknown";
 
@@ -277,7 +317,7 @@ function showOverview() {
     Poor: { bg:"#fee2e2", border:"#dc2626", text:"#b91c1c", badge:"#dc2626" }
   };
 
-  const flipCards = stationData.features.map(f => {
+  const flipCards = stationData.features.filter(f => !f.properties.archived).map(f => {
     const p = f.properties;
     const c = SC[p.overallStatus] || SC.Good;
     const params = Object.entries(p.parameters);
