@@ -330,9 +330,9 @@ export function getStatusClass(status) {
     Good: "good",
     Fair: "fair",
     Poor: "poor",
-    Pass: "pass",
-    Alert: "alert",
-    Fail: "fail"
+    Pass: "status-pass",
+    Alert: "status-alert",
+    Fail: "status-fail"
   };
   return map[status] || "fair";
 }
