@@ -110,17 +110,6 @@
         </div>
       </div>
 
-      <div style="background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-radius:1.25rem;padding:1.4rem 1.6rem;width:270px;box-shadow:0 12px 40px rgba(0,0,0,0.3);display:flex;flex-direction:column;align-items:center;gap:0.8rem;">
-        <div style="font-size:0.7rem;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.1em;">Station Status</div>
-        <div style="position:relative;width:160px;height:160px;">
-          <canvas id="status-donut" width="160" height="160"></canvas>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
-            <div id="donut-total" style="font-size:1.9rem;font-weight:900;color:#1e293b;line-height:1;"></div>
-            <div style="font-size:0.58rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;">Active</div>
-          </div>
-        </div>
-        <div id="donut-legend" style="width:100%;display:flex;flex-direction:column;gap:0.4rem;"></div>
-      </div>
     </div>
 
     <!-- Caption bottom-left -->
@@ -398,36 +387,6 @@
         entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); cObserver.unobserve(e.target); } });
       }, { threshold: 0.4 });
       document.querySelectorAll('.stat-counter').forEach(el => cObserver.observe(el));
-
-      // Donut chart
-      const donutCtx = document.getElementById('status-donut');
-      if (donutCtx && typeof Chart !== 'undefined') {
-        new Chart(donutCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Good','Fair','Poor','Archived'],
-            datasets: [{ data: [good, fair, poor, archivedFe.length],
-              backgroundColor: ['#16a34a','#f59e0b','#dc2626','#94a3b8'],
-              borderColor: ['#fff','#fff','#fff','#fff'], borderWidth: 3, hoverOffset: 6 }]
-          },
-          options: { responsive: false, cutout: '72%',
-            plugins: { legend: { display: false },
-              tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.raw + ' stations' } } },
-            animation: { duration: 1000, easing: 'easeOutQuart' } }
-        });
-        document.getElementById('donut-total').textContent = nActive;
-        document.getElementById('donut-legend').innerHTML = [
-          { label:'Good',    val:good,              color:'#16a34a' },
-          { label:'Fair',    val:fair,              color:'#f59e0b' },
-          { label:'Poor',    val:poor,              color:'#dc2626' },
-          { label:'Archived',val:archivedFe.length, color:'#94a3b8' },
-        ].map(item => '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">' +
-          '<div style="display:flex;align-items:center;gap:0.4rem;">' +
-          '<span style="width:10px;height:10px;border-radius:50%;background:' + item.color + ';flex-shrink:0;display:inline-block;"></span>' +
-          '<span style="font-size:0.75rem;color:#475569;">' + item.label + '</span></div>' +
-          '<span style="font-size:0.8rem;font-weight:700;color:#1e293b;">' + item.val + '</span></div>'
-        ).join('');
-      }
 
       // ── Explore box counts
       const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
