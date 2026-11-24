@@ -378,35 +378,6 @@
 .overview-station-name { font-size: 0.8rem;  font-weight: 600; }
 .overview-station-bay  { font-size: 0.68rem; opacity: 0.4; margin-left: auto; }
 
-/* --- Override daisyUI warning color to darker amber (prevents visual size illusion) --- */
-:root {
-  --fallback-warning: #b45309;
-}
-
-[data-theme] .badge-warning,
-[data-theme] .bg-warning {
-  --tw-bg-opacity: 1;
-  background-color: #d97706 !important;
-  color: #fff !important;
-  border-color: #b45309 !important;
-}
-
-[data-theme] .text-warning {
-  color: #b45309 !important;
-}
-
-[data-theme] .border-warning,
-[data-theme] .border-warning\/20 {
-  border-color: rgba(180, 83, 9, 0.2) !important;
-}
-
-[data-theme] .bg-warning\/10 {
-  background-color: rgba(180, 83, 9, 0.1) !important;
-}
-
-[data-theme] .text-warning\/80 {
-  color: rgba(180, 83, 9, 0.8) !important;
-}
 /* --- Leaflet z-index fixes for daisyUI modals --- */
 .leaflet-pane           { z-index: 1 !important; }
 .leaflet-tile-pane      { z-index: 2 !important; }
