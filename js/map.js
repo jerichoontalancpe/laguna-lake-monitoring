@@ -173,8 +173,6 @@ function selectStation(marker) {
   const props = marker._props;
   updateSidebar(props);
   setCurrentStation(props);
-  updateTrendChart(props);
-  renderTrendToggles("sidebar-trend-toggles");
 
   // Mobile: expand bottom sheet
   if (window.innerWidth < 1024) {
@@ -248,8 +246,8 @@ function updateSidebar(props) {
   document.getElementById("back-btn")?.addEventListener("click", deselectStation);
 
   initTrendChart("sidebar-trend-chart");
-  updateTrendChart(props);
-  renderTrendToggles("sidebar-trend-toggles");
+  updateTrendChart(props, "sidebar-trend-chart");
+  renderTrendToggles("sidebar-trend-toggles", "sidebar-trend-chart");
 
   if (typeof lucide !== "undefined") lucide.createIcons();
 }
@@ -412,8 +410,8 @@ function openModal(props) {
 
   setCurrentStation(props);
   initTrendChart("modal-trend-chart");
-  updateTrendChart(props);
-  renderTrendToggles("modal-trend-toggles");
+  updateTrendChart(props, "modal-trend-chart");
+  renderTrendToggles("modal-trend-toggles", "modal-trend-chart");
 
   if (typeof lucide !== "undefined") lucide.createIcons();
 }
