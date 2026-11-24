@@ -122,8 +122,8 @@
 
 /* --- Progress Bars --- */
 .param-bar-track {
-  height: 5px;
-  background: rgba(0,0,0,0.07);
+  height: 6px;
+  background: rgba(0,0,0,0.08);
   border-radius: 9999px;
   overflow: visible;
   position: relative;
@@ -131,16 +131,20 @@
 
 .param-bar-fill {
   height: 100%;
+  max-height: 6px;
   border-radius: 9999px;
   transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
   animation: growBar 0.8s ease-out;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
 }
 
 @keyframes growBar { from { width: 0 !important; } }
 
-.param-bar-fill.pass  { background: #22c55e; }
-.param-bar-fill.alert { background: #f59e0b; }
-.param-bar-fill.fail  { background: #ef4444; }
+.param-bar-fill.pass  { background: #16a34a; }
+.param-bar-fill.alert { background: #d97706; }
+.param-bar-fill.fail  { background: #dc2626; }
 
 .param-bar-labels {
   display: flex;
@@ -152,17 +156,16 @@
 
 .param-status-dot {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   margin-right: 0.35rem;
   flex-shrink: 0;
-  box-shadow: 0 0 0 1.5px rgba(0,0,0,0.12);
 }
 
-.param-status-dot.pass  { background: #22c55e; }
-.param-status-dot.alert { background: #f59e0b; }
-.param-status-dot.fail  { background: #ef4444; }
+.param-status-dot.pass  { background: #16a34a; }
+.param-status-dot.alert { background: #d97706; }
+.param-status-dot.fail  { background: #dc2626; }
 
 .param-bar-threshold-marker {
   position: absolute;
