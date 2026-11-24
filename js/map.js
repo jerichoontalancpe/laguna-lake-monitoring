@@ -294,7 +294,6 @@ function showOverview() {
 
   let good = 0, fair = 0, poor = 0;
   let doSum = 0, bodSum = 0, phSum = 0, tempSum = 0;
-  const n = stationData.features.length;
 
   const activeFeatures = stationData.features.filter(f => !f.properties.archived);
   activeFeatures.forEach(f => {
