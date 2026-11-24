@@ -139,9 +139,10 @@ References follow APA 7th edition format.
 - Andersson, R. (n.d.). *Inter* [Typeface]. Google Fonts. https://fonts.google.com/specimen/Inter
 - Chart.js Contributors. (2023). *Chart.js* (Version 4.4.1) [Computer software]. https://www.chartjs.org
 - Department of Environment and Natural Resources. (2016). *Water quality guidelines and general effluent standards of 2016* (DENR Administrative Order No. 2016-08). Environmental Management Bureau.
+- Department of Environment and Natural Resources. (2021). *Updated water quality guidelines (WQG) and general effluent standards (GES) for selected parameters* (DENR Administrative Order No. 2021-19). Environmental Management Bureau.
 - Esri. (n.d.). *World Imagery* [Basemap]. ArcGIS Online. https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer
 - Laguna Lake Development Authority. (n.d.). *Research programs*. Retrieved November 24, 2026, from https://llda.gov.ph/research-programs/
-- Laguna Lake Development Authority. (2026). *Water quality report: Second quarter 2026 (April–June 2026)* [Report].
+- Laguna Lake Development Authority. (2026). *Quarterly water quality monitoring report: Laguna Lake and tributary rivers, April to June 2026* [Report].
 - Lucide Contributors. (n.d.). *Lucide* [Computer software]. https://lucide.dev
 - OpenStreetMap contributors. (n.d.). *Laguna de Bay* [Relation 79348]. OpenStreetMap. Retrieved November 24, 2026, from https://www.openstreetmap.org/relation/79348
 - Saadeghi, P. (2025). *daisyUI* (Version 5) [Computer software]. https://daisyui.com
