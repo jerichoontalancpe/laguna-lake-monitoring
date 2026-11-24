@@ -74,12 +74,12 @@ function initMap() {
 function renderLakeBoundary(geojson) {
   const layer = L.geoJSON(geojson, {
     style: {
-      color: "#0ea5e9",
-      weight: 2,
-      opacity: 0.7,
+      color: "#1d6f42",
+      weight: 3,
+      opacity: 1,
       fillColor: "#38bdf8",
-      fillOpacity: 0.1,
-      dashArray: "4 3"
+      fillOpacity: 0.08,
+      dashArray: null
     }
   }).addTo(map);
   map.fitBounds(layer.getBounds(), { padding: [40, 40] });

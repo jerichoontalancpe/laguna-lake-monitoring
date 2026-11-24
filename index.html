@@ -31,9 +31,7 @@
   <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50 border-b border-base-300" style="min-height:52px;padding:0 0.75rem;">
     <div class="navbar-start">
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-          <i data-lucide="droplets" class="w-5 h-5 text-primary-content"></i>
-        </div>
+        <img src="assets/logo.webp" alt="Laguna Lake Water Quality Monitoring Portal Logo" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
         <span class="font-bold text-base-content text-base leading-tight">
           <span class="hidden lg:inline">Laguna Lake Water Quality <span class="text-primary">Monitoring Portal</span></span>
           <span class="hidden sm:inline lg:hidden">LLWQM <span class="text-primary">Portal</span></span>
@@ -74,6 +72,8 @@
     <!-- Background slideshow — 2 photos only -->
     <div class="hslide" style="position:absolute;inset:0;background:url('assets/laguna-lake-hero.webp') center/cover no-repeat;transition:opacity 1.4s ease;z-index:0;"></div>
     <div class="hslide" style="position:absolute;inset:0;opacity:0;background:url('assets/laguna-fishermen.jpg') center 30%/cover no-repeat;transition:opacity 1.4s ease;z-index:0;"></div>
+    <div class="hslide" style="position:absolute;inset:0;opacity:0;background:url('assets/laguna-boat1.jpg') center/cover no-repeat;transition:opacity 1.4s ease;z-index:0;"></div>
+    <div class="hslide" style="position:absolute;inset:0;opacity:0;background:url('assets/laguna-boat2.jpg') center/cover no-repeat;transition:opacity 1.4s ease;z-index:0;"></div>
 
     <!-- Subtle overlay — keep photos clear, just soften contrast slightly -->
     <div style="position:absolute;inset:0;background:rgba(255,255,255,0.3);z-index:1;pointer-events:none;"></div>
@@ -83,14 +83,14 @@
       <div style="max-width:520px;background:rgba(255,255,255,0.82);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.7);border-radius:1.25rem;padding:2.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.1);">
 
         <!-- Live badge -->
-        <div style="display:inline-flex;align-items:center;gap:0.4rem;background:#0ea5e9;color:#fff;padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.68rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:1.1rem;">
+        <div style="display:inline-flex;align-items:center;gap:0.4rem;background:#15803d;color:#fff;padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.68rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:1.1rem;">
           <span style="width:6px;height:6px;border-radius:50%;background:#7dd3fc;display:inline-block;animation:blink 1.8s ease-in-out infinite;"></span>
           LLDA &bull; DENR DAO 2016-08 Class C
         </div>
 
         <h1 style="font-size:clamp(1.9rem,3.5vw,3rem);font-weight:900;line-height:1.1;color:#0c4a6e;margin:0 0 0.9rem 0;letter-spacing:-0.02em;">
           Laguna Lake<br/>
-          <span style="color:#0ea5e9;">Water Quality</span><br/>
+          <span style="color:#16a34a;">Water Quality</span><br/>
           Monitoring Portal
         </h1>
 
@@ -103,13 +103,13 @@
         <!-- CTA row -->
         <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.4rem;">
           <a href="map.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:#0ea5e9;color:#fff;padding:0.65rem 1.25rem;border-radius:0.5rem;font-weight:700;font-size:0.85rem;text-decoration:none;box-shadow:0 4px 14px rgba(14,165,233,0.35);transition:all 0.15s;"
-            onmouseover="this.style.background='#0284c7';this.style.transform='translateY(-2px)'"
-            onmouseout="this.style.background='#0ea5e9';this.style.transform=''">
+            onmouseover="this.style.background='#166534';this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.background='#15803d';this.style.transform=''">
             <i data-lucide="map" style="width:15px;height:15px;"></i> Open Live Map
           </a>
           <a href="stations.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:#fff;color:#0369a1;padding:0.65rem 1.25rem;border-radius:0.5rem;font-weight:700;font-size:0.85rem;text-decoration:none;border:2px solid #bae6fd;transition:all 0.15s;"
-            onmouseover="this.style.borderColor='#0ea5e9';this.style.background='#f0f9ff'"
-            onmouseout="this.style.borderColor='#bae6fd';this.style.background='#fff'">
+            onmouseover="this.style.borderColor='#16a34a';this.style.background='#f0fdf4'"
+            onmouseout="this.style.borderColor='#bbf7d0';this.style.background='#fff'">
             <i data-lucide="table-2" style="width:15px;height:15px;"></i> All Stations
           </a>
           <a href="about.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:transparent;color:#475569;padding:0.65rem 1rem;border-radius:0.5rem;font-weight:600;font-size:0.85rem;text-decoration:none;border:2px solid #cbd5e1;transition:all 0.15s;"
@@ -121,7 +121,7 @@
 
         <!-- Fact chips — 2 per row, compact -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
-          <span style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(240,249,255,0.95);border:1px solid #bae6fd;border-radius:0.4rem;padding:0.3rem 0.6rem;font-size:0.7rem;font-weight:600;color:#0369a1;">
+          <span style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(240,253,244,0.95);border:1px solid #bbf7d0;border-radius:0.4rem;padding:0.3rem 0.6rem;font-size:0.7rem;font-weight:600;color:#166534;">
             <i data-lucide="map-pin" style="width:11px;height:11px;flex-shrink:0;"></i> Laguna de Bay, PH
           </span>
           <span style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(240,253,244,0.95);border:1px solid #bbf7d0;border-radius:0.4rem;padding:0.3rem 0.6rem;font-size:0.7rem;font-weight:600;color:#166534;">
@@ -147,15 +147,17 @@
 
     <!-- Dot controls -->
     <div style="position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:0.5rem;">
-      <button class="hdot" onclick="goSlide(0)" aria-label="Slide 1" style="width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:#0ea5e9;padding:0;transition:all 0.2s;"></button>
-      <button class="hdot" onclick="goSlide(1)" aria-label="Slide 2" style="width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:rgba(14,165,233,0.3);padding:0;transition:all 0.2s;"></button>
+      <button class="hdot" onclick="goSlide(0)" aria-label="Slide 1" style="width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:#15803d;padding:0;transition:all 0.2s;"></button>
+      <button class="hdot" onclick="goSlide(1)" aria-label="Slide 2" style="width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:rgba(21,128,61,0.3);padding:0;transition:all 0.2s;"></button>
+      <button class="hdot" onclick="goSlide(2)" aria-label="Slide 3" style="width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:rgba(21,128,61,0.3);padding:0;transition:all 0.2s;"></button>
+      <button class="hdot" onclick="goSlide(3)" aria-label="Slide 4" style="width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:rgba(21,128,61,0.3);padding:0;transition:all 0.2s;"></button>
     </div>
 
     <!-- Prev/Next arrows -->
-    <button onclick="goSlide((hCurrent-1+2)%2)" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);z-index:3;background:rgba(255,255,255,0.85);border:1px solid rgba(14,165,233,0.2);border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background 0.15s;" onmouseover="this.style.background='rgba(14,165,233,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
+    <button onclick="goSlide((hCurrent-1+4)%4)" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);z-index:3;background:rgba(255,255,255,0.85);border:1px solid rgba(14,165,233,0.2);border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background 0.15s;" onmouseover="this.style.background='rgba(21,128,61,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
       <i data-lucide="chevron-left" style="width:18px;height:18px;color:#0369a1;"></i>
     </button>
-    <button onclick="goSlide((hCurrent+1)%2)" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);z-index:3;background:rgba(255,255,255,0.85);border:1px solid rgba(14,165,233,0.2);border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background 0.15s;" onmouseover="this.style.background='rgba(14,165,233,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
+    <button onclick="goSlide((hCurrent+1)%4)" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);z-index:3;background:rgba(255,255,255,0.85);border:1px solid rgba(14,165,233,0.2);border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background 0.15s;" onmouseover="this.style.background='rgba(21,128,61,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
       <i data-lucide="chevron-right" style="width:18px;height:18px;color:#0369a1;"></i>
     </button>
 
@@ -185,15 +187,15 @@
     var hCurrent = 0;
     var hSlides  = document.querySelectorAll('.hslide');
     var hDots    = document.querySelectorAll('.hdot');
-    var hCaps    = ['Laguna de Bay \u2014 aerial view, Los Ba\u00f1os','Fishing community along Laguna de Bay shoreline'];
+    var hCaps    = ['Laguna de Bay \u2014 aerial view, Los Ba\u00f1os','Fishing community along Laguna de Bay shoreline','Traditional fishing boat on Laguna de Bay','Net casting at dawn on Laguna de Bay'];
     var hTimer;
     function goSlide(n){
       hSlides[hCurrent].style.opacity='0';
-      hDots[hCurrent].style.background='rgba(14,165,233,0.3)';
+      hDots[hCurrent].style.background='rgba(21,128,61,0.3)';
       hDots[hCurrent].style.transform='scale(1)';
       hCurrent=n;
       hSlides[hCurrent].style.opacity='1';
-      hDots[hCurrent].style.background='#0ea5e9';
+      hDots[hCurrent].style.background='#15803d';
       hDots[hCurrent].style.transform='scale(1.3)';
       document.getElementById('hcaption').textContent=hCaps[hCurrent];
       clearInterval(hTimer);
