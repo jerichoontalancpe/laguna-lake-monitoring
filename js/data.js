@@ -37,8 +37,8 @@ export const PARAMETERS = {
     unit: "",
     min: 6.5,
     max: 9.0,
-    alertMin: 6.5,
-    alertMax: 6.8,
+    alertMin: 6.8,
+    alertMax: 8.5,
     direction: "range",
     description: "Acceptable range 6.5-9.0 (Class C)"
   },
@@ -47,7 +47,7 @@ export const PARAMETERS = {
     short: "BOD",
     unit: "mg/L",
     max: 7.0,
-    alertMax: 6.0,
+    alertMax: 5.5,
     direction: "below",
     description: "Must be <= 7 mg/L; higher indicates organic pollution"
   },
@@ -56,7 +56,7 @@ export const PARAMETERS = {
     short: "COD",
     unit: "mg/L",
     max: 25.0,
-    alertMax: 22.0,
+    alertMax: 20.0,
     direction: "below",
     description: "Must be <= 25 mg/L (Class C limit)"
   },
@@ -75,8 +75,8 @@ export const PARAMETERS = {
     unit: "\u00b0C",
     min: 25.0,
     max: 31.0,
-    alertMin: 24.0,
-    alertMax: 31.5,
+    alertMin: 25.5,
+    alertMax: 30.5,
     direction: "range",
     description: "Acceptable range 25-31 \u00b0C (Class C)"
   }
