@@ -201,9 +201,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
       <div class="explore-box" style="background:linear-gradient(135deg,#0f4c2a 0%,#16a34a 60%,#4ade80 100%);">
-        <div class="explore-icon"><i data-lucide="activity" style="width:26px;height:26px;"></i></div>
-        <h3 class="explore-title">Monitoring Stations</h3>
-        <p class="explore-text">Status of the 16 active lake stations for Q2 2026. Open the Live Map to see each station&rsquo;s readings and trends.</p>
+        <div class="explore-head">
+          <div class="explore-icon"><i data-lucide="activity" style="width:26px;height:26px;"></i></div>
+          <p class="explore-text">Status of the 16 active lake stations for Q2 2026. Open the Live Map to see each station&rsquo;s readings and trends.</p>
+        </div>
         <div class="explore-stats">
           <div><span id="box1-good">0</span><small>Good</small></div>
           <div><span id="box1-fair">0</span><small>Fair</small></div>
@@ -213,9 +214,10 @@
       </div>
 
       <div class="explore-box" style="background:linear-gradient(135deg,#0c4a6e 0%,#0e7490 55%,#22d3ee 100%);">
-        <div class="explore-icon"><i data-lucide="map-pin" style="width:26px;height:26px;"></i></div>
-        <h3 class="explore-title">All Monitoring Stations</h3>
-        <p class="explore-text">Full directory of LLDA lake stations, including 3 archived stations kept for historical reference.</p>
+        <div class="explore-head">
+          <div class="explore-icon"><i data-lucide="map-pin" style="width:26px;height:26px;"></i></div>
+          <p class="explore-text">Full directory of LLDA lake stations, including 3 archived stations kept for historical reference.</p>
+        </div>
         <div class="explore-stats">
           <div><span id="box2-active">0</span><small>Active</small></div>
           <div><span id="box2-archived">0</span><small>Archived</small></div>
@@ -231,9 +233,9 @@
     .explore-box{position:relative;overflow:hidden;border-radius:1.25rem;padding:1.75rem;color:#fff;box-shadow:0 10px 30px rgba(15,23,42,0.18);transition:transform .2s,box-shadow .2s;}
     .explore-box:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(15,23,42,0.25);}
     .explore-box::after{content:'';position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.1);}
-    .explore-icon{width:48px;height:48px;border-radius:0.9rem;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
-    .explore-title{font-size:1.35rem;font-weight:800;margin:0 0 0.4rem;}
-    .explore-text{font-size:0.88rem;opacity:0.9;line-height:1.55;margin:0 0 1.2rem;max-width:420px;}
+    .explore-head{position:relative;z-index:1;display:flex;align-items:center;gap:1rem;margin-bottom:1.3rem;}
+    .explore-icon{width:56px;height:56px;flex-shrink:0;border-radius:1rem;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;}
+    .explore-text{font-size:1.15rem;font-weight:600;line-height:1.5;margin:0;}
     .explore-stats{display:flex;gap:0.75rem;margin-bottom:1.3rem;}
     .explore-stats div{flex:1;background:rgba(255,255,255,0.15);border-radius:0.75rem;padding:0.6rem;text-align:center;}
     .explore-stats span{display:block;font-size:1.6rem;font-weight:900;line-height:1;}
@@ -295,7 +297,17 @@
   </section>
 
   <!-- ── FOOTER ────────────────────────────────── -->
-  <footer style="background:#0f172a;color:#cbd5e1;padding:2.5rem 1.5rem 1.5rem;">
+  <footer style="position:relative;background:#0f172a;color:#cbd5e1;padding:2.5rem 1.5rem 1.5rem;margin-top:72px;">
+    <div style="position:absolute;top:-71px;left:0;right:0;height:72px;overflow:hidden;pointer-events:none;">
+      <div style="position:relative;width:200%;height:100%;">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style="position:absolute;bottom:0;width:100%;height:100%;animation:wavemove 11s linear infinite;">
+          <path d="M0,36 C180,0 360,72 540,36 C720,0 900,72 1080,36 C1260,0 1440,72 1620,36 C1800,0 1980,72 2160,36 L2160,72 L0,72 Z" fill="#0f172a" opacity="0.45"/>
+        </svg>
+        <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="position:absolute;bottom:0;width:100%;height:100%;animation:wavemove 15s linear infinite reverse;">
+          <path d="M0,28 C240,0 480,56 720,28 C960,0 1200,56 1440,28 C1680,0 1920,56 2160,28 L2160,56 L0,56 Z" fill="#0f172a"/>
+        </svg>
+      </div>
+    </div>
     <div class="container mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
       <div class="flex items-center gap-4">
         <img src="assets/logo.webp" alt="Laguna Lake Water Quality Monitoring Portal logo" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:#fff;" />
