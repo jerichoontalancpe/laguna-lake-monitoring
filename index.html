@@ -166,11 +166,7 @@
       <i data-lucide="chevron-right" style="width:18px;height:18px;color:#0369a1;"></i>
     </button>
 
-    <!-- Logo overlay — left side, circular, behind text card -->
-    <div style="position:absolute;left:3%;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none;">
-      <img src="assets/logo.webp" alt="Portal Logo"
-           style="width:clamp(140px,18vw,260px);height:clamp(140px,18vw,260px);border-radius:50%;object-fit:cover;opacity:0.22;filter:drop-shadow(0 4px 24px rgba(0,0,0,0.3));" />
-    </div>
+
 
     <!-- Animated waves at bottom -->
     <div style="position:absolute;bottom:0;left:0;right:0;overflow:hidden;height:72px;z-index:4;pointer-events:none;">
@@ -253,13 +249,50 @@
   <!-- ── PARAMETER REFERENCE STRIP ────────────── -->
   <section class="bg-base-100 border-y border-base-300 py-12">
     <div class="container mx-auto px-6">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-base-content">Monitored Parameters</h2>
-        <p class="text-base-content/60 text-sm mt-1">Based on DENR DAO 2016-08 Class C standards</p>
+
+      <!-- Logo + Title row -->
+      <div class="flex flex-col sm:flex-row items-center gap-5 mb-8">
+        <img src="assets/logo.webp" alt="Laguna Lake Water Quality Monitoring Portal"
+             style="width:90px;height:90px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.12);" />
+        <div>
+          <h2 class="text-2xl font-bold text-base-content">Monitored Parameters</h2>
+          <p class="text-base-content/60 text-sm mt-1">Based on DENR DAO 2016-08 Class C standards</p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <a href="assets/2Q2026 WATER QUALITY REPORT.pdf" target="_blank"
+               class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary border border-primary/30 bg-primary/5 rounded-full px-3 py-1 hover:bg-primary/10 transition-colors">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              LLDA Q2 2026 Water Quality Report (PDF)
+            </a>
+            <a href="about.html"
+               class="inline-flex items-center gap-1.5 text-xs font-semibold text-base-content/60 border border-base-300 bg-base-200 rounded-full px-3 py-1 hover:bg-base-300 transition-colors">
+              <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              View Standards Reference
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="param-strip">
+
+      <!-- Parameter cards -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-10" id="param-strip">
         <!-- filled by JS -->
       </div>
+
+      <!-- 19 Stations quick-nav grid -->
+      <div class="border-t border-base-300 pt-8">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-base-content">All Monitoring Stations</h3>
+            <p class="text-xs text-base-content/50 mt-0.5">16 active &bull; 3 archived &mdash; click any station to view parameter readings on the map</p>
+          </div>
+          <a href="stations.html" class="btn btn-sm btn-outline btn-primary gap-1">
+            <i data-lucide="table-2" class="w-4 h-4"></i> Full Table
+          </a>
+        </div>
+        <div id="all-stations-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -380,6 +413,22 @@
           <div class="text-xs text-base-content/50 mt-0.5">${p.unit || '—'}</div>
           <div class="text-xs text-base-content/40 mt-1 leading-tight">${p.direction === 'above' ? '>= '+p.min : p.direction === 'below' ? '<= '+p.max : p.min+'–'+p.max}</div>
         </div>`).join('');
+
+      // ── All stations quick-nav grid
+      const stationsGridEl = document.getElementById('all-stations-grid');
+      if (stationsGridEl) {
+        stationsGridEl.innerHTML = features.map(f => {
+          const p = f.properties;
+          const isArchived = p.archived;
+          const sc = isArchived ? 'neutral' : (STATUS_COLOR[p.overallStatus] || 'neutral');
+          return `<a href="map.html#${p.id}" class="card border transition-all duration-150 p-3 text-center cursor-pointer hover:shadow-md hover:-translate-y-0.5 ${isArchived ? 'bg-base-200 border-base-300 opacity-60' : 'bg-base-100 border-base-300'}"
+            style="text-decoration:none;">
+            <div class="badge badge-${sc} badge-xs mb-1.5 font-semibold">${isArchived ? 'Archived' : p.overallStatus}</div>
+            <div class="font-bold text-base-content text-xs leading-tight">${p.name}</div>
+            <div class="text-base-content/40 text-xs mt-0.5 leading-tight">${p.bay.split('(')[0].trim()}</div>
+          </a>`;
+        }).join('');
+      }
 
       lucide.createIcons();
     }
