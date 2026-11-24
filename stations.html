@@ -397,8 +397,8 @@
 
       setCurrentStation(p);
       initTrendChart('detail-trend-chart');
-      updateTrendChart(p);
-      renderTrendToggles('detail-trend-toggles');
+      updateTrendChart(p, 'detail-trend-chart');
+      renderTrendToggles('detail-trend-toggles', 'detail-trend-chart');
       lucide.createIcons();
     };
 
