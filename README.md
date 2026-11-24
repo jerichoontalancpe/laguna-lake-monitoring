@@ -174,6 +174,15 @@ Overall station status:
 
 ## References
 
-- DENR Administrative Order No. 2016-08: Water Quality Guidelines and General Effluent Standards of the Philippines
-- Laguna Lake Development Authority (LLDA): Water Quality Monitoring Program
-- OpenStreetMap: Laguna de Bay boundary (relation 79348), licensed under ODbL
+References follow APA 7th edition format.
+
+- Agafonkin, V. (2023). *Leaflet* (Version 1.9.4) [Computer software]. https://leafletjs.com
+- Andersson, R. (n.d.). *Inter* [Typeface]. Google Fonts. https://fonts.google.com/specimen/Inter
+- Chart.js Contributors. (2023). *Chart.js* (Version 4.4.1) [Computer software]. https://www.chartjs.org
+- Department of Environment and Natural Resources. (2016). *Water quality guidelines and general effluent standards of 2016* (DENR Administrative Order No. 2016-08). Environmental Management Bureau.
+- Esri. (n.d.). *World Imagery* [Basemap]. ArcGIS Online. https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer
+- Laguna Lake Development Authority. (n.d.). *Research programs*. Retrieved November 24, 2026, from https://llda.gov.ph/research-programs/
+- Laguna Lake Development Authority. (2026). *Water quality report: Second quarter 2026 (April–June 2026)* [Report].
+- Lucide Contributors. (n.d.). *Lucide* [Computer software]. https://lucide.dev
+- OpenStreetMap contributors. (n.d.). *Laguna de Bay* [Relation 79348]. OpenStreetMap. Retrieved November 24, 2026, from https://www.openstreetmap.org/relation/79348
+- Saadeghi, P. (2025). *daisyUI* (Version 5) [Computer software]. https://daisyui.com
