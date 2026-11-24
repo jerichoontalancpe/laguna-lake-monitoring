@@ -152,16 +152,17 @@
 
 .param-status-dot {
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   margin-right: 0.35rem;
   flex-shrink: 0;
+  box-shadow: 0 0 0 1.5px rgba(0,0,0,0.12);
 }
 
-.param-status-dot.pass  { background: #22c55e; }
-.param-status-dot.alert { background: #f59e0b; }
-.param-status-dot.fail  { background: #ef4444; }
+.param-status-dot.pass  { background: #15803d; }
+.param-status-dot.alert { background: #b45309; }
+.param-status-dot.fail  { background: #b91c1c; }
 
 .param-bar-threshold-marker {
   position: absolute;
@@ -377,6 +378,35 @@
 .overview-station-name { font-size: 0.8rem;  font-weight: 600; }
 .overview-station-bay  { font-size: 0.68rem; opacity: 0.4; margin-left: auto; }
 
+/* --- Override daisyUI warning color to darker amber (prevents visual size illusion) --- */
+:root {
+  --fallback-warning: #b45309;
+}
+
+[data-theme] .badge-warning,
+[data-theme] .bg-warning {
+  --tw-bg-opacity: 1;
+  background-color: #d97706 !important;
+  color: #fff !important;
+  border-color: #b45309 !important;
+}
+
+[data-theme] .text-warning {
+  color: #b45309 !important;
+}
+
+[data-theme] .border-warning,
+[data-theme] .border-warning\/20 {
+  border-color: rgba(180, 83, 9, 0.2) !important;
+}
+
+[data-theme] .bg-warning\/10 {
+  background-color: rgba(180, 83, 9, 0.1) !important;
+}
+
+[data-theme] .text-warning\/80 {
+  color: rgba(180, 83, 9, 0.8) !important;
+}
 /* --- Leaflet z-index fixes for daisyUI modals --- */
 .leaflet-pane           { z-index: 1 !important; }
 .leaflet-tile-pane      { z-index: 2 !important; }
