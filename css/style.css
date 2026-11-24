@@ -138,9 +138,9 @@
 
 @keyframes growBar { from { width: 0 !important; } }
 
-.param-bar-fill.pass  { background: linear-gradient(90deg, #4ade80, #22c55e); }
-.param-bar-fill.alert { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-.param-bar-fill.fail  { background: linear-gradient(90deg, #f87171, #ef4444); }
+.param-bar-fill.pass  { background: linear-gradient(90deg, #4ade80, #16a34a); }
+.param-bar-fill.alert { background: linear-gradient(90deg, #d97706, #92400e); }
+.param-bar-fill.fail  { background: linear-gradient(90deg, #f87171, #b91c1c); }
 
 .param-bar-labels {
   display: flex;
@@ -160,8 +160,8 @@
   box-shadow: 0 0 0 1.5px rgba(0,0,0,0.12);
 }
 
-.param-status-dot.pass  { background: #15803d; }
-.param-status-dot.alert { background: #b45309; }
+.param-status-dot.pass  { background: #16a34a; }
+.param-status-dot.alert { background: #92400e; }
 .param-status-dot.fail  { background: #b91c1c; }
 
 .param-bar-threshold-marker {
@@ -230,7 +230,7 @@
 }
 
 .wq-marker-good { background: #16a34a; border-color: #15803d; }
-.wq-marker-fair { background: #d97706; border-color: #b45309; }
+.wq-marker-fair { background: #92400e; border-color: #78350f; }
 .wq-marker-poor { background: #dc2626; border-color: #b91c1c; }
 
 .wq-marker-label {

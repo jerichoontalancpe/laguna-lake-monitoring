@@ -311,11 +311,11 @@ export function geoJSONToLatLng(coords) {
 export function getStatusColor(status) {
   const colors = {
     Good: "#16a34a",
-    Fair: "#d97706",
-    Poor: "#dc2626",
+    Fair: "#92400e",
+    Poor: "#b91c1c",
     Pass: "#16a34a",
-    Alert: "#d97706",
-    Fail: "#dc2626"
+    Alert: "#92400e",
+    Fail: "#b91c1c"
   };
   return colors[status] || "#64748b";
 }
