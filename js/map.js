@@ -142,7 +142,6 @@ function buildPopup(props) {
     <div class="popup-name">${props.name}</div>
     <div class="popup-bay">${props.bay}</div>
     <span class="badge badge-${dc} badge-sm font-semibold">${props.overallStatus}</span>
-    <div style="margin-top:0.4rem;font-size:0.7rem;opacity:0.5;">Click for full details</div>
   </div>`;
 }
 
@@ -288,7 +287,7 @@ function showOverview() {
       '<div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:' + c.text + ';margin-bottom:0.3rem;">' + p.bay + '</div>',
       '<div style="font-size:1rem;font-weight:800;color:#1e293b;line-height:1.2;margin-bottom:0.6rem;">' + p.name + '</div>',
       '<span style="background:' + c.badge + ';color:#fff;padding:0.2rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;">' + p.overallStatus + '</span>',
-      '<div style="margin-top:0.75rem;font-size:0.62rem;color:#64748b;">Hover to see parameters</div>',
+
       '</div>'
     ].join("");
 
@@ -306,7 +305,7 @@ function showOverview() {
       '<div style="background:#fff;border:2px solid ' + c.border + ';border-radius:0.75rem;padding:0.65rem;display:flex;flex-direction:column;justify-content:center;height:100%;">',
       '<div style="font-size:0.65rem;font-weight:700;color:#1e293b;margin-bottom:0.4rem;text-align:center;">' + p.name + '</div>',
       '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.2rem;border:1px solid #f1f5f9;border-radius:0.4rem;overflow:hidden;background:#f8fafc;">' + paramRows + '</div>',
-      '<div style="text-align:center;margin-top:0.4rem;font-size:0.58rem;color:#94a3b8;">Click to open station</div>',
+
       '</div>'
     ].join("");
 
@@ -347,7 +346,7 @@ function showOverview() {
     '</div>' +
 
     '<div class="section-divider"></div>' +
-    '<p style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.5rem;">Monitoring Stations <span style="font-size:0.58rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:0.7;">&mdash; hover to see readings, click to open</span></p>' +
+    
     '<div style="display:flex;flex-direction:column;gap:0.5rem;">' + flipCards + '</div>' +
 
     '<div class="section-divider"></div>' +
