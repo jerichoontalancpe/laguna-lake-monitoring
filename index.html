@@ -196,33 +196,51 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="stat-cards"></div>
   </section>
 
-  <!-- ── STATION STATUS CARDS ──────────────────── -->
-  <section class="container mx-auto px-6 pb-16" style="
-    background: url('assets/bg-pattern.jpg') center/cover no-repeat;
-    background-attachment: fixed;
-    border-radius: 0;
-    padding-top: 3rem;
-    margin: 0;
-    max-width: 100%;
-    position: relative;
-  ">
-    <div style="position:absolute;inset:0;background:rgba(255,255,255,0.88);pointer-events:none;"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-base-content">Monitoring Stations</h2>
-          <p class="text-base-content/60 text-sm mt-1">Quick pulse of five reference stations. Click a card to open it on the Live Map.</p>
+  <!-- ── EXPLORE BOXES ──────────────────────────── -->
+  <section class="container mx-auto px-6 pb-14">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div class="explore-box" style="background:linear-gradient(135deg,#0f4c2a 0%,#16a34a 60%,#4ade80 100%);">
+        <div class="explore-icon"><i data-lucide="activity" style="width:26px;height:26px;"></i></div>
+        <h3 class="explore-title">Monitoring Stations</h3>
+        <p class="explore-text">Status of the 16 active lake stations for Q2 2026. Open the Live Map to see each station&rsquo;s readings and trends.</p>
+        <div class="explore-stats">
+          <div><span id="box1-good">0</span><small>Good</small></div>
+          <div><span id="box1-fair">0</span><small>Fair</small></div>
+          <div><span id="box1-poor">0</span><small>Poor</small></div>
         </div>
-        <a href="stations.html" class="btn btn-sm btn-ghost gap-1 text-primary">
-          View all
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </a>
+        <a href="map.html" class="explore-link">Explore More <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="station-cards">
-        <!-- filled by JS -->
+
+      <div class="explore-box" style="background:linear-gradient(135deg,#0c4a6e 0%,#0e7490 55%,#22d3ee 100%);">
+        <div class="explore-icon"><i data-lucide="map-pin" style="width:26px;height:26px;"></i></div>
+        <h3 class="explore-title">All Monitoring Stations</h3>
+        <p class="explore-text">Full directory of LLDA lake stations, including 3 archived stations kept for historical reference.</p>
+        <div class="explore-stats">
+          <div><span id="box2-active">0</span><small>Active</small></div>
+          <div><span id="box2-archived">0</span><small>Archived</small></div>
+          <div><span id="box2-total">0</span><small>Total</small></div>
+        </div>
+        <a href="stations.html" class="explore-link">Explore More <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
       </div>
+
     </div>
   </section>
+
+  <style>
+    .explore-box{position:relative;overflow:hidden;border-radius:1.25rem;padding:1.75rem;color:#fff;box-shadow:0 10px 30px rgba(15,23,42,0.18);transition:transform .2s,box-shadow .2s;}
+    .explore-box:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(15,23,42,0.25);}
+    .explore-box::after{content:'';position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.1);}
+    .explore-icon{width:48px;height:48px;border-radius:0.9rem;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+    .explore-title{font-size:1.35rem;font-weight:800;margin:0 0 0.4rem;}
+    .explore-text{font-size:0.88rem;opacity:0.9;line-height:1.55;margin:0 0 1.2rem;max-width:420px;}
+    .explore-stats{display:flex;gap:0.75rem;margin-bottom:1.3rem;}
+    .explore-stats div{flex:1;background:rgba(255,255,255,0.15);border-radius:0.75rem;padding:0.6rem;text-align:center;}
+    .explore-stats span{display:block;font-size:1.6rem;font-weight:900;line-height:1;}
+    .explore-stats small{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;opacity:0.85;}
+    .explore-link{position:relative;z-index:1;display:inline-flex;align-items:center;gap:0.35rem;background:#fff;color:#0f172a;font-weight:700;font-size:0.85rem;padding:0.55rem 1.1rem;border-radius:9999px;text-decoration:none;}
+    .explore-link:hover{background:#f0fdf4;}
+  </style>
 
   <!-- ── PARAMETER REFERENCE STRIP ────────────── -->
   <section class="bg-base-100 border-y border-base-300 py-12">
@@ -255,22 +273,6 @@
         <!-- filled by JS -->
       </div>
 
-      <!-- 19 Stations quick-nav grid -->
-      <div class="border-t border-base-300 pt-8">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h3 class="text-lg font-bold text-base-content">All Monitoring Stations</h3>
-            <p class="text-xs text-base-content/50 mt-0.5">16 active &bull; 3 archived &mdash; click any station to view parameter readings on the map</p>
-          </div>
-          <a href="stations.html" class="btn btn-sm btn-outline btn-primary gap-1">
-            <i data-lucide="table-2" class="w-4 h-4"></i> Full Table
-          </a>
-        </div>
-        <div id="all-stations-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-          <!-- filled by JS -->
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -293,10 +295,24 @@
   </section>
 
   <!-- ── FOOTER ────────────────────────────────── -->
-  <footer class="footer footer-center bg-base-100 border-t border-base-300 p-8 text-base-content/50 text-sm">
-    <div>
-      <p>Laguna Lake Development Authority &middot; DENR DAO 2016-08 Class C Standards</p>
-      <p class="mt-1">Data is representative of typical Laguna de Bay conditions for educational purposes &middot; WITM 101</p>
+  <footer style="background:#0f172a;color:#cbd5e1;padding:2.5rem 1.5rem 1.5rem;">
+    <div class="container mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <img src="assets/logo.webp" alt="Laguna Lake Water Quality Monitoring Portal logo" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:#fff;" />
+        <div>
+          <div style="font-weight:800;color:#fff;font-size:1.05rem;line-height:1.2;">Laguna Lake Water Quality<br/>Monitoring Portal</div>
+          <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">LLDA &middot; DENR DAO 2016-08 Class C Standards</div>
+        </div>
+      </div>
+      <nav style="display:flex;gap:1.25rem;flex-wrap:wrap;font-size:0.85rem;font-weight:600;">
+        <a href="index.html" style="color:#cbd5e1;text-decoration:none;">Dashboard</a>
+        <a href="map.html" style="color:#cbd5e1;text-decoration:none;">Live Map</a>
+        <a href="stations.html" style="color:#cbd5e1;text-decoration:none;">Stations</a>
+        <a href="about.html" style="color:#cbd5e1;text-decoration:none;">About</a>
+      </nav>
+    </div>
+    <div class="container mx-auto" style="border-top:1px solid #1e293b;margin-top:1.5rem;padding-top:1rem;text-align:center;font-size:0.72rem;color:#64748b;">
+      Data source: LLDA Q2 2026 Water Quality Monitoring Report (April&ndash;June 2026) &middot; WITM 101 Advanced Web Design and Programming
     </div>
   </footer>
 
@@ -401,39 +417,10 @@
         ).join('');
       }
 
-      // ── Station quick-pulse strip (reference stations I, II, IV, V, VIII)
-      const RANK = { Fail: 2, Alert: 1, Pass: 0 };
-      function worstParam(params) {
-        let best = null;
-        Object.entries(params).forEach(([k, v]) => {
-          const cfg = PARAMETERS[k];
-          const lim = cfg.direction === 'above' ? cfg.min : cfg.max;
-          const ratio = cfg.direction === 'above' ? lim / v.value : v.value / lim;
-          const score = RANK[v.status] * 100 + ratio;
-          if (!best || score > best.score) best = { k, v, score };
-        });
-        return best;
-      }
-      const PULSE_IDS = ['stn-i', 'stn-ii', 'stn-iv', 'stn-v', 'stn-viii'];
-      const PILL = { Good: '#16a34a', Fair: '#d97706', Poor: '#dc2626' };
-      const cardsEl = document.getElementById('station-cards');
-      cardsEl.innerHTML = PULSE_IDS.map(id => activeFeatures.find(f => f.properties.id === id)).filter(Boolean).map((f, i) => {
-        const p = f.properties;
-        const w = worstParam(p.parameters);
-        const cfg = PARAMETERS[w.k];
-        const note = w.v.status === 'Fail' ? 'Exceeded' : w.v.status === 'Alert' ? 'Borderline' : 'Within limit';
-        const wColor = w.v.status === 'Fail' ? '#dc2626' : w.v.status === 'Alert' ? '#d97706' : '#16a34a';
-        return `
-          <a href="map.html#${p.id}" class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate__animated animate__fadeInUp" style="animation-delay:${i*90}ms;text-decoration:none;border-top:4px solid ${PILL[p.overallStatus]};">
-            <div class="card-body p-4 gap-2">
-              <div class="font-bold text-base-content text-sm leading-tight">${p.name} &middot; ${p.bay}</div>
-              <span style="align-self:flex-start;background:${PILL[p.overallStatus]};color:#fff;font-size:0.65rem;font-weight:700;padding:0.15rem 0.65rem;border-radius:9999px;">${p.overallStatus}</span>
-              ${w.v.status === 'Pass'
-                ? '<div style="font-size:0.78rem;font-weight:700;color:#16a34a;margin-top:0.2rem;line-height:1.3;">All 6 parameters within Class C limits</div>'
-                : '<div style="font-size:0.72rem;color:#64748b;margin-top:0.2rem;">Worst parameter</div><div style="font-size:0.82rem;font-weight:800;color:' + wColor + ';line-height:1.25;">' + cfg.short + ': ' + w.v.value + ' ' + cfg.unit + '<br/><span style="font-size:0.68rem;font-weight:600;">(' + note + ')</span></div>'}
-            </div>
-          </a>`;
-      }).join('');
+      // ── Explore box counts
+      const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      setText('box1-good', good); setText('box1-fair', fair); setText('box1-poor', poor);
+      setText('box2-active', activeFeatures.length); setText('box2-archived', archivedFe.length); setText('box2-total', features.length);
 
       // ── Class C benchmark grid
       const paramEl = document.getElementById('param-strip');
@@ -468,22 +455,6 @@
             <p class="text-xs text-base-content/60 leading-snug">${IMPACT[k]}</p>
           </div>`;
       }).join('');
-
-      // ── All stations quick-nav grid
-      const stationsGridEl = document.getElementById('all-stations-grid');
-      if (stationsGridEl) {
-        stationsGridEl.innerHTML = features.map(f => {
-          const p = f.properties;
-          const isArchived = p.archived;
-          const sc = isArchived ? 'neutral' : (STATUS_COLOR[p.overallStatus] || 'neutral');
-          return `<a href="map.html#${p.id}" class="card border transition-all duration-150 p-3 text-center cursor-pointer hover:shadow-md hover:-translate-y-0.5 ${isArchived ? 'bg-base-200 border-base-300 opacity-60' : 'bg-base-100 border-base-300'}"
-            style="text-decoration:none;">
-            <div class="badge badge-${sc} badge-xs mb-1.5 font-semibold">${isArchived ? 'Archived' : p.overallStatus}</div>
-            <div class="font-bold text-base-content text-xs leading-tight">${p.name}</div>
-            <div class="text-base-content/40 text-xs mt-0.5 leading-tight">${p.bay.split('(')[0].trim()}</div>
-          </a>`;
-        }).join('');
-      }
 
       lucide.createIcons();
     }
