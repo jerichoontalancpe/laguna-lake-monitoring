@@ -280,13 +280,22 @@ function showArchivedStation(props) {
         <p style="font-size:0.8rem;color:#64748b;margin-bottom:0.75rem;">${props.bay}</p>
         <span style="display:inline-block;background:#f1f5f9;color:#64748b;padding:0.2rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;">Archived Station</span>
         <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-bottom:0.75rem;">${props.note || "This station is no longer actively monitored in the current reporting period."}</p>
-        <p style="font-size:0.75rem;color:#94a3b8;line-height:1.5;">Archived stations are retained on the map for historical reference. No recent water quality readings are available. Last data recorded prior to decommissioning is shown below for reference.</p>
+        <p style="font-size:0.75rem;color:#94a3b8;line-height:1.5;">The readings and trends below were the last values recorded before this station was archived. They are kept for historical reference and do not reflect current conditions.</p>
       </div>
       <div class="section-divider"></div>
       <p style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.5rem;">Last Recorded Readings</p>
       ${renderParameterBars(props.parameters)}
+      <div class="section-divider"></div>
+      <p style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.3rem;">Last 6-Month Trends</p>
+      <p class="text-xs opacity-40 mb-3">Dashed = DAO 2016-08 limit &bull; R = right Y-axis</p>
+      <div id="sidebar-trend-toggles" class="flex flex-wrap gap-1.5 mb-3"></div>
+      <div class="chart-wrapper"><canvas id="sidebar-trend-chart"></canvas></div>
     </div>`;
   document.getElementById("back-btn")?.addEventListener("click", deselectStation);
+  setCurrentStation(props);
+  initTrendChart("sidebar-trend-chart");
+  updateTrendChart(props, "sidebar-trend-chart");
+  renderTrendToggles("sidebar-trend-toggles", "sidebar-trend-chart");
 }
 
 function showOverview() {

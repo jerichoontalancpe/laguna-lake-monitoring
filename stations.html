@@ -213,7 +213,9 @@
       grid.innerHTML = archivedStations.map(f => {
         const p = f.properties;
         return `
-          <div class="card bg-base-200 border border-base-300 shadow-sm opacity-75">
+          <div class="card bg-base-200 border border-base-300 shadow-sm opacity-80 hover:opacity-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+               role="button" tabindex="0" onclick="openDetail('${p.id}')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail('${p.id}');}">
             <div class="card-body p-5">
               <div class="flex items-start justify-between mb-3">
                 <div>
@@ -227,7 +229,7 @@
               </div>
               <p class="text-xs text-base-content/50 mb-3 italic">${p.note || "No recent readings available"}</p>
               <div class="text-xs text-base-content/40 border-t border-base-300 pt-2 mt-1">
-                Last recorded readings shown for reference only.
+                Last recorded readings before archiving. Click to view.
               </div>
             </div>
           </div>`;
@@ -365,24 +367,33 @@
     };
 
     window.openDetail = function(stationId) {
-      const f = allStations.find(s => s.properties.id === stationId);
+      const f = allFeaturesRaw.find(s => s.properties.id === stationId);
       if (!f) return;
       const p = f.properties;
-      const sc = STATUS_COLOR[p.overallStatus];
+      const sc = p.archived ? 'neutral' : STATUS_COLOR[p.overallStatus];
 
       document.getElementById('detail-title').textContent = p.name;
       document.getElementById('detail-subtitle').textContent = `${p.bay} · ${p.location}`;
       document.getElementById('detail-badge').className = `badge badge-${sc} badge-sm font-semibold`;
-      document.getElementById('detail-badge').textContent = p.overallStatus;
+      document.getElementById('detail-badge').textContent = p.archived ? 'Archived' : p.overallStatus;
 
-      document.getElementById('detail-body').innerHTML = `
+      const archivedNote = p.archived ? `
+        <div class="alert" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#334155;">
+          <i data-lucide="archive" class="w-5 h-5 flex-shrink-0" style="color:#64748b;"></i>
+          <div>
+            <p class="font-semibold text-sm">Archived station &mdash; last recorded readings</p>
+            <p class="text-xs mt-1" style="color:#64748b;">The values and trends below were the last readings recorded before this station was archived. They are kept for historical reference and do not reflect current conditions.${p.note ? ' ' + p.note + '.' : ''}</p>
+          </div>
+        </div>` : '';
+
+      document.getElementById('detail-body').innerHTML = archivedNote + `
         <div>
-          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-3">Water Quality Parameters</h4>
+          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-3">${p.archived ? 'Last Recorded ' : ''}Water Quality Parameters</h4>
           <div id="detail-param-bars"></div>
         </div>
         <div class="section-divider"></div>
         <div>
-          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-1">6-Month Historical Trends</h4>
+          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-1">${p.archived ? 'Last ' : ''}6-Month Historical Trends</h4>
           <p class="text-xs text-base-content/40 mb-3">Dashed lines mark DAO 2016-08 limits</p>
           <div id="detail-trend-toggles" class="flex flex-wrap gap-2 mb-3"></div>
           <div class="rounded-xl border border-base-300 bg-base-200/50 p-3" style="height:220px">
