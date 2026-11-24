@@ -122,8 +122,8 @@
 
 /* --- Progress Bars --- */
 .param-bar-track {
-  height: 7px;
-  background: rgba(0,0,0,0.08);
+  height: 5px;
+  background: rgba(0,0,0,0.07);
   border-radius: 9999px;
   overflow: visible;
   position: relative;
@@ -138,9 +138,9 @@
 
 @keyframes growBar { from { width: 0 !important; } }
 
-.param-bar-fill.pass  { background: linear-gradient(90deg, #4ade80, #16a34a); }
-.param-bar-fill.alert { background: linear-gradient(90deg, #d97706, #92400e); }
-.param-bar-fill.fail  { background: linear-gradient(90deg, #f87171, #b91c1c); }
+.param-bar-fill.pass  { background: #16a34a; }
+.param-bar-fill.alert { background: #92400e; }
+.param-bar-fill.fail  { background: #b91c1c; }
 
 .param-bar-labels {
   display: flex;
