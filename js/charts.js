@@ -272,7 +272,8 @@ export function renderParameterBars(parameters) {
 
     const status      = getParameterStatus(key, data.value);
     const statusClass = getStatusClass(status).toLowerCase();
-    const fill        = getBarFillPercent(key, data.value);
+    const rawFill     = getBarFillPercent(key, data.value);
+    const fill        = Math.min(rawFill, 75); // cap visual width at 75% so bars stay slim
     const threshold   = getThresholdText(key);
     const marker      = getMarkerPercent(key);
     const markerHtml  = marker !== null
