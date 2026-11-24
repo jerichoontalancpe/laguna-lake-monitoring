@@ -9,11 +9,13 @@ import {
   geoJSONToLatLng,
   getStatusColor,
   getStatusClass,
+  displayValue,
   loadStations,
   loadLakeBoundary
 } from "./data.js";
 import {
   renderParameterBars,
+  renderExtraParameters,
   initTrendChart,
   updateTrendChart,
   renderTrendToggles,
@@ -107,7 +109,7 @@ function createMarker(feature, filterMode) {
     const pd = props.parameters[filterMode];
     const pc = PARAMETERS[filterMode];
     if (!pd || !pc) {
-      const sc = getStatusClass(props.overallStatus);
+      const sc = props.archived ? "archived" : getStatusClass(props.overallStatus);
       iconHtml = `<div class="wq-marker wq-marker-${sc}" data-id="${props.id}">
         <span class="wq-marker-label">${props.name.replace("Station ", "")}</span></div>`;
       iconSize = [32, 32];
@@ -119,7 +121,7 @@ function createMarker(feature, filterMode) {
       else if (pc.direction === "below") size = Math.max(26, Math.min(58, 26 + (pd.value / (pc.max || 1)) * 32));
       iconHtml = `<div class="wq-bubble" data-id="${props.id}"
         style="width:${size}px;height:${size}px;background:${color}33;border-color:${color};">
-        <span class="wq-bubble-label" style="color:${color};">${pd.value}</span></div>`;
+        <span class="wq-bubble-label" style="color:${color};">${displayValue(pd)}</span></div>`;
       iconSize = [size, size];
     }
   }
@@ -235,20 +237,24 @@ function updateSidebar(props) {
 
       <div class="section-divider"></div>
 
-      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-3">Water Quality Parameters</p>
+      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-1">Water Quality Parameters</p>
+      <p class="text-xs opacity-40 mb-3">June 2026 readings vs. Class C limits</p>
       ${paramBars}
+
+      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-2 mt-3">Additional Parameters</p>
+      ${renderExtraParameters(props.extra)}
 
       <div class="section-divider"></div>
 
-      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-2">6-Month Trends</p>
-      <p class="text-xs opacity-40 mb-3">Dashed = DAO 2016-08 limit &bull; R = right Y-axis</p>
+      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-2">Monthly Trends &middot; Q2 2026 (Apr&ndash;Jun)</p>
+      <p class="text-xs opacity-40 mb-3">Dashed = Class C limit &bull; R = right Y-axis</p>
       <div id="sidebar-trend-toggles" class="flex flex-wrap gap-1.5 mb-3"></div>
       <div class="chart-wrapper"><canvas id="sidebar-trend-chart"></canvas></div>
 
       <div class="section-divider"></div>
       <div class="text-xs opacity-40 leading-relaxed pb-2">
-        <span class="font-semibold opacity-60">Standard:</span> DENR DAO 2016-08 Class C &bull;
-        <span class="font-semibold opacity-60">Updated:</span> ${lastUpdated}
+        <span class="font-semibold opacity-60">Source:</span> LLDA Q2 2026 Water Quality Report &bull;
+        <span class="font-semibold opacity-60">Standard:</span> DENR DAO 2016-08 / 2021-19 Class C
       </div>
     </div>`;
 
@@ -280,29 +286,17 @@ function showArchivedStation(props) {
         <p style="font-size:0.8rem;color:#64748b;margin-bottom:0.75rem;">${props.bay}</p>
         <span style="display:inline-block;background:#f1f5f9;color:#64748b;padding:0.2rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;">Archived Station</span>
         <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-bottom:0.75rem;">${props.note || "This station is no longer actively monitored in the current reporting period."}</p>
-        <p style="font-size:0.75rem;color:#94a3b8;line-height:1.5;">The readings and trends below were the last values recorded before this station was archived. They are kept for historical reference and do not reflect current conditions.</p>
+        <p style="font-size:0.75rem;color:#94a3b8;line-height:1.5;">This station was not sampled in the LLDA Q2 2026 report, so no current readings are available. It stays on the map for historical reference.</p>
       </div>
-      <div class="section-divider"></div>
-      <p style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.5rem;">Last Recorded Readings</p>
-      ${renderParameterBars(props.parameters)}
-      <div class="section-divider"></div>
-      <p style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;opacity:0.5;margin-bottom:0.3rem;">Last 6-Month Trends</p>
-      <p class="text-xs opacity-40 mb-3">Dashed = DAO 2016-08 limit &bull; R = right Y-axis</p>
-      <div id="sidebar-trend-toggles" class="flex flex-wrap gap-1.5 mb-3"></div>
-      <div class="chart-wrapper"><canvas id="sidebar-trend-chart"></canvas></div>
     </div>`;
   document.getElementById("back-btn")?.addEventListener("click", deselectStation);
-  setCurrentStation(props);
-  initTrendChart("sidebar-trend-chart");
-  updateTrendChart(props, "sidebar-trend-chart");
-  renderTrendToggles("sidebar-trend-toggles", "sidebar-trend-chart");
 }
 
 function showOverview() {
   if (!stationData) return;
 
   let good = 0, fair = 0, poor = 0;
-  let doSum = 0, bodSum = 0, phSum = 0, tempSum = 0;
+  let doSum = 0, bodSum = 0, phSum = 0, phosSum = 0;
 
   const activeFeatures = stationData.features.filter(f => !f.properties.archived);
   activeFeatures.forEach(f => {
@@ -313,7 +307,7 @@ function showOverview() {
     doSum   += p.parameters.do.value;
     bodSum  += p.parameters.bod.value;
     phSum   += p.parameters.ph.value;
-    tempSum += p.parameters.temperature.value;
+    phosSum += p.parameters.phosphate.value;
   });
   const n = activeFeatures.length;
 
@@ -343,8 +337,8 @@ function showOverview() {
       const k = entry[0], v = entry[1];
       const sc = v.status === "Pass" ? "#16a34a" : v.status === "Fail" ? "#b91c1c" : "#d97706";
       return '<div style="text-align:center;padding:0.3rem 0.15rem;">' +
-        '<div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;color:#64748b;">' + k.toUpperCase() + '</div>' +
-        '<div style="font-size:0.85rem;font-weight:800;color:' + sc + ';">' + v.value + '</div>' +
+        '<div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;color:#64748b;">' + (PARAMETERS[k] ? PARAMETERS[k].short : k) + '</div>' +
+        '<div style="font-size:0.85rem;font-weight:800;color:' + sc + ';">' + displayValue(v) + '</div>' +
         '<div style="font-size:0.5rem;color:#94a3b8;">' + (v.unit || "—") + '</div>' +
         '</div>';
     }).join("");
@@ -390,7 +384,7 @@ function showOverview() {
     '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. DO</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (doSum/n).toFixed(1) + ' <span style="font-size:0.6rem;color:#94a3b8;">mg/L</span></div><div style="font-size:0.58rem;color:#94a3b8;">&gt;= 5.0 mg/L</div></div>' +
     '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. BOD</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (bodSum/n).toFixed(1) + ' <span style="font-size:0.6rem;color:#94a3b8;">mg/L</span></div><div style="font-size:0.58rem;color:#94a3b8;">&lt;= 7.0 mg/L</div></div>' +
     '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. pH</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (phSum/n).toFixed(1) + '</div><div style="font-size:0.58rem;color:#94a3b8;">6.5 &ndash; 9.0</div></div>' +
-    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. Temp</div><div style="font-size:0.95rem;font-weight:800;color:#1e293b;">' + (tempSum/n).toFixed(1) + ' <span style="font-size:0.6rem;color:#94a3b8;">°C</span></div><div style="font-size:0.58rem;color:#94a3b8;">25 &ndash; 31 °C</div></div>' +
+    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.45rem;padding:0.45rem 0.55rem;"><div style="font-size:0.6rem;font-weight:600;color:#64748b;">Avg. Phosphate</div><div style="font-size:0.95rem;font-weight:800;color:#b91c1c;">' + (phosSum/n).toFixed(2) + ' <span style="font-size:0.6rem;color:#94a3b8;">mg/L</span></div><div style="font-size:0.58rem;color:#94a3b8;">&le; 0.025 mg/L</div></div>' +
     '</div>' +
 
     '<div class="section-divider"></div>' +
@@ -398,7 +392,7 @@ function showOverview() {
     '<div style="display:flex;flex-direction:column;gap:0.5rem;">' + flipCards + '</div>' +
 
     '<div class="section-divider"></div>' +
-    '<div style="font-size:0.6rem;opacity:0.4;line-height:1.5;padding-bottom:0.5rem;"><strong style="opacity:0.7;">Last Updated:</strong> ' + lastUpdated + ' &bull; Representative data for WITM 101.</div>' +
+    '<div style="font-size:0.6rem;opacity:0.4;line-height:1.5;padding-bottom:0.5rem;"><strong style="opacity:0.7;">Data:</strong> June 2026 readings &bull; Source: LLDA Q2 2026 Water Quality Report.</div>' +
     '</div>';
 
   document.querySelectorAll(".station-flip-card").forEach(function(card) {
@@ -442,13 +436,15 @@ function openModal(props) {
 
   document.getElementById("modal-body").innerHTML = `
     <div>
-      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-3">Water Quality Parameters</p>
+      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-3">Water Quality Parameters &middot; June 2026</p>
       ${renderParameterBars(props.parameters)}
+      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-2 mt-3">Additional Parameters</p>
+      ${renderExtraParameters(props.extra)}
     </div>
     <div class="section-divider"></div>
     <div>
-      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-1">6-Month Historical Trends</p>
-      <p class="text-xs opacity-40 mb-3">Dashed lines = DAO 2016-08 limits &bull; R badge = right Y-axis</p>
+      <p class="text-xs font-bold uppercase tracking-widest opacity-50 mb-1">Monthly Trends &middot; Q2 2026 (Apr&ndash;Jun)</p>
+      <p class="text-xs opacity-40 mb-3">Dashed lines = Class C limits &bull; R badge = right Y-axis</p>
       <div id="modal-trend-toggles" class="flex flex-wrap gap-1.5 mb-3"></div>
       <div class="chart-wrapper"><canvas id="modal-trend-chart"></canvas></div>
     </div>`;

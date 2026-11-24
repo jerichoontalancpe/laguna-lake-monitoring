@@ -94,7 +94,7 @@
           Laguna Lake<br/><span style="color:#4ade80;">Water Quality</span><br/>Monitoring Portal
         </h1>
         <p style="font-size:0.95rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:1.5rem;">
-          Visualization of water quality data across 16 active LLDA lake stations on
+          Water quality readings from the LLDA Q2 2026 report for 16 active lake stations on
           <strong style="color:#fff;">Laguna de Bay</strong>, the largest freshwater lake in the Philippines,
           benchmarked against DENR DAO 2016-08 Class C standards.
         </p>
@@ -320,7 +320,7 @@
   </footer>
 
   <script type="module">
-    import { PARAMETERS, loadStations, getStatusColor, getStatusClass } from './js/data.js';
+    import { PARAMETERS, loadStations, getStatusColor, getStatusClass, getParameterStatus } from './js/data.js';
 
     const STATUS_ICON = { Good: 'check-circle', Fair: 'alert-triangle', Poor: 'x-circle' };
     const STATUS_COLOR = { Good: 'success', Fair: 'warning', Poor: 'error' };
@@ -397,17 +397,21 @@
 
       // ── Class C benchmark grid
       const paramEl = document.getElementById('param-strip');
-      const PARAM_ICONS = { do:'droplets', ph:'flask-conical', bod:'bug', cod:'zap', turbidity:'eye', temperature:'thermometer' };
+      const PARAM_ICONS = { do:'droplets', ph:'flask-conical', bod:'bug', nitrate:'leaf', phosphate:'sprout', tss:'eye' };
       const IMPACT = {
         do: 'Essential for fish respiration and aquatic survival.',
-        ph: 'Extreme pH stresses fish and disrupts aquatic chemistry.',
         bod: 'High values signal organic pollution that depletes oxygen.',
-        cod: 'Indicates the load of chemically oxidizable pollutants.',
-        turbidity: 'Cloudy water blocks sunlight and harms aquatic plants.',
-        temperature: 'Affects oxygen solubility and fish metabolism.'
+        ph: 'Extreme pH stresses fish and disrupts aquatic chemistry.',
+        nitrate: 'Excess nitrate feeds algal blooms.',
+        phosphate: 'The main driver of eutrophication and algal blooms in the lake.',
+        tss: 'Suspended solids cloud the water and smother habitats.'
       };
       paramEl.innerHTML = Object.entries(PARAMETERS).map(([k, p]) => {
-        const avg = activeFeatures.reduce((s, f) => s + f.properties.parameters[k].value, 0) / activeFeatures.length;
+        const rs = activeFeatures.map(f => f.properties.parameters[k]);
+        const avg = rs.reduce((s, r) => s + r.value, 0) / rs.length;
+        const allBelow = rs.every(r => r.belowDetection);
+        const avgText = allBelow ? '&lt;' + rs[0].value : (avg < 1 ? avg.toFixed(2) : avg.toFixed(1));
+        const meets = rs.filter(r => getParameterStatus(k, r.value) === 'Pass').length;
         const thr = p.direction === 'above' ? '&ge; ' + p.min : p.direction === 'below' ? '&le; ' + p.max : p.min + ' &ndash; ' + p.max;
         const u = p.unit ? ' ' + p.unit : '';
         return `
@@ -423,8 +427,9 @@
             </div>
             <div class="flex justify-between gap-2 mb-2">
               <div><div class="text-xs text-base-content/50">Class C limit</div><div class="font-bold text-sm text-base-content">${thr}${u}</div></div>
-              <div class="text-right"><div class="text-xs text-base-content/50">Lake-wide avg.</div><div class="font-black text-sm text-primary">${avg.toFixed(1)}${u}</div></div>
+              <div class="text-right"><div class="text-xs text-base-content/50">Lake-wide avg.</div><div class="font-black text-sm ${meets === rs.length ? 'text-primary' : 'text-error'}">${avgText}${u}</div></div>
             </div>
+            <p class="text-xs font-semibold mb-1 ${meets === rs.length ? 'text-success' : 'text-error'}">${meets} of ${rs.length} stations meet Class C in June 2026</p>
             <p class="text-xs text-base-content/60 leading-snug">${IMPACT[k]}</p>
           </div>`;
       }).join('');

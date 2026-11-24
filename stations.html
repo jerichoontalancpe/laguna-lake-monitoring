@@ -107,16 +107,16 @@
                   BOD <span class="normal-case font-normal">(mg/L)</span>
                   <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
                 </th>
-                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('cod')">
-                  COD <span class="normal-case font-normal">(mg/L)</span>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('nitrate')">
+                  Nitrate <span class="normal-case font-normal">(mg/L)</span>
                   <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
                 </th>
-                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('turbidity')">
-                  Turbidity <span class="normal-case font-normal">(NTU)</span>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('phosphate')">
+                  Phosphate <span class="normal-case font-normal">(mg/L)</span>
                   <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
                 </th>
-                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('temperature')">
-                  Temp <span class="normal-case font-normal">(°C)</span>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('tss')">
+                  TSS <span class="normal-case font-normal">(mg/L)</span>
                   <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
                 </th>
                 <th></th>
@@ -183,8 +183,8 @@
   </footer>
 
   <script type="module">
-    import { PARAMETERS, loadStations, getParameterStatus, getStatusColor, getStatusClass } from './js/data.js';
-    import { renderParameterBars, initTrendChart, updateTrendChart, renderTrendToggles, setCurrentStation } from './js/charts.js';
+    import { PARAMETERS, loadStations, getParameterStatus, getStatusColor, getStatusClass, displayValue } from './js/data.js';
+    import { renderParameterBars, renderExtraParameters, initTrendChart, updateTrendChart, renderTrendToggles, setCurrentStation } from './js/charts.js';
 
     const STATUS_COLOR = { Good: 'success', Fair: 'warning', Poor: 'error' };
     const STATUS_ICON  = { Good: 'check-circle', Fair: 'alert-triangle', Poor: 'x-circle' };
@@ -229,7 +229,7 @@
               </div>
               <p class="text-xs text-base-content/50 mb-3 italic">${p.note || "No recent readings available"}</p>
               <div class="text-xs text-base-content/40 border-t border-base-300 pt-2 mt-1">
-                Last recorded readings before archiving. Click to view.
+                Not sampled in the Q2 2026 report.
               </div>
             </div>
           </div>`;
@@ -287,10 +287,10 @@
       lucide.createIcons();
     };
 
-    function paramCell(paramKey, value) {
-      const status = getParameterStatus(paramKey, value);
+    function paramCell(paramKey, reading) {
+      const status = getParameterStatus(paramKey, reading.value);
       const cls = status === 'Pass' ? 'badge-success' : status === 'Alert' ? 'badge-warning' : 'badge-error';
-      return `<td class="text-center"><span class="badge ${cls} badge-sm font-semibold">${value}</span></td>`;
+      return `<td class="text-center"><span class="badge ${cls} badge-sm font-semibold" title="${status}">${displayValue(reading)}</span></td>`;
     }
 
     function renderTable() {
@@ -308,12 +308,12 @@
               <i data-lucide="${STATUS_ICON[p.overallStatus]}" class="w-3 h-3"></i>
               ${p.overallStatus}
             </span></td>
-            ${paramCell('do',          p.parameters.do.value)}
-            ${paramCell('ph',          p.parameters.ph.value)}
-            ${paramCell('bod',         p.parameters.bod.value)}
-            ${paramCell('cod',         p.parameters.cod.value)}
-            ${paramCell('turbidity',   p.parameters.turbidity.value)}
-            ${paramCell('temperature', p.parameters.temperature.value)}
+            ${paramCell('do',        p.parameters.do)}
+            ${paramCell('ph',        p.parameters.ph)}
+            ${paramCell('bod',       p.parameters.bod)}
+            ${paramCell('nitrate',   p.parameters.nitrate)}
+            ${paramCell('phosphate', p.parameters.phosphate)}
+            ${paramCell('tss',       p.parameters.tss)}
             <td>
               <button class="btn btn-xs btn-ghost text-primary" onclick="event.stopPropagation();openDetail('${p.id}')">
                 Details <i data-lucide="arrow-right" class="w-3 h-3"></i>
@@ -346,7 +346,7 @@
                   const bc = st === 'Pass' ? 'success' : st === 'Alert' ? 'warning' : 'error';
                   return `<div class="text-center bg-base-200 rounded-lg py-2 px-1">
                     <div class="text-[10px] font-bold uppercase tracking-wide text-base-content/50">${PARAMETERS[k]?.short}</div>
-                    <div class="font-bold text-sm text-${bc}">${v.value}</div>
+                    <div class="font-bold text-sm text-${bc}">${displayValue(v)}</div>
                     <div class="text-[10px] text-base-content/40">${v.unit || '—'}</div>
                   </div>`;
                 }).join('')}
@@ -377,31 +377,38 @@
       document.getElementById('detail-badge').className = `badge badge-${sc} badge-sm font-semibold`;
       document.getElementById('detail-badge').textContent = p.archived ? 'Archived' : p.overallStatus;
 
-      const archivedNote = p.archived ? `
-        <div class="alert" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#334155;">
-          <i data-lucide="archive" class="w-5 h-5 flex-shrink-0" style="color:#64748b;"></i>
-          <div>
-            <p class="font-semibold text-sm">Archived station &mdash; last recorded readings</p>
-            <p class="text-xs mt-1" style="color:#64748b;">The values and trends below were the last readings recorded before this station was archived. They are kept for historical reference and do not reflect current conditions.${p.note ? ' ' + p.note + '.' : ''}</p>
-          </div>
-        </div>` : '';
+      if (p.archived) {
+        document.getElementById('detail-body').innerHTML = `
+          <div class="alert" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#334155;">
+            <i data-lucide="archive" class="w-5 h-5 flex-shrink-0" style="color:#64748b;"></i>
+            <div>
+              <p class="font-semibold text-sm">Archived station &mdash; not sampled in Q2 2026</p>
+              <p class="text-xs mt-1" style="color:#64748b;">This station does not appear in the LLDA Q2 2026 Water Quality Report, so no current readings are available. It is kept for historical reference.${p.note ? ' ' + p.note + '.' : ''}</p>
+            </div>
+          </div>`;
+        document.getElementById('detail-modal').showModal();
+        lucide.createIcons();
+        return;
+      }
 
-      document.getElementById('detail-body').innerHTML = archivedNote + `
+      document.getElementById('detail-body').innerHTML = `
         <div>
-          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-3">${p.archived ? 'Last Recorded ' : ''}Water Quality Parameters</h4>
+          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-3">Water Quality Parameters &middot; June 2026</h4>
           <div id="detail-param-bars"></div>
         </div>
         <div class="section-divider"></div>
         <div>
-          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-1">${p.archived ? 'Last ' : ''}6-Month Historical Trends</h4>
-          <p class="text-xs text-base-content/40 mb-3">Dashed lines mark DAO 2016-08 limits</p>
+          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-1">Monthly Trends &middot; Q2 2026 (Apr&ndash;Jun)</h4>
+          <p class="text-xs text-base-content/40 mb-3">Dashed lines mark Class C limits</p>
           <div id="detail-trend-toggles" class="flex flex-wrap gap-2 mb-3"></div>
           <div class="rounded-xl border border-base-300 bg-base-200/50 p-3" style="height:220px">
             <canvas id="detail-trend-chart"></canvas>
           </div>
         </div>`;
 
-      document.getElementById('detail-param-bars').innerHTML = renderParameterBars(p.parameters);
+      document.getElementById('detail-param-bars').innerHTML = renderParameterBars(p.parameters) +
+        '<h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mt-4 mb-2">Additional Parameters</h4>' +
+        renderExtraParameters(p.extra);
 
       const modal = document.getElementById('detail-modal');
       modal.showModal();

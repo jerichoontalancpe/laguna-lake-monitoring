@@ -1,0 +1,2562 @@
+{
+  "metadata": {
+    "source": "LLDA Quarterly Water Quality Monitoring Report — Laguna Lake and Tributary Rivers",
+    "period": "April to June 2026 (Q2 2026)",
+    "agency": "Laguna Lake Development Authority (LLDA) - Resource Management and Development Department, Environmental Laboratory and Research Division (ELRD)",
+    "months": [
+      "apr",
+      "may",
+      "jun"
+    ],
+    "footnotes": {
+      "*": "No data - broken pH meter",
+      "**": "No sample - inaccessible sampling site",
+      "***": "No sample - prolific water hyacinth",
+      "****": "No sample - low water level"
+    },
+    "notes": [
+      "Station 20 (Jala-jala River) has blank readings as it was replaced by Station 30 (Binangonan River) since June 2022 due to dry river/sampling site."
+    ],
+    "units": {
+      "bod": "mg/L",
+      "do": "mg/L",
+      "fecal_coliform": "MPN/100mL (Geomean)",
+      "chloride": "mg/L",
+      "ph": "units",
+      "ammonia": "mg/L",
+      "nitrate": "mg/L",
+      "phosphate": "mg/L",
+      "tss": "mg/L"
+    }
+  },
+  "denr_wqg_thresholds": {
+    "DAO_2016_08": {
+      "ph": {
+        "unit": "units",
+        "classes_a_b": {
+          "color": "blue",
+          "range": "6.5 to 8.5"
+        },
+        "class_c": {
+          "color": "yellow",
+          "range": "6.5 to 9.0"
+        },
+        "class_d": {
+          "color": "red",
+          "range": "6.0 to 9.0"
+        },
+        "failed": {
+          "color": "black",
+          "range": "<6.0 or >9.0"
+        }
+      },
+      "bod": {
+        "unit": "mg/L",
+        "class_a": {
+          "color": "blue",
+          "range": "<=3"
+        },
+        "class_b": {
+          "color": "white",
+          "range": ">3 to 5"
+        },
+        "class_c": {
+          "color": "yellow",
+          "range": ">5 to 7"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">7 to 15"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">15"
+        }
+      },
+      "do": {
+        "unit": "mg/L",
+        "classes_a_b_c": {
+          "color": "blue",
+          "range": ">=5"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">2 to <5"
+        },
+        "failed": {
+          "color": "black",
+          "range": "<2"
+        }
+      },
+      "chloride": {
+        "unit": "mg/L",
+        "classes_a_b": {
+          "color": "blue",
+          "range": "<=250"
+        },
+        "class_c": {
+          "color": "yellow",
+          "range": ">250 to 350"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">350 to 400"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">400"
+        }
+      },
+      "tss": {
+        "unit": "mg/L",
+        "class_a": {
+          "color": "blue",
+          "range": "<=50"
+        },
+        "class_b": {
+          "color": "white",
+          "range": ">50 to 65"
+        },
+        "class_c": {
+          "color": "yellow",
+          "range": ">65 to 80"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">80 to 110"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">110"
+        }
+      },
+      "oil_and_grease": {
+        "unit": "mg/L",
+        "classes_a_b": {
+          "color": "blue",
+          "range": "<=1"
+        },
+        "class_c": {
+          "color": "yellow",
+          "range": ">1 to 2"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">2 to 5"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">5"
+        }
+      },
+      "nitrate": {
+        "unit": "mg/L",
+        "classes_a_b_c": {
+          "color": "blue",
+          "range": "<=7"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">7 to 15"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">15"
+        }
+      }
+    },
+    "DAO_2021_19": {
+      "ammonia": {
+        "unit": "mg/L",
+        "classes_a_b_c": {
+          "color": "blue",
+          "range": "<=0.06"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">0.06 to 0.3"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">0.3"
+        }
+      },
+      "phosphate": {
+        "unit": "mg/L",
+        "classes_a_b_c": {
+          "color": "blue",
+          "range": "<=0.025"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">0.025 to 0.05"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">0.05"
+        }
+      },
+      "fecal_coliform": {
+        "unit": "MPN/100mL",
+        "class_a": {
+          "color": "blue",
+          "range": "<50"
+        },
+        "class_b": {
+          "color": "white",
+          "range": ">50 to 100"
+        },
+        "class_c": {
+          "color": "yellow",
+          "range": ">100 to 200"
+        },
+        "class_d": {
+          "color": "red",
+          "range": ">200 to 400"
+        },
+        "failed": {
+          "color": "black",
+          "range": ">400"
+        }
+      }
+    }
+  },
+  "lake_stations": [
+    {
+      "code": "I",
+      "name": "Central West Bay",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 4
+        },
+        "do": {
+          "apr": 8,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 19,
+          "may": 18,
+          "jun": 18
+        },
+        "chloride": {
+          "apr": 38,
+          "may": 59,
+          "jun": 317
+        },
+        "ph": {
+          "apr": 8.8,
+          "may": 8.7,
+          "jun": 9.0
+        },
+        "ammonia": {
+          "apr": 0.05,
+          "may": 0.01,
+          "jun": 0.2
+        },
+        "nitrate": {
+          "apr": 0.2,
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.42,
+          "may": 0.35,
+          "jun": 0.35
+        },
+        "tss": {
+          "apr": 23,
+          "may": 15,
+          "jun": 18
+        }
+      }
+    },
+    {
+      "code": "II",
+      "name": "East Bay",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 5
+        },
+        "do": {
+          "apr": 8,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 33,
+          "may": 33,
+          "jun": 33
+        },
+        "chloride": {
+          "apr": 48,
+          "may": 51,
+          "jun": 53
+        },
+        "ph": {
+          "apr": 8.7,
+          "may": 8.7,
+          "jun": 8.1
+        },
+        "ammonia": {
+          "apr": 0.07,
+          "may": 0.02,
+          "jun": 0.04
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.35,
+          "may": 0.31,
+          "jun": 0.23
+        },
+        "tss": {
+          "apr": 19,
+          "may": 29,
+          "jun": 12
+        }
+      }
+    },
+    {
+      "code": "IV",
+      "name": "Central Bay",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 19,
+          "may": 19,
+          "jun": 18
+        },
+        "chloride": {
+          "apr": 50,
+          "may": 53,
+          "jun": 74
+        },
+        "ph": {
+          "apr": 9.1,
+          "may": 8.8,
+          "jun": 8.8
+        },
+        "ammonia": {
+          "apr": 0.08,
+          "may": 0.01,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.4,
+          "may": 0.34,
+          "jun": 0.31
+        },
+        "tss": {
+          "apr": 7,
+          "may": 12,
+          "jun": 4
+        }
+      }
+    },
+    {
+      "code": "V",
+      "name": "Northern West Bay",
+      "readings": {
+        "bod": {
+          "apr": 6,
+          "may": 6,
+          "jun": 6
+        },
+        "do": {
+          "apr": 8,
+          "may": 8,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 245,
+          "may": 161,
+          "jun": 112
+        },
+        "chloride": {
+          "apr": 52,
+          "may": 851,
+          "jun": 76
+        },
+        "ph": {
+          "apr": 9.9,
+          "may": "*",
+          "jun": 7.9
+        },
+        "ammonia": {
+          "apr": 0.01,
+          "may": 1,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.4,
+          "may": 0.51,
+          "jun": 0.28
+        },
+        "tss": {
+          "apr": 69,
+          "may": 47,
+          "jun": 28
+        }
+      }
+    },
+    {
+      "code": "VIII",
+      "name": "South Bay",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 3,
+          "jun": 3
+        },
+        "do": {
+          "apr": 8,
+          "may": 8,
+          "jun": 7
+        },
+        "fecal_coliform": {
+          "apr": 29,
+          "may": 19,
+          "jun": 25
+        },
+        "chloride": {
+          "apr": 46,
+          "may": 51,
+          "jun": 53
+        },
+        "ph": {
+          "apr": 8.7,
+          "may": 8.8,
+          "jun": 8.0
+        },
+        "ammonia": {
+          "apr": 0.04,
+          "may": 0.03,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.31,
+          "may": 0.3,
+          "jun": 0.28
+        },
+        "tss": {
+          "apr": 20,
+          "may": 13,
+          "jun": 24
+        }
+      }
+    },
+    {
+      "code": "XIII",
+      "name": "Taytay",
+      "readings": {
+        "bod": {
+          "apr": 6,
+          "may": 5,
+          "jun": 5
+        },
+        "do": {
+          "apr": 8,
+          "may": 8,
+          "jun": 7
+        },
+        "fecal_coliform": {
+          "apr": 259,
+          "may": 375,
+          "jun": 520
+        },
+        "chloride": {
+          "apr": 54,
+          "may": 773,
+          "jun": 65
+        },
+        "ph": {
+          "apr": 9.2,
+          "may": "*",
+          "jun": 7.1
+        },
+        "ammonia": {
+          "apr": 0.02,
+          "may": 2,
+          "jun": 0.8
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 0.7,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.41,
+          "may": 0.57,
+          "jun": 0.42
+        },
+        "tss": {
+          "apr": 138,
+          "may": 34,
+          "jun": 40
+        }
+      }
+    },
+    {
+      "code": "XV",
+      "name": "San Pedro (West Bay)",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 3,
+          "jun": 4
+        },
+        "do": {
+          "apr": 10,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 45,
+          "may": 44,
+          "jun": 97
+        },
+        "chloride": {
+          "apr": 46,
+          "may": 49,
+          "jun": 53
+        },
+        "ph": {
+          "apr": 9.0,
+          "may": "*",
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": 0.02,
+          "may": 0.02,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.34,
+          "may": 0.29,
+          "jun": 0.57
+        },
+        "tss": {
+          "apr": 28,
+          "may": 34,
+          "jun": 30
+        }
+      }
+    },
+    {
+      "code": "XVI",
+      "name": "Sta Rosa (West Bay)",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 2,
+          "jun": 5
+        },
+        "do": {
+          "apr": 9,
+          "may": 8,
+          "jun": 9
+        },
+        "fecal_coliform": {
+          "apr": 125,
+          "may": 47,
+          "jun": 54
+        },
+        "chloride": {
+          "apr": 50,
+          "may": 51,
+          "jun": 53
+        },
+        "ph": {
+          "apr": 9.5,
+          "may": "*",
+          "jun": 7.4
+        },
+        "ammonia": {
+          "apr": 0.05,
+          "may": 0.02,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.34,
+          "may": 0.31,
+          "jun": 0.26
+        },
+        "tss": {
+          "apr": 64,
+          "may": 42,
+          "jun": 18
+        }
+      }
+    },
+    {
+      "code": "XVII",
+      "name": "Fish Sanctuary (Central Bay)",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 1,
+          "jun": 3
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 18,
+          "may": 24,
+          "jun": 24
+        },
+        "chloride": {
+          "apr": 48,
+          "may": 55,
+          "jun": 55
+        },
+        "ph": {
+          "apr": 9.5,
+          "may": 9.0,
+          "jun": 8.6
+        },
+        "ammonia": {
+          "apr": 0.03,
+          "may": 0.01,
+          "jun": 0.01
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.42,
+          "may": 0.33,
+          "jun": 0.29
+        },
+        "tss": {
+          "apr": 10,
+          "may": 7,
+          "jun": 4
+        }
+      }
+    },
+    {
+      "code": "XVIII",
+      "name": "Pagsanjan (East Bay)",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 2,
+          "jun": 3
+        },
+        "do": {
+          "apr": 8,
+          "may": 7,
+          "jun": 9
+        },
+        "fecal_coliform": {
+          "apr": 18,
+          "may": 18,
+          "jun": 24
+        },
+        "chloride": {
+          "apr": 42,
+          "may": 45,
+          "jun": 45
+        },
+        "ph": {
+          "apr": 8.8,
+          "may": 8.6,
+          "jun": 8.6
+        },
+        "ammonia": {
+          "apr": 0.02,
+          "may": 0.04,
+          "jun": 0.03
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 0.9,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.19,
+          "may": 0.18,
+          "jun": 0.14
+        },
+        "tss": {
+          "apr": 7,
+          "may": 10,
+          "jun": 18
+        }
+      }
+    },
+    {
+      "code": "XIX",
+      "name": "Muntinlupa",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 2,
+          "jun": 3
+        },
+        "do": {
+          "apr": 8,
+          "may": 6,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 87,
+          "may": 45,
+          "jun": 54
+        },
+        "chloride": {
+          "apr": 50,
+          "may": 49,
+          "jun": 55
+        },
+        "ph": {
+          "apr": 9.0,
+          "may": "*",
+          "jun": 7.6
+        },
+        "ammonia": {
+          "apr": 0.01,
+          "may": 0.02,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.36,
+          "may": 0.33,
+          "jun": 0.29
+        },
+        "tss": {
+          "apr": 49,
+          "may": 34,
+          "jun": 2
+        }
+      }
+    },
+    {
+      "code": "XX",
+      "name": "GEMS",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 6
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 10
+        },
+        "fecal_coliform": {
+          "apr": 296,
+          "may": 245,
+          "jun": 221
+        },
+        "chloride": {
+          "apr": 48,
+          "may": 55,
+          "jun": 397
+        },
+        "ph": {
+          "apr": 7.6,
+          "may": 8.8,
+          "jun": 8.7
+        },
+        "ammonia": {
+          "apr": 0.04,
+          "may": 0.02,
+          "jun": 0.04
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.39,
+          "may": 0.35,
+          "jun": 0.36
+        },
+        "tss": {
+          "apr": 32,
+          "may": 27,
+          "jun": 28
+        }
+      }
+    },
+    {
+      "code": "XXI",
+      "name": "Cardona (Talim)",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 2,
+          "jun": 2
+        },
+        "do": {
+          "apr": 8,
+          "may": 6,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 25,
+          "may": 41,
+          "jun": 40
+        },
+        "chloride": {
+          "apr": 48,
+          "may": 53,
+          "jun": 67
+        },
+        "ph": {
+          "apr": 9.3,
+          "may": 8.9,
+          "jun": 8.1
+        },
+        "ammonia": {
+          "apr": 0.03,
+          "may": 0.03,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.4,
+          "may": 0.34,
+          "jun": 0.3
+        },
+        "tss": {
+          "apr": 17,
+          "may": 7,
+          "jun": 4
+        }
+      }
+    },
+    {
+      "code": "XXII",
+      "name": "Jala-jala",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "do": {
+          "apr": 9,
+          "may": 8,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 18,
+          "may": 33,
+          "jun": 33
+        },
+        "chloride": {
+          "apr": 46,
+          "may": 51,
+          "jun": 49
+        },
+        "ph": {
+          "apr": 8.7,
+          "may": 8.7,
+          "jun": 7.9
+        },
+        "ammonia": {
+          "apr": 0.02,
+          "may": 0.02,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.34,
+          "may": 0.3,
+          "jun": 0.29
+        },
+        "tss": {
+          "apr": 17,
+          "may": 14,
+          "jun": 26
+        }
+      }
+    },
+    {
+      "code": "XXIII",
+      "name": "Lumban",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 3,
+          "jun": 3
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 38,
+          "may": 62,
+          "jun": 40
+        },
+        "chloride": {
+          "apr": 40,
+          "may": 33,
+          "jun": 25
+        },
+        "ph": {
+          "apr": 7.6,
+          "may": 8.0,
+          "jun": 7.4
+        },
+        "ammonia": {
+          "apr": 0.03,
+          "may": 0.1,
+          "jun": 0.05
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": 1,
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.22,
+          "may": 0.13,
+          "jun": 0.14
+        },
+        "tss": {
+          "apr": 35,
+          "may": 8,
+          "jun": 38
+        }
+      }
+    },
+    {
+      "code": "XXIV",
+      "name": "Cardona (North Central Bay)",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 2,
+          "jun": 5
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 9
+        },
+        "fecal_coliform": {
+          "apr": 18,
+          "may": 19,
+          "jun": 19
+        },
+        "chloride": {
+          "apr": 52,
+          "may": 53,
+          "jun": 202
+        },
+        "ph": {
+          "apr": 8.3,
+          "may": 8.7,
+          "jun": 9.2
+        },
+        "ammonia": {
+          "apr": 0.07,
+          "may": 0.02,
+          "jun": 0.02
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.4,
+          "may": 0.33,
+          "jun": 0.3
+        },
+        "tss": {
+          "apr": 24,
+          "may": 14,
+          "jun": 10
+        }
+      }
+    }
+  ],
+  "tributary_stations": [
+    {
+      "code": "1",
+      "name": "Marikina River",
+      "readings": {
+        "bod": {
+          "apr": 24,
+          "may": 21,
+          "jun": 10
+        },
+        "do": {
+          "apr": 2,
+          "may": 0.4,
+          "jun": 1
+        },
+        "fecal_coliform": {
+          "apr": 847304,
+          "may": 507746,
+          "jun": 528635
+        },
+        "ph": {
+          "apr": 7.5,
+          "may": 7.6,
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": 13,
+          "may": 6,
+          "jun": 7
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.1
+        },
+        "phosphate": {
+          "apr": 1.4,
+          "may": 1.5,
+          "jun": 0.6
+        }
+      }
+    },
+    {
+      "code": "2",
+      "name": "Bagumbayan River (Taguig)",
+      "readings": {
+        "bod": {
+          "apr": 270,
+          "may": 246,
+          "jun": 302
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "fecal_coliform": {
+          "apr": 7954060,
+          "may": 7523246,
+          "jun": 14488695
+        },
+        "ph": {
+          "apr": 7.2,
+          "may": 7.4,
+          "jun": 6.5
+        },
+        "ammonia": {
+          "apr": 26,
+          "may": 30,
+          "jun": 27
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.1
+        },
+        "phosphate": {
+          "apr": 3.0,
+          "may": 3.8,
+          "jun": 3.6
+        }
+      }
+    },
+    {
+      "code": "3",
+      "name": "Buli Creek",
+      "readings": {
+        "bod": {
+          "apr": 113,
+          "may": 118,
+          "jun": 106
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "fecal_coliform": {
+          "apr": 6549809,
+          "may": 4021194,
+          "jun": 9558020
+        },
+        "ph": {
+          "apr": 7.1,
+          "may": 7.5,
+          "jun": 7.4
+        },
+        "ammonia": {
+          "apr": 26,
+          "may": 27,
+          "jun": 25
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 2.7,
+          "may": 2.7,
+          "jun": 2.5
+        }
+      }
+    },
+    {
+      "code": "4",
+      "name": "Mangangate River (Muntinlupa) - Downstream",
+      "readings": {
+        "bod": {
+          "apr": "**",
+          "may": 41,
+          "jun": "**"
+        },
+        "do": {
+          "apr": "**",
+          "may": "<0.1",
+          "jun": "**"
+        },
+        "fecal_coliform": {
+          "apr": "**",
+          "may": 4900000,
+          "jun": "**"
+        },
+        "ph": {
+          "apr": "**",
+          "may": 7.5,
+          "jun": "**"
+        },
+        "ammonia": {
+          "apr": "**",
+          "may": 32,
+          "jun": "**"
+        },
+        "nitrate": {
+          "apr": "**",
+          "may": "<0.1",
+          "jun": "**"
+        },
+        "phosphate": {
+          "apr": "**",
+          "may": 3.1,
+          "jun": "**"
+        }
+      }
+    },
+    {
+      "code": "5",
+      "name": "Tunasan River (Muntinlupa) - Downstream",
+      "readings": {
+        "bod": {
+          "apr": 35,
+          "may": 27,
+          "jun": 15
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 1
+        },
+        "fecal_coliform": {
+          "apr": 14211747,
+          "may": 6503588,
+          "jun": 2144841
+        },
+        "ph": {
+          "apr": 7.6,
+          "may": 7.9,
+          "jun": 7.0
+        },
+        "ammonia": {
+          "apr": 9,
+          "may": 14,
+          "jun": 9
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.8
+        },
+        "phosphate": {
+          "apr": 2.2,
+          "may": 3.8,
+          "jun": 1.2
+        }
+      }
+    },
+    {
+      "code": "6",
+      "name": "San Pedro River (T2)",
+      "readings": {
+        "bod": {
+          "apr": 13,
+          "may": 8,
+          "jun": 9
+        },
+        "do": {
+          "apr": 0.9,
+          "may": 1,
+          "jun": 1
+        },
+        "fecal_coliform": {
+          "apr": 260094,
+          "may": 560355,
+          "jun": 1044186
+        },
+        "ph": {
+          "apr": "*",
+          "may": 7.7,
+          "jun": 7.5
+        },
+        "ammonia": {
+          "apr": 6,
+          "may": 11,
+          "jun": 8
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.6
+        },
+        "phosphate": {
+          "apr": 2.0,
+          "may": 2.3,
+          "jun": 2.0
+        }
+      }
+    },
+    {
+      "code": "7",
+      "name": "Biñan River",
+      "readings": {
+        "bod": {
+          "apr": 62,
+          "may": 30,
+          "jun": 43
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "fecal_coliform": {
+          "apr": 5258327,
+          "may": 3991545,
+          "jun": 3914019
+        },
+        "ph": {
+          "apr": "*",
+          "may": 7.8,
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": 10,
+          "may": 12,
+          "jun": 10
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.1
+        },
+        "phosphate": {
+          "apr": 1.9,
+          "may": 2.4,
+          "jun": 1.6
+        }
+      }
+    },
+    {
+      "code": "8",
+      "name": "Sta. Rosa River - Downstream",
+      "readings": {
+        "bod": {
+          "apr": 87,
+          "may": 26,
+          "jun": 80
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "fecal_coliform": {
+          "apr": 3914019,
+          "may": 2925849,
+          "jun": 3914019
+        },
+        "ph": {
+          "apr": "*",
+          "may": 7.6,
+          "jun": 7.4
+        },
+        "ammonia": {
+          "apr": 4,
+          "may": 8,
+          "jun": 4
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 1.7,
+          "may": 2.4,
+          "jun": 1.9
+        }
+      }
+    },
+    {
+      "code": "8M",
+      "name": "Sta. Rosa River - Midstream",
+      "readings": {
+        "bod": {
+          "apr": 99,
+          "may": 43,
+          "jun": 88
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.7
+        },
+        "fecal_coliform": {
+          "apr": 4813676,
+          "may": 6902736,
+          "jun": 5271762
+        },
+        "ph": {
+          "apr": "*",
+          "may": 7.5,
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": 4,
+          "may": 6,
+          "jun": 5
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 2.6,
+          "may": 1.8,
+          "jun": 1.8
+        }
+      }
+    },
+    {
+      "code": "8U",
+      "name": "Sta. Rosa River - Upstream",
+      "readings": {
+        "bod": {
+          "apr": 5,
+          "may": 8,
+          "jun": 6
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 6
+        },
+        "fecal_coliform": {
+          "apr": 295576,
+          "may": 568010,
+          "jun": 556173
+        },
+        "ph": {
+          "apr": "*",
+          "may": 7.9,
+          "jun": 7.4
+        },
+        "ammonia": {
+          "apr": 1,
+          "may": 2,
+          "jun": 2
+        },
+        "nitrate": {
+          "apr": 2,
+          "may": 1,
+          "jun": 2
+        },
+        "phosphate": {
+          "apr": 0.96,
+          "may": 1.1,
+          "jun": 0.9
+        }
+      }
+    },
+    {
+      "code": "9",
+      "name": "Cabuyao River",
+      "readings": {
+        "bod": {
+          "apr": 45,
+          "may": 45,
+          "jun": 39
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "fecal_coliform": {
+          "apr": 3337946,
+          "may": 4837296,
+          "jun": 4837296
+        },
+        "ph": {
+          "apr": "*",
+          "may": 7.5,
+          "jun": 7.0
+        },
+        "ammonia": {
+          "apr": 18,
+          "may": 21,
+          "jun": 14
+        },
+        "nitrate": {
+          "apr": 0.1,
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 2.5,
+          "may": 2.8,
+          "jun": 2.5
+        }
+      }
+    },
+    {
+      "code": "10",
+      "name": "San Cristobal River (T3)",
+      "readings": {
+        "bod": {
+          "apr": 115,
+          "may": 98,
+          "jun": 66
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.4
+        },
+        "fecal_coliform": {
+          "apr": 6383213,
+          "may": 4578857,
+          "jun": 4797221
+        },
+        "ph": {
+          "apr": 7.3,
+          "may": "*",
+          "jun": 7.1
+        },
+        "ammonia": {
+          "apr": 10,
+          "may": 3,
+          "jun": 1
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.92,
+          "may": 0.85,
+          "jun": 0.05
+        }
+      }
+    },
+    {
+      "code": "11",
+      "name": "San Juan River (T5)",
+      "readings": {
+        "bod": {
+          "apr": 5,
+          "may": 6,
+          "jun": 6
+        },
+        "do": {
+          "apr": 6,
+          "may": 7,
+          "jun": 7
+        },
+        "fecal_coliform": {
+          "apr": 59155,
+          "may": 31582,
+          "jun": 40083
+        },
+        "ph": {
+          "apr": 7.9,
+          "may": "*",
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": 0.5,
+          "may": 1,
+          "jun": 0.5
+        },
+        "nitrate": {
+          "apr": 5,
+          "may": 4,
+          "jun": 3
+        },
+        "phosphate": {
+          "apr": 1.0,
+          "may": 1.0,
+          "jun": 0.6
+        }
+      }
+    },
+    {
+      "code": "12",
+      "name": "Molawin Creek (Los Baños)",
+      "readings": {
+        "bod": {
+          "apr": 4,
+          "may": 17,
+          "jun": 4
+        },
+        "do": {
+          "apr": 4,
+          "may": 3,
+          "jun": 4
+        },
+        "fecal_coliform": {
+          "apr": 200088,
+          "may": 69425,
+          "jun": 82313
+        },
+        "ph": {
+          "apr": 7.4,
+          "may": "*",
+          "jun": 6.9
+        },
+        "ammonia": {
+          "apr": 0.6,
+          "may": 0.4,
+          "jun": 0.4
+        },
+        "nitrate": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "phosphate": {
+          "apr": 0.52,
+          "may": 0.47,
+          "jun": 0.35
+        }
+      }
+    },
+    {
+      "code": "13",
+      "name": "Bay River (T9)",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 3,
+          "jun": 2
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 6
+        },
+        "fecal_coliform": {
+          "apr": 79586,
+          "may": 42543,
+          "jun": 33561
+        },
+        "ph": {
+          "apr": 8.1,
+          "may": "*",
+          "jun": 7.7
+        },
+        "ammonia": {
+          "apr": 0.1,
+          "may": 0.1,
+          "jun": 0.1
+        },
+        "nitrate": {
+          "apr": 1,
+          "may": 0.7,
+          "jun": 0.7
+        },
+        "phosphate": {
+          "apr": 0.38,
+          "may": 0.38,
+          "jun": 0.37
+        }
+      }
+    },
+    {
+      "code": "14",
+      "name": "Pila River",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "do": {
+          "apr": 5,
+          "may": 2,
+          "jun": 3
+        },
+        "fecal_coliform": {
+          "apr": 20305,
+          "may": 16116,
+          "jun": 21448
+        },
+        "ph": {
+          "apr": 7.7,
+          "may": "*",
+          "jun": 7.5
+        },
+        "ammonia": {
+          "apr": 0.1,
+          "may": 0.1,
+          "jun": 0.2
+        },
+        "nitrate": {
+          "apr": 0.3,
+          "may": "<0.1",
+          "jun": 0.2
+        },
+        "phosphate": {
+          "apr": 0.16,
+          "may": 0.18,
+          "jun": 0.19
+        }
+      }
+    },
+    {
+      "code": "15",
+      "name": "Sta. Cruz River (T6)",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": "*"
+        },
+        "do": {
+          "apr": 6,
+          "may": 5,
+          "jun": 4
+        },
+        "fecal_coliform": {
+          "apr": 4514,
+          "may": 2696,
+          "jun": 3635
+        },
+        "ph": {
+          "apr": 7.7,
+          "may": "*",
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": 0.2,
+          "may": 0.9,
+          "jun": 0.1
+        },
+        "nitrate": {
+          "apr": 0.6,
+          "may": 0.8,
+          "jun": 0.8
+        },
+        "phosphate": {
+          "apr": 0.27,
+          "may": 0.41,
+          "jun": 0.28
+        }
+      }
+    },
+    {
+      "code": "16",
+      "name": "Pagsanjan River (T8)",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "do": {
+          "apr": 7,
+          "may": 7,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 5406,
+          "may": 5406,
+          "jun": 7699
+        },
+        "ph": {
+          "apr": 7.5,
+          "may": 7.8,
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": 0.06,
+          "may": 0.1,
+          "jun": 0.05
+        },
+        "nitrate": {
+          "apr": 0.5,
+          "may": "<0.1",
+          "jun": 0.2
+        },
+        "phosphate": {
+          "apr": 0.11,
+          "may": 0.1,
+          "jun": 0.076
+        }
+      }
+    },
+    {
+      "code": "17",
+      "name": "Pangil River - Downstream",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 1
+        },
+        "do": {
+          "apr": 8,
+          "may": 8,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 34703,
+          "may": 34703,
+          "jun": 25941
+        },
+        "ph": {
+          "apr": 7.6,
+          "may": 8.0,
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": 0.07,
+          "may": 0.09,
+          "jun": 0.09
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.12,
+          "may": 0.14,
+          "jun": 0.13
+        }
+      }
+    },
+    {
+      "code": "17U",
+      "name": "Pangil River - Upstream",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": "<1"
+        },
+        "do": {
+          "apr": 8,
+          "may": 9,
+          "jun": 8
+        },
+        "fecal_coliform": {
+          "apr": 752,
+          "may": 1295,
+          "jun": 1644
+        },
+        "ph": {
+          "apr": 7.3,
+          "may": 7.8,
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": 0.03,
+          "may": 0.03,
+          "jun": 0.05
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.13,
+          "may": 0.14,
+          "jun": 0.14
+        }
+      }
+    },
+    {
+      "code": "18",
+      "name": "Siniloan River",
+      "readings": {
+        "bod": {
+          "apr": 6,
+          "may": 4,
+          "jun": 3
+        },
+        "do": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "fecal_coliform": {
+          "apr": 53471,
+          "may": 83215,
+          "jun": 141321
+        },
+        "ph": {
+          "apr": 6.9,
+          "may": 7.5,
+          "jun": 6.9
+        },
+        "ammonia": {
+          "apr": 0.6,
+          "may": 1,
+          "jun": 1
+        },
+        "nitrate": {
+          "apr": 0.3,
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.19,
+          "may": 0.2,
+          "jun": 0.19
+        }
+      }
+    },
+    {
+      "code": "19",
+      "name": "Sta. Maria River - Downstream",
+      "readings": {
+        "bod": {
+          "apr": 3,
+          "may": 3,
+          "jun": 1
+        },
+        "do": {
+          "apr": 4,
+          "may": 4,
+          "jun": 4
+        },
+        "fecal_coliform": {
+          "apr": 7699,
+          "may": 6493,
+          "jun": 9248
+        },
+        "ph": {
+          "apr": 7.3,
+          "may": 7.7,
+          "jun": 7.0
+        },
+        "ammonia": {
+          "apr": 0.2,
+          "may": 0.1,
+          "jun": 0.09
+        },
+        "nitrate": {
+          "apr": 0.2,
+          "may": "<0.1",
+          "jun": 0.2
+        },
+        "phosphate": {
+          "apr": 0.26,
+          "may": 0.18,
+          "jun": 0.17
+        }
+      }
+    },
+    {
+      "code": "19U",
+      "name": "Sta. Maria River - Upstream",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 1
+        },
+        "do": {
+          "apr": 8,
+          "may": 10,
+          "jun": 9
+        },
+        "fecal_coliform": {
+          "apr": 4097,
+          "may": 3704,
+          "jun": 2049
+        },
+        "ph": {
+          "apr": 7.8,
+          "may": 8.2,
+          "jun": 7.9
+        },
+        "ammonia": {
+          "apr": 0.04,
+          "may": 0.04,
+          "jun": 0.06
+        },
+        "nitrate": {
+          "apr": 0.1,
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.12,
+          "may": 0.11,
+          "jun": 0.13
+        }
+      }
+    },
+    {
+      "code": "20",
+      "name": "Jala-jala River",
+      "status": "replaced_by_stn_30_binangonan_river",
+      "readings": {
+        "bod": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        },
+        "do": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        },
+        "fecal_coliform": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        },
+        "ph": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        },
+        "ammonia": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        },
+        "nitrate": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        },
+        "phosphate": {
+          "apr": null,
+          "may": null,
+          "jun": null
+        }
+      }
+    },
+    {
+      "code": "21",
+      "name": "Pililla River",
+      "readings": {
+        "bod": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "do": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "fecal_coliform": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "ph": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "ammonia": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "nitrate": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "phosphate": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        }
+      }
+    },
+    {
+      "code": "22 A",
+      "name": "Tanay River - Brgy. Wawa (Downstream)",
+      "readings": {
+        "bod": {
+          "apr": 5,
+          "may": 6,
+          "jun": 5
+        },
+        "do": {
+          "apr": 1,
+          "may": 0.7,
+          "jun": 1
+        },
+        "fecal_coliform": {
+          "apr": 134461,
+          "may": 157769,
+          "jun": 182406
+        },
+        "ph": {
+          "apr": 7.5,
+          "may": 7.5,
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": 0.8,
+          "may": 1,
+          "jun": 1
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.2,
+          "may": 0.28,
+          "jun": 0.25
+        }
+      }
+    },
+    {
+      "code": "22 B",
+      "name": "Tanay River - Midstream",
+      "readings": {
+        "bod": {
+          "apr": 2,
+          "may": 2,
+          "jun": 1
+        },
+        "do": {
+          "apr": 4,
+          "may": 4,
+          "jun": 3
+        },
+        "fecal_coliform": {
+          "apr": 13515,
+          "may": 9371,
+          "jun": 20384
+        },
+        "ph": {
+          "apr": 7.5,
+          "may": 7.7,
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": "<0.002",
+          "may": 0.07,
+          "jun": 0.03
+        },
+        "nitrate": {
+          "apr": 0.4,
+          "may": 0.4,
+          "jun": 0.7
+        },
+        "phosphate": {
+          "apr": 0.03,
+          "may": 0.042,
+          "jun": 0.053
+        }
+      }
+    },
+    {
+      "code": "22 C",
+      "name": "Tanay River - Daranak Falls (Upstream)",
+      "readings": {
+        "bod": {
+          "apr": "<1",
+          "may": 2,
+          "jun": "<1"
+        },
+        "do": {
+          "apr": 8,
+          "may": 9,
+          "jun": 9
+        },
+        "fecal_coliform": {
+          "apr": 3941,
+          "may": 3941,
+          "jun": 8764
+        },
+        "ph": {
+          "apr": 8.2,
+          "may": 8.2,
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": "<0.002",
+          "may": 0.06,
+          "jun": 0.04
+        },
+        "nitrate": {
+          "apr": 0.3,
+          "may": 0.2,
+          "jun": 0.4
+        },
+        "phosphate": {
+          "apr": "<0.01",
+          "may": "<0.01",
+          "jun": 0.027
+        }
+      }
+    },
+    {
+      "code": "23",
+      "name": "Baras River",
+      "readings": {
+        "bod": {
+          "apr": 8,
+          "may": 10,
+          "jun": 10
+        },
+        "do": {
+          "apr": 0.2,
+          "may": 0.6,
+          "jun": 0.6
+        },
+        "fecal_coliform": {
+          "apr": 191357,
+          "may": 314856,
+          "jun": 314856
+        },
+        "ph": {
+          "apr": 7.3,
+          "may": 7.5,
+          "jun": 7.1
+        },
+        "ammonia": {
+          "apr": 2,
+          "may": 1,
+          "jun": 1
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": "<0.1"
+        },
+        "phosphate": {
+          "apr": 0.35,
+          "may": 0.26,
+          "jun": 0.24
+        }
+      }
+    },
+    {
+      "code": "24",
+      "name": "Morong River - Downstream",
+      "readings": {
+        "bod": {
+          "apr": 5,
+          "may": 3,
+          "jun": 24
+        },
+        "do": {
+          "apr": 3,
+          "may": 3,
+          "jun": 3
+        },
+        "fecal_coliform": {
+          "apr": 98090,
+          "may": 113408,
+          "jun": 113408
+        },
+        "ph": {
+          "apr": 7.8,
+          "may": 8.1,
+          "jun": 7.3
+        },
+        "ammonia": {
+          "apr": 0.5,
+          "may": 1,
+          "jun": 1
+        },
+        "nitrate": {
+          "apr": 2,
+          "may": 2,
+          "jun": 2
+        },
+        "phosphate": {
+          "apr": 1.1,
+          "may": 1.0,
+          "jun": 0.68
+        }
+      }
+    },
+    {
+      "code": "24U",
+      "name": "Morong River - Upstream",
+      "readings": {
+        "bod": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "do": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "fecal_coliform": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "ph": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "ammonia": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "nitrate": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        },
+        "phosphate": {
+          "apr": "***",
+          "may": "***",
+          "jun": "***"
+        }
+      }
+    },
+    {
+      "code": "25",
+      "name": "Manggahan Floodway (Taytay)",
+      "readings": {
+        "bod": {
+          "apr": 28,
+          "may": 21,
+          "jun": 13
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.1
+        },
+        "fecal_coliform": {
+          "apr": 34772,
+          "may": 56239,
+          "jun": 92534
+        },
+        "ph": {
+          "apr": 7.3,
+          "may": 7.1,
+          "jun": 6.8
+        },
+        "ammonia": {
+          "apr": 11,
+          "may": 20,
+          "jun": 9
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.03
+        },
+        "phosphate": {
+          "apr": 1.5,
+          "may": 2.5,
+          "jun": 1.0
+        }
+      }
+    },
+    {
+      "code": "26",
+      "name": "Sapang Baho River (Cainta)",
+      "readings": {
+        "bod": {
+          "apr": 25,
+          "may": 18,
+          "jun": 10
+        },
+        "do": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.4
+        },
+        "fecal_coliform": {
+          "apr": 1939257,
+          "may": 2120658,
+          "jun": 1700000
+        },
+        "ph": {
+          "apr": 7.5,
+          "may": 7.2,
+          "jun": 7.1
+        },
+        "ammonia": {
+          "apr": 13,
+          "may": 12,
+          "jun": 7
+        },
+        "nitrate": {
+          "apr": "<0.1",
+          "may": "<0.1",
+          "jun": 0.1
+        },
+        "phosphate": {
+          "apr": 2.0,
+          "may": 2.0,
+          "jun": 1.1
+        }
+      }
+    },
+    {
+      "code": "27",
+      "name": "Angono River",
+      "readings": {
+        "bod": {
+          "apr": 10,
+          "may": 9,
+          "jun": 11
+        },
+        "do": {
+          "apr": 3,
+          "may": 2,
+          "jun": 2
+        },
+        "fecal_coliform": {
+          "apr": 177337,
+          "may": 208078,
+          "jun": 283846
+        },
+        "ph": {
+          "apr": 7.7,
+          "may": 7.4,
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": 3,
+          "may": 4,
+          "jun": 4
+        },
+        "nitrate": {
+          "apr": 2,
+          "may": 2,
+          "jun": 1
+        },
+        "phosphate": {
+          "apr": 0.59,
+          "may": 0.73,
+          "jun": 0.64
+        }
+      }
+    },
+    {
+      "code": "28",
+      "name": "Teresa River",
+      "readings": {
+        "bod": {
+          "apr": 5,
+          "may": 3,
+          "jun": 5
+        },
+        "do": {
+          "apr": 7,
+          "may": 5,
+          "jun": 5
+        },
+        "fecal_coliform": {
+          "apr": 435874,
+          "may": 446775,
+          "jun": 376825
+        },
+        "ph": {
+          "apr": 8.1,
+          "may": 7.5,
+          "jun": 7.7
+        },
+        "ammonia": {
+          "apr": 0.09,
+          "may": 0.1,
+          "jun": 0.5
+        },
+        "nitrate": {
+          "apr": 2,
+          "may": 1,
+          "jun": 2
+        },
+        "phosphate": {
+          "apr": 0.38,
+          "may": 0.4,
+          "jun": 0.35
+        }
+      }
+    },
+    {
+      "code": "29",
+      "name": "Saran River",
+      "readings": {
+        "bod": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        },
+        "do": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        },
+        "fecal_coliform": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        },
+        "ph": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        },
+        "ammonia": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        },
+        "nitrate": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        },
+        "phosphate": {
+          "apr": "****",
+          "may": "****",
+          "jun": "****"
+        }
+      }
+    },
+    {
+      "code": "30",
+      "name": "Binangonan River",
+      "readings": {
+        "bod": {
+          "apr": "***",
+          "may": 23,
+          "jun": 16
+        },
+        "do": {
+          "apr": "***",
+          "may": 0.6,
+          "jun": 2
+        },
+        "fecal_coliform": {
+          "apr": "***",
+          "may": 2491987,
+          "jun": 5449771
+        },
+        "ph": {
+          "apr": "***",
+          "may": 7.2,
+          "jun": 7.2
+        },
+        "ammonia": {
+          "apr": "***",
+          "may": 9,
+          "jun": 7
+        },
+        "nitrate": {
+          "apr": "***",
+          "may": "<0.1",
+          "jun": 2
+        },
+        "phosphate": {
+          "apr": "***",
+          "may": 1.6,
+          "jun": 0.96
+        }
+      }
+    }
+  ]
+}

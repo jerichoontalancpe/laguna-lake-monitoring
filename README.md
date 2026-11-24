@@ -1,94 +1,109 @@
 # Laguna Lake Water Quality Monitoring Portal
 
-A single-page web application for monitoring and visualizing water quality data across five LLDA stations on Laguna de Bay (Laguna Lake), Philippines. Built with Leaflet.js for interactive mapping, Chart.js for trend visualization, and Tailwind CSS for a responsive dashboard layout.
+A multi-page web application that maps and visualizes water quality at the Laguna Lake Development Authority (LLDA) lake monitoring stations on Laguna de Bay, Philippines. Readings come from the **LLDA Q2 2026 Quarterly Water Quality Monitoring Report (April–June 2026)** and are evaluated against DENR Class C water quality guidelines.
 
-Parameter thresholds follow **DENR DAO 2016-08 Class C** standards for fisheries, recreation, and general-purpose waters.
+**Live site:** https://jerichoontalancpe.github.io/laguna-lake-monitoring/
+**Repository:** https://github.com/jerichoontalancpe/laguna-lake-monitoring
+
+Built for WITM 101 — Advanced Web Design and Programming (Final Examination).
 
 ## Data Methodology
 
-The water quality values in this portal are **representative sample data** modeled after documented conditions in Laguna de Bay. They are **not live sensor readings**. Station coordinates and bay designations are based on LLDA monitoring station references. Trend data covers a simulated six-month period (June–November) to illustrate typical seasonal variation patterns. The lake boundary polygon is derived from **OpenStreetMap** (relation 79348).
+- **Source:** LLDA Q2 2026 Quarterly Water Quality Monitoring Report, Environmental Laboratory and Research Division. The report is included at `assets/2Q2026 WATER QUALITY REPORT.pdf`; its values were transcribed into `llda_q2_2026_water_quality.json` and converted into `assets/stations.json`.
+- **Stations:** 16 active lake stations sampled in Q2 2026, plus 3 archived stations (III, VI, VII) that are not in the report. Archived stations have no readings and are shown for historical reference only.
+- **Readings:** the map, status and tables use the **June 2026** reading. Trend charts plot the **April, May and June 2026** monthly readings.
+- **Below detection:** values reported as `<0.1` are shown as reported and plotted at 0.1.
+- **Coordinates:** the report gives station names but not coordinates, so markers are approximate positions inside each named bay.
+- **Lake boundary:** OpenStreetMap relation 79348, simplified from 11,390 to 761 points.
+- **Not included:** the report's 37 tributary river stations, because the report has no coordinates for them.
 
-This project is built for educational and academic purposes under WITM 101 Advanced Web Design and Programming.
+## Pages
 
----
+| Page | What it shows |
+|---|---|
+| `index.html` Dashboard | Photo slideshow hero, animated stat counters, status summary boxes, Class C benchmark cards with lake-wide averages and how many stations meet each limit, link to the source PDF |
+| `map.html` Live Map | Leaflet map with Street and Satellite layers, lake boundary, 19 color-coded markers, parameter filter (bubble markers), lake-wide overview, station detail panel with parameter bars, additional parameters and an April–June trend chart |
+| `stations.html` Stations | Sortable table of all 16 active stations, station cards, an Archived tab, and a details window with charts |
+| `about.html` About | LLDA monitoring network, DENR standards, parameter reference cards, status rules, data methodology, technology stack, APA 7 references |
 
-## Layout
+## Water Quality Parameters and Thresholds
 
-```
-+------------------------------------------------------------------+
-|  HEADER: Title  |  Dynamic Status Counts  |  Last Updated Date  |
-+--------------------------------------+---------------------------+
-|                                      | SIDEBAR (initial load):   |
-|   INTERACTIVE MAP (Leaflet.js)       |   Lake-wide overview      |
-|                                      |   - Good/Fair/Poor counts |
-|   - Real Laguna de Bay boundary      |   - Avg DO, BOD, pH, Temp |
-|   - Color-coded station markers      |   - Clickable station list|
-|   - Filter dropdown (top-left)       |                           |
-|   - Floating legend (bottom-left)    | SIDEBAR (station selected)|
-|   - Scale bar (bottom-right)         |   - Station name & bay    |
-|   - Zoom controls (top-right)        |   - Status badge          |
-|                                      |   - 6 parameter cards     |
-|                                      |   - 6-month trend chart   |
-+--------------------------------------+---------------------------+
-```
+Laguna de Bay is a Class C water body. Each reading is compared with the DENR Class C guideline, using the same color bands as the LLDA report.
 
-On mobile, the map takes the full screen and the sidebar slides up as a bottom sheet when a station marker is tapped.
+| Parameter | Unit | Class C (Pass) | Class D (Alert) | Fail | Limit source |
+|---|---|---|---|---|---|
+| Dissolved Oxygen (DO) | mg/L | ≥ 5 | > 2 to < 5 | ≤ 2 | DAO 2016-08 |
+| Biochemical Oxygen Demand (BOD) | mg/L | ≤ 7 | > 7 to 15 | > 15 | DAO 2016-08 |
+| pH | — | 6.5 – 9.0 | 6.0 – 9.0 | < 6.0 or > 9.0 | DAO 2016-08 |
+| Nitrate | mg/L | ≤ 7 | > 7 to 15 | > 15 | DAO 2016-08 |
+| Phosphate | mg/L | ≤ 0.025 | > 0.025 to 0.05 | > 0.05 | DAO 2021-19 |
+| Total Suspended Solids (TSS) | mg/L | ≤ 80 | > 80 to 110 | > 110 | DAO 2016-08 |
+| Ammonia (additional) | mg/L | ≤ 0.06 | > 0.06 to 0.3 | > 0.3 | DAO 2021-19 |
+| Chloride (additional) | mg/L | ≤ 350 | > 350 to 400 | > 400 | DAO 2016-08 |
+| Fecal Coliform (additional) | MPN/100mL | ≤ 200 | > 200 to 400 | > 400 | DAO 2021-19 |
 
----
+The six core parameters appear on the map filter, charts and table. The three additional parameters appear in station details. All nine count toward the overall status:
 
-## Features
+| Overall status | Rule |
+|---|---|
+| Good | Every parameter meets Class C |
+| Fair | Exactly one parameter is outside Class C |
+| Poor | Two or more parameters are outside Class C |
 
-- Interactive Leaflet map centered on Laguna de Bay with panning restricted to the lake/Rizal region
-- Real lake boundary polygon from OpenStreetMap (761 points, simplified from 11,390)
-- Color-coded circular markers by overall water quality status (Good / Fair / Poor)
-- Proportional bubble markers when filtering by individual parameter
-- Dynamic header showing real-time Good/Fair/Poor counts from loaded data
-- Lake-wide overview sidebar on initial load with average parameter values and clickable station list
-- Station detail sidebar on marker click with all 6 parameter cards and progress bars
-- Progress bars with threshold markers and direction hints (higher is better / lower is better)
-- 6-month historical trend chart (Chart.js) with toggleable datasets for all 6 parameters
-- Dashed threshold reference lines on the trend chart at DAO 2016-08 limits
-- Parameter filter dropdown to switch map display between overall status and individual parameters
-- Floating legend that updates to explain bubble sizes when in parameter filter mode
-- Scale bar in metric units (bottom-right of map)
-- Responsive layout: desktop split view, mobile bottom sheet
-- Async data loading with ES module imports and proper error handling
+**June 2026 result:** 12 stations Fair and 4 Poor (I, XIII, XX, XXIV). No station is Good, because phosphate exceeds the Class C limit at all 16 stations (0.14–0.57 mg/L against a 0.025 mg/L limit).
 
----
+## Monitoring Stations
+
+| Station | Report name | Bay | Status in portal |
+|---|---|---|---|
+| Station I | Central West Bay | Central West Bay | Active |
+| Station II | East Bay | East Bay | Active |
+| Station IV | Central Bay | Central Bay | Active |
+| Station V | Northern West Bay | Northern West Bay | Active |
+| Station VIII | South Bay | South Bay | Active |
+| Station XIII | Taytay | West Bay (Taytay) | Active |
+| Station XV | San Pedro (West Bay) | West Bay (San Pedro) | Active |
+| Station XVI | Sta Rosa (West Bay) | West Bay (Sta. Rosa) | Active |
+| Station XVII | Fish Sanctuary (Central Bay) | Central Bay | Active |
+| Station XVIII | Pagsanjan (East Bay) | East Bay (Pagsanjan) | Active |
+| Station XIX | Muntinlupa | West Bay (Muntinlupa) | Active |
+| Station XX | GEMS | Central/West Bay (GEMS) | Active |
+| Station XXI | Cardona (Talim) | Central Bay (Cardona) | Active |
+| Station XXII | Jala-jala | South/Central Bay | Active |
+| Station XXIII | Lumban | East Bay (Lumban) | Active |
+| Station XXIV | Cardona (North Central Bay) | North Central Bay (Cardona) | Active |
+| Station III | West Bay | West Bay | Archived |
+| Station VI | West Bay | West Bay | Archived |
+| Station VII | East Bay | East Bay | Archived |
 
 ## Tech Stack
 
-| Component          | Tool                           |
-|--------------------|--------------------------------|
-| Mapping Engine     | Leaflet.js 1.9.4               |
-| Map Base Layer     | OpenStreetMap (no API key)     |
-| Data Visualization | Chart.js 4.4.1                 |
-| Front-End Styling  | Tailwind CSS (CDN)             |
-| Data Format        | GeoJSON (stations + boundary)  |
-| JavaScript         | ES Modules (import/export)     |
-
-No build tools, no API keys, no backend required.
-
----
+| Component | Tool |
+|---|---|
+| Mapping | Leaflet.js 1.9.4, OpenStreetMap tiles, Esri World Imagery |
+| Charts | Chart.js 4.4.1 (dual Y-axis, custom threshold-line plugin) |
+| UI | daisyUI 5 on Tailwind CSS 4 (CDN), Lucide icons, Inter font |
+| Data | GeoJSON (`stations.json`, `lake-boundary.json`) loaded with `fetch()` |
+| JavaScript | ES modules (`data.js` → `charts.js` → `map.js`), no build step |
+| Hosting | GitHub Pages |
 
 ## Project Structure
 
 ```
 laguna-lake-monitoring/
-├── index.html              # Single-page HTML entry point
-├── README.md
+├── index.html, map.html, stations.html, about.html
+├── css/style.css
+├── js/
+│   ├── data.js     # parameter limits, Pass/Alert/Fail logic, data loading and validation
+│   ├── charts.js   # trend charts, parameter bars, additional-parameter table
+│   └── map.js      # Leaflet map, markers, sidebar, station details
 ├── assets/
-│   ├── stations.json       # GeoJSON: 5 monitoring stations, 6 parameters, 6-month trends
-│   └── lake-boundary.json  # GeoJSON: Real Laguna de Bay shoreline (OpenStreetMap)
-├── css/
-│   └── style.css           # Custom styles: markers, sidebar, parameter bars, responsive
-└── js/
-    ├── data.js             # PARAMETERS config, threshold evaluation, GeoJSON loaders (exports)
-    ├── charts.js           # Chart.js trend chart, parameter bars, toggle buttons (imports data.js)
-    └── map.js              # Leaflet init, markers, filters, legend, sidebar (imports both)
+│   ├── stations.json             # 16 active + 3 archived stations (Q2 2026 readings)
+│   ├── lake-boundary.json        # Laguna de Bay polygon (OpenStreetMap)
+│   ├── 2Q2026 WATER QUALITY REPORT.pdf
+│   └── images (logo, hero photos, background pattern)
+└── llda_q2_2026_water_quality.json   # transcribed report data (source for stations.json)
 ```
-
----
 
 ## Setup
 
@@ -113,62 +128,6 @@ npx serve -l 8080
 ### Option 3: VS Code Live Server extension
 
 Right-click `index.html` and select "Open with Live Server".
-
----
-
-## Usage
-
-1. The map loads with all five stations visible and the sidebar showing a lake-wide summary.
-2. **Click a station marker** to see full details: status badge, all 6 parameter cards with progress bars, and a 6-month trend chart.
-3. **Toggle trend parameters** using the colored pills above the chart. All 6 parameters (DO, BOD, COD, Turbidity, pH, Temperature) are toggleable.
-4. **Use the filter dropdown** (top-left) to switch from overall status to a single parameter view. Markers become proportional bubbles and the legend updates to explain the bubble size.
-5. On **mobile**, tap a marker to slide up the bottom sheet with station details.
-6. **Click a station name** in the initial lake-wide overview to jump to that station on the map.
-
----
-
-## Monitoring Stations
-
-| Station      | Bay                          | Coordinates (lng, lat) | Status |
-|--------------|------------------------------|-------------------------|--------|
-| Station I    | Central Bay                  | 121.246, 14.332         | Good   |
-| Station II   | East Bay                     | 121.325, 14.3725        | Fair   |
-| Station IV   | West Bay                     | 121.127, 14.418         | Fair   |
-| Station V    | Northern West Bay (Napindan) | 121.102, 14.526         | Poor   |
-| Station VIII | South Bay                    | 121.258, 14.238         | Good   |
-
-All station coordinates are verified to fall within the real Laguna de Bay polygon boundary.
-
----
-
-## Water Quality Parameters and Thresholds
-
-All thresholds follow **DENR DAO 2016-08 Class C** (waters intended for fisheries, recreation, and general purpose).
-
-| Parameter                       | Key           | Unit  | Threshold    | Direction          |
-|---------------------------------|---------------|-------|--------------|--------------------|
-| Dissolved Oxygen (DO)           | `do`          | mg/L  | >= 5.0       | Higher is better   |
-| pH Level                        | `ph`          | —     | 6.5 – 9.0    | Acceptable range   |
-| Biochemical Oxygen Demand (BOD) | `bod`         | mg/L  | <= 7.0       | Lower is better    |
-| Chemical Oxygen Demand (COD)    | `cod`         | mg/L  | <= 25.0      | Lower is better    |
-| Turbidity                       | `turbidity`   | NTU   | <= 80.0      | Lower is better    |
-| Temperature                     | `temperature` | °C    | 25.0 – 31.0  | Acceptable range   |
-
-### Status Evaluation
-
-| Status | Criteria                                              |
-|--------|-------------------------------------------------------|
-| Pass   | Value is within the acceptable threshold              |
-| Alert  | Value is borderline (near the threshold boundary)     |
-| Fail   | Value exceeds the allowable limit                     |
-
-Overall station status:
-
-| Status | Criteria                                           |
-|--------|----------------------------------------------------|
-| Good   | All parameters pass                                |
-| Fair   | 1–2 parameters at alert level, or one at fail      |
-| Poor   | 2+ parameters at fail, or 3+ at alert level        |
 
 ---
 

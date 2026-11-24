@@ -6,12 +6,23 @@
 
 import {
   PARAMETERS,
+  EXTRA_PARAMETERS,
   getParameterStatus,
   getBarFillPercent,
+  getLimitMarkerPercent,
   getStatusColor,
   getStatusClass,
-  getThresholdText
+  getThresholdText,
+  displayValue
 } from "./data.js";
+
+/** What each status means for a Class C water body. */
+export const STATUS_MEANING = {
+  "Pass": "Meets Class C",
+  "Alert": "Class D range",
+  "Fail": "Beyond Class D",
+  "No data": "Not sampled"
+};
 
 // ── Defaults ──────────────────────────────────
 Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
@@ -24,15 +35,16 @@ const chartInstances = new Map();
 let currentStation = null;
 
 const TREND_COLORS = {
-  do:          "#0ea5e9",
-  bod:         "#f97316",
-  cod:         "#a855f7",
-  turbidity:   "#14b8a6",
-  ph:          "#ec4899",
-  temperature: "#ef4444"
+  do:        "#0ea5e9",
+  bod:       "#f97316",
+  ph:        "#ec4899",
+  nitrate:   "#a855f7",
+  phosphate: "#ef4444",
+  tss:       "#14b8a6"
 };
 
-const RIGHT_AXIS = new Set(["ph", "temperature"]);
+// pH has no unit and a narrow range, so it is plotted on the right axis.
+const RIGHT_AXIS = new Set(["ph"]);
 
 // ── Threshold lines plugin ────────────────────
 const thresholdLinesPlugin = {
@@ -124,7 +136,9 @@ export function initTrendChart(canvasId = "trend-chart") {
           callbacks: {
             label(c) {
               const unit = PARAMETERS[c.dataset.paramKey]?.unit || "";
-              return `${c.dataset.label}: ${c.parsed.y} ${unit}`;
+              const shown = c.dataset.displayData?.[c.dataIndex] ?? c.parsed.y;
+              const note = String(shown).startsWith("<") ? " (below detection limit)" : "";
+              return `${c.dataset.label}: ${shown} ${unit}${note}`;
             }
           }
         }
@@ -135,13 +149,13 @@ export function initTrendChart(canvasId = "trend-chart") {
           type: "linear", position: "left", beginAtZero: true,
           grid: { color: "rgba(0,0,0,0.05)" },
           ticks: { font: { size: 9 } },
-          title: { display: true, text: "Concentration", font: { size: 9 }, color: "#94a3b8" }
+          title: { display: true, text: "mg/L", font: { size: 9 }, color: "#94a3b8" }
         },
         y2: {
           type: "linear", position: "right", beginAtZero: false,
           grid: { drawOnChartArea: false },
           ticks: { font: { size: 9 } },
-          title: { display: true, text: "pH / Temp °C", font: { size: 9 }, color: "#94a3b8" }
+          title: { display: true, text: "pH", font: { size: 9 }, color: "#94a3b8" }
         }
       }
     }
@@ -169,6 +183,7 @@ export function updateTrendChart(stationProps, canvasId = "trend-chart") {
       label: PARAMETERS[key].short,
       paramKey: key,
       data: trends[key],
+      displayData: trends[key + "_display"],
       yAxisID: isRight ? "y2" : "y",
       borderColor: TREND_COLORS[key] || "#64748b",
       backgroundColor: (TREND_COLORS[key] || "#64748b") + "18",
@@ -199,7 +214,7 @@ export function renderTrendToggles(containerId = "trend-toggles", canvasId = "tr
   if (!container) return;
 
   const inst   = getInstance(canvasId);
-  const params = ["do", "bod", "cod", "turbidity", "ph", "temperature"];
+  const params = Object.keys(PARAMETERS);
   container.innerHTML = "";
 
   params.forEach(key => {
@@ -250,14 +265,6 @@ export function renderTrendToggles(containerId = "trend-toggles", canvasId = "tr
 }
 
 // ── Parameter bars ────────────────────────────
-function getMarkerPercent(paramKey) {
-  const p = PARAMETERS[paramKey];
-  if (!p) return null;
-  if (p.direction === "above") return (p.min / 10) * 100;
-  if (p.direction === "below" && p.max && p.alertMax) return (p.alertMax / p.max) * 100;
-  return null;
-}
-
 /**
  * Render all 6 parameter cards as an HTML string.
  * @param {object} parameters
@@ -272,10 +279,9 @@ export function renderParameterBars(parameters) {
 
     const status      = getParameterStatus(key, data.value);
     const statusClass = getStatusClass(status).toLowerCase();
-    const rawFill     = getBarFillPercent(key, data.value);
-    const fill        = Math.min(rawFill, 75); // cap visual width at 75% so bars stay slim
+    const fill        = getBarFillPercent(key, data.value);
     const threshold   = getThresholdText(key);
-    const marker      = getMarkerPercent(key);
+    const marker      = getLimitMarkerPercent(key);
     const markerHtml  = marker !== null
       ? `<div class="param-bar-threshold-marker" style="left:${marker}%"></div>` : "";
     const hint =
@@ -291,7 +297,7 @@ export function renderParameterBars(parameters) {
             <span class="param-info-icon" data-tooltip="${param.description}" aria-label="${param.description}">i</span>
           </div>
           <div>
-            <span class="param-value">${data.value}</span>
+            <span class="param-value">${displayValue(data)}</span>
             <span class="param-unit">${param.unit}</span>
           </div>
         </div>
@@ -300,15 +306,44 @@ export function renderParameterBars(parameters) {
           ${markerHtml}
         </div>
         <div class="param-bar-labels">
-          <span>Threshold: ${threshold}</span>
+          <span>Class C: ${threshold}</span>
           <span>${hint}</span>
         </div>
         <div class="param-bar-labels" style="margin-top:0.1rem;">
-          <span style="color:${getStatusColor(status)};font-weight:700;">${status}</span>
+          <span style="color:${getStatusColor(status)};font-weight:700;">${status} &middot; ${STATUS_MEANING[status] || ""}</span>
+          ${data.belowDetection ? '<span>Below detection limit</span>' : ''}
         </div>
       </div>`;
   }
   return html;
+}
+
+/**
+ * Render the supplementary parameters (ammonia, chloride, fecal coliform)
+ * as a compact table. They count toward the overall station status.
+ * @param {object} extra - Station extra readings
+ * @returns {string} HTML
+ */
+export function renderExtraParameters(extra) {
+  if (!extra || !Object.keys(extra).length) return "";
+  const rows = Object.entries(EXTRA_PARAMETERS).map(([key, cfg]) => {
+    const r = extra[key];
+    if (!r) return "";
+    const status = getParameterStatus(key, r.value);
+    return `<tr>
+      <td style="padding:0.35rem 0.5rem;font-weight:600;">${cfg.label}</td>
+      <td style="padding:0.35rem 0.5rem;text-align:right;font-weight:700;">${displayValue(r)} <span style="font-weight:400;opacity:0.5;">${cfg.unit}</span></td>
+      <td style="padding:0.35rem 0.5rem;opacity:0.6;">${getThresholdText(key)}</td>
+      <td style="padding:0.35rem 0.5rem;color:${getStatusColor(status)};font-weight:700;">${status}</td>
+    </tr>`;
+  }).join("");
+  return `<div style="border:1px solid rgba(0,0,0,0.08);border-radius:0.6rem;overflow:hidden;">
+    <table style="width:100%;font-size:0.75rem;border-collapse:collapse;">
+      <thead><tr style="background:rgba(0,0,0,0.04);text-align:left;">
+        <th style="padding:0.35rem 0.5rem;">Parameter</th><th style="padding:0.35rem 0.5rem;text-align:right;">June</th>
+        <th style="padding:0.35rem 0.5rem;">Class C</th><th style="padding:0.35rem 0.5rem;">Status</th>
+      </tr></thead><tbody>${rows}</tbody></table></div>
+    <p style="font-size:0.65rem;opacity:0.5;margin-top:0.35rem;">These also count toward the station&rsquo;s overall status.</p>`;
 }
 
 export function setCurrentStation(props) {

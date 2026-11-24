@@ -1,9 +1,16 @@
 /**
- * data.js — Parameter thresholds, status evaluation, and data loading
- * for the Laguna Lake Water Quality Monitoring Portal.
+ * data.js — Parameter definitions, DENR water quality thresholds,
+ * status evaluation, and data loading for the Laguna Lake Water
+ * Quality Monitoring Portal.
  *
- * Thresholds based on DENR DAO 2016-08 Class C standards
- * (fisheries, recreation, and general purpose waters).
+ * Readings come from the LLDA Q2 2026 (April–June 2026) Quarterly
+ * Water Quality Monitoring Report. Laguna de Bay is a Class C water
+ * body, so each reading is evaluated against the DENR Class C limit:
+ *   - Pass  : meets the Class C guideline
+ *   - Alert : falls in the Class D range (below Class C quality)
+ *   - Fail  : beyond the Class D range
+ * Limits are from DENR DAO 2016-08, with DAO 2021-19 for ammonia,
+ * phosphate and fecal coliform.
  */
 
 // ──────────────────────────────────────────────
@@ -11,189 +18,145 @@
 // ──────────────────────────────────────────────
 
 /**
- * Each parameter entry defines:
- *  - label:   Display name
- *  - unit:    Measurement unit
- *  - min/max: Acceptable range (for "Pass" status)
- *  - alertMin/alertMax: Borderline threshold boundaries
- *  - direction: "above" = higher is better (e.g. DO)
- *               "below" = lower is better (e.g. BOD)
- *  - description: Short explanation for tooltips
+ * Each parameter defines:
+ *  - direction: "above" (higher is better), "below" (lower is better),
+ *               or "range" (must stay inside a band)
+ *  - min/max:       Class C limit(s)  → Pass
+ *  - dMin/dMax:     Class D limit(s)  → Alert
+ *  - anything beyond Class D          → Fail
+ *  - source: the DENR order that sets the limit
  */
 export const PARAMETERS = {
   do: {
-    label: "Dissolved Oxygen",
-    short: "DO",
-    unit: "mg/L",
-    min: 5.0,
-    alertMin: 5.0,
-    alertMax: 5.5,
-    direction: "above",
-    description: "Must be >= 5 mg/L for fish survival (Class C)"
-  },
-  ph: {
-    label: "pH Level",
-    short: "pH",
-    unit: "",
-    min: 6.5,
-    max: 9.0,
-    alertMin: 6.8,
-    alertMax: 8.5,
-    direction: "range",
-    description: "Acceptable range 6.5-9.0 (Class C)"
+    label: "Dissolved Oxygen", short: "DO", unit: "mg/L",
+    direction: "above", min: 5, dMin: 2, source: "DAO 2016-08",
+    description: "Class C requires at least 5 mg/L for fish survival"
   },
   bod: {
-    label: "Biochemical Oxygen Demand",
-    short: "BOD",
-    unit: "mg/L",
-    max: 7.0,
-    alertMax: 5.5,
-    direction: "below",
-    description: "Must be <= 7 mg/L; higher indicates organic pollution"
+    label: "Biochemical Oxygen Demand", short: "BOD", unit: "mg/L",
+    direction: "below", max: 7, dMax: 15, source: "DAO 2016-08",
+    description: "Class C allows up to 7 mg/L; higher values mean organic pollution"
   },
-  cod: {
-    label: "Chemical Oxygen Demand",
-    short: "COD",
-    unit: "mg/L",
-    max: 25.0,
-    alertMax: 20.0,
-    direction: "below",
-    description: "Must be <= 25 mg/L (Class C limit)"
+  ph: {
+    label: "pH Level", short: "pH", unit: "",
+    direction: "range", min: 6.5, max: 9.0, dMin: 6.0, dMax: 9.0, source: "DAO 2016-08",
+    description: "Class C range is 6.5 to 9.0"
   },
-  turbidity: {
-    label: "Turbidity",
-    short: "Turbidity",
-    unit: "NTU",
-    max: 80.0,
-    alertMax: 60.0,
-    direction: "below",
-    description: "Must be <= 80 NTU; measures water clarity"
+  nitrate: {
+    label: "Nitrate", short: "Nitrate", unit: "mg/L",
+    direction: "below", max: 7, dMax: 15, source: "DAO 2016-08",
+    description: "Class C allows up to 7 mg/L; excess nitrate feeds algal blooms"
   },
-  temperature: {
-    label: "Temperature",
-    short: "Temp",
-    unit: "\u00b0C",
-    min: 25.0,
-    max: 31.0,
-    alertMin: 25.5,
-    alertMax: 30.5,
-    direction: "range",
-    description: "Acceptable range 25-31 \u00b0C (Class C)"
+  phosphate: {
+    label: "Phosphate", short: "Phosphate", unit: "mg/L",
+    direction: "below", max: 0.025, dMax: 0.05, source: "DAO 2021-19",
+    description: "Class C allows up to 0.025 mg/L; excess phosphate drives eutrophication"
+  },
+  tss: {
+    label: "Total Suspended Solids", short: "TSS", unit: "mg/L",
+    direction: "below", max: 80, dMax: 110, source: "DAO 2016-08",
+    description: "Class C allows up to 80 mg/L; high TSS makes water murky"
   }
 };
+
+/** Supplementary parameters shown in station details and counted in overall status. */
+export const EXTRA_PARAMETERS = {
+  ammonia: {
+    label: "Ammonia", short: "NH3", unit: "mg/L",
+    direction: "below", max: 0.06, dMax: 0.3, source: "DAO 2021-19"
+  },
+  chloride: {
+    label: "Chloride", short: "Cl", unit: "mg/L",
+    direction: "below", max: 350, dMax: 400, source: "DAO 2016-08"
+  },
+  fecal_coliform: {
+    label: "Fecal Coliform", short: "FC", unit: "MPN/100mL",
+    direction: "below", max: 200, dMax: 400, source: "DAO 2021-19"
+  }
+};
+
+function cfgFor(key) { return PARAMETERS[key] || EXTRA_PARAMETERS[key]; }
 
 // ──────────────────────────────────────────────
 // Status Evaluation
 // ──────────────────────────────────────────────
 
 /**
- * Evaluate a single parameter value against its thresholds.
- * @param {string} paramKey - Key in PARAMETERS (e.g. "do", "ph")
- * @param {number} value - Measured value
- * @returns {string} "Pass" | "Alert" | "Fail"
+ * Evaluate a reading against its Class C and Class D limits.
+ * @param {string} paramKey - Parameter key (e.g. "do", "phosphate")
+ * @param {number|null} value - Measured value
+ * @returns {string} "Pass" | "Alert" | "Fail" | "No data"
  */
 export function getParameterStatus(paramKey, value) {
-  const p = PARAMETERS[paramKey];
+  const p = cfgFor(paramKey);
   if (!p) return "Unknown";
+  if (value === null || value === undefined || Number.isNaN(value)) return "No data";
 
-  switch (p.direction) {
-    case "above":
-      // Higher is better (DO): Fail < min, Alert between min & alertMax, Pass >= alertMax
-      if (value < p.min) return "Fail";
-      if (value >= p.min && value < p.alertMax) return "Alert";
-      return "Pass";
-
-    case "below":
-      // Lower is better (BOD, COD, turbidity): Fail > max, Alert between alertMax & max, Pass <= alertMax
-      if (value > p.max) return "Fail";
-      if (value > p.alertMax && value <= p.max) return "Alert";
-      return "Pass";
-
-    case "range":
-      // Range-based (pH, temperature): Fail outside min/max, Alert near boundaries
-      if (value < p.min || value > p.max) return "Fail";
-      if (
-        (p.alertMin !== undefined && value >= p.min && value < p.alertMin) ||
-        (p.alertMax !== undefined && value <= p.max && value > p.alertMax)
-      ) {
-        return "Alert";
-      }
-      return "Pass";
-
-    default:
-      return "Unknown";
+  if (p.direction === "above") {
+    if (value >= p.min) return "Pass";
+    if (value > p.dMin) return "Alert";
+    return "Fail";
   }
+  if (p.direction === "below") {
+    if (value <= p.max) return "Pass";
+    if (value <= p.dMax) return "Alert";
+    return "Fail";
+  }
+  // range
+  if (value >= p.min && value <= p.max) return "Pass";
+  if (value >= p.dMin && value <= p.dMax) return "Alert";
+  return "Fail";
 }
 
 /**
- * Evaluate overall station status based on all parameter statuses.
- * - Good: All parameters Pass
- * - Fair: 1-2 parameters at Alert or one at Fail
- * - Poor: Any parameter at Fail, or 3+ at Alert
- * @param {object} parameters - Station parameters object from GeoJSON
+ * Overall station status from all measured parameters
+ * (the 6 core parameters plus ammonia, chloride and fecal coliform).
+ * - Good: every parameter meets Class C
+ * - Fair: exactly one parameter is outside Class C
+ * - Poor: two or more parameters are outside Class C
+ * @param {object} parameters - Core readings
+ * @param {object} [extra] - Supplementary readings
  * @returns {string} "Good" | "Fair" | "Poor"
  */
-export function getOverallStatus(parameters) {
-  let passCount = 0;
-  let alertCount = 0;
-  let failCount = 0;
-
-  for (const key of Object.keys(PARAMETERS)) {
-    if (!parameters[key]) continue;
-    const status = getParameterStatus(key, parameters[key].value);
-    if (status === "Pass") passCount++;
-    else if (status === "Alert") alertCount++;
-    else if (status === "Fail") failCount++;
+export function getOverallStatus(parameters, extra = {}) {
+  let outside = 0;
+  for (const [key, r] of Object.entries({ ...parameters, ...extra })) {
+    const s = getParameterStatus(key, r.value);
+    if (s === "Alert" || s === "Fail") outside++;
   }
-
-  if (failCount >= 2) return "Poor";
-  if (failCount === 1) return "Fair";
-  if (alertCount >= 3) return "Poor";
-  if (alertCount >= 1) return "Fair";
+  if (outside >= 2) return "Poor";
+  if (outside === 1) return "Fair";
   return "Good";
 }
 
 /**
- * Calculate a percentage fill for a parameter bar (0-100%).
- *
- * For "above" parameters (DO): fill grows with the value (more = better).
- * For "below" parameters (BOD, COD, turbidity): fill grows with proximity
- *   to the max threshold (more fill = closer to limit = worse).
- * For "range" parameters (pH, temperature): fill represents position
- *   within the acceptable range.
- *
+ * Percentage fill (0–100) for a parameter bar. The bar's full length
+ * is the edge of the Class D range, so the Class C limit marker sits
+ * at a fixed point and readings past it are clearly visible.
  * @param {string} paramKey
  * @param {number} value
- * @returns {number} 0-100
+ * @returns {number} 0–100
  */
 export function getBarFillPercent(paramKey, value) {
-  const p = PARAMETERS[paramKey];
-  if (!p) return 0;
+  const p = cfgFor(paramKey);
+  if (!p || value === null || value === undefined) return 0;
+  if (p.direction === "above") return Math.min(100, (value / (p.min * 2)) * 100);
+  if (p.direction === "below") return Math.min(100, (value / p.dMax) * 100);
+  // range: map 5.5–9.5 onto 0–100
+  return Math.max(0, Math.min(100, ((value - 5.5) / 4) * 100));
+}
 
-  switch (p.direction) {
-    case "above":
-      // DO: 0 at 0 mg/L, 100 at 10+ mg/L (scaled)
-      return Math.min(100, (value / 10) * 100);
-
-    case "below":
-      // BOD/COD/turbidity: fill represents proximity to max threshold
-      // Lower values = greener (less fill), higher = more fill (worse)
-      if (p.max) return Math.min(100, (value / p.max) * 100);
-      return 0;
-
-    case "range":
-      // pH/temp: position within the acceptable range
-      if (p.min !== undefined && p.max !== undefined) {
-        const range = p.max - p.min;
-        if (value < p.min) return 100; // Off-scale = full bar (bad)
-        if (value > p.max) return 100;
-        return Math.min(100, ((value - p.min) / range) * 100);
-      }
-      return 50;
-
-    default:
-      return 0;
-  }
+/**
+ * Position (0–100) of the Class C limit tick on a parameter bar.
+ * @param {string} paramKey
+ * @returns {number|null}
+ */
+export function getLimitMarkerPercent(paramKey) {
+  const p = cfgFor(paramKey);
+  if (!p) return null;
+  if (p.direction === "above") return 50;
+  if (p.direction === "below") return (p.max / p.dMax) * 100;
+  return ((p.max - 5.5) / 4) * 100;
 }
 
 // ──────────────────────────────────────────────
@@ -263,6 +226,19 @@ export async function loadStations() {
           throw new Error(`stations.json: Station at index ${i} is missing required property "${key}"`);
         }
       }
+    });
+
+    // Evaluate every reading against DENR limits so status is computed
+    // in one place, from the raw values.
+    data.features.forEach((f) => {
+      const p = f.properties;
+      if (p.archived) return;
+      for (const group of [p.parameters, p.extra || {}]) {
+        for (const [key, r] of Object.entries(group)) {
+          r.status = getParameterStatus(key, r.value);
+        }
+      }
+      p.overallStatus = getOverallStatus(p.parameters, p.extra || {});
     });
 
     return data;
@@ -338,22 +314,26 @@ export function getStatusClass(status) {
 }
 
 /**
- * Get the threshold description for display.
+ * Class C limit as display text.
  * @param {string} paramKey
- * @returns {string} Human-readable threshold
+ * @returns {string}
  */
 export function getThresholdText(paramKey) {
-  const p = PARAMETERS[paramKey];
+  const p = cfgFor(paramKey);
   if (!p) return "";
+  const u = p.unit ? " " + p.unit : "";
+  if (p.direction === "above") return `≥ ${p.min}${u}`;
+  if (p.direction === "below") return `≤ ${p.max}${u}`;
+  return `${p.min}–${p.max}${u}`;
+}
 
-  switch (p.direction) {
-    case "above":
-      return `>= ${p.min} ${p.unit}`;
-    case "below":
-      return `<= ${p.max} ${p.unit}`;
-    case "range":
-      return `${p.min}-${p.max} ${p.unit}`;
-    default:
-      return "";
-  }
+/**
+ * Value as shown in the UI (keeps "<0.1" below-detection readings).
+ * @param {object} reading - { value, display }
+ * @returns {string}
+ */
+export function displayValue(reading) {
+  if (!reading) return "—";
+  const text = reading.display ?? String(reading.value);
+  return text.replace(/</g, "&lt;");   // "<0.1" is inserted as HTML
 }

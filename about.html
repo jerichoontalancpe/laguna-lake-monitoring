@@ -182,7 +182,7 @@
             <span class="font-bold text-base-content">Pass</span>
             <span class="badge badge-success badge-sm">Good</span>
           </div>
-          <p class="text-sm text-base-content/70">Value is within the acceptable threshold defined by DAO 2016-08 Class C.</p>
+          <p class="text-sm text-base-content/70">The reading meets the Class C guideline value, the classification of Laguna de Bay.</p>
         </div>
         <div class="card bg-warning/10 border border-warning/20 p-5">
           <div class="flex items-center gap-2 mb-2">
@@ -190,7 +190,7 @@
             <span class="font-bold text-base-content">Alert</span>
             <span class="badge badge-warning badge-sm">Fair</span>
           </div>
-          <p class="text-sm text-base-content/70">Value is borderline — near the threshold boundary and may deteriorate without intervention.</p>
+          <p class="text-sm text-base-content/70">The reading misses Class C but falls in the Class D range (water fit only for agriculture and similar uses).</p>
         </div>
         <div class="card bg-error/10 border border-error/20 p-5">
           <div class="flex items-center gap-2 mb-2">
@@ -198,7 +198,7 @@
             <span class="font-bold text-base-content">Fail</span>
             <span class="badge badge-error badge-sm">Poor</span>
           </div>
-          <p class="text-sm text-base-content/70">Value exceeds the allowable limit — corrective action and regulatory review are required.</p>
+          <p class="text-sm text-base-content/70">The reading is beyond even the Class D range; the report marks these values in black.</p>
         </div>
       </div>
 
@@ -210,9 +210,9 @@
               <th>Overall Status</th><th>Criteria</th>
             </tr></thead>
             <tbody>
-              <tr><td><span class="badge badge-success font-semibold">Good</span></td><td>All 6 parameters pass</td></tr>
-              <tr><td><span class="badge badge-warning font-semibold">Fair</span></td><td>1–2 parameters at Alert, or one at Fail</td></tr>
-              <tr><td><span class="badge badge-error font-semibold">Poor</span></td><td>2+ parameters at Fail, or 3+ at Alert</td></tr>
+              <tr><td><span class="badge badge-success font-semibold">Good</span></td><td>All 9 measured parameters meet Class C</td></tr>
+              <tr><td><span class="badge badge-warning font-semibold">Fair</span></td><td>Exactly 1 parameter is outside Class C</td></tr>
+              <tr><td><span class="badge badge-error font-semibold">Poor</span></td><td>2 or more parameters are outside Class C</td></tr>
             </tbody>
           </table>
         </div>
@@ -228,14 +228,22 @@
       <div class="alert bg-base-100 border border-base-300 shadow-sm">
         <i data-lucide="info" class="w-5 h-5 text-info flex-shrink-0"></i>
         <div>
-          <p class="font-semibold text-base-content">Representative Sample Data</p>
+          <p class="font-semibold text-base-content">LLDA Q2 2026 Monitoring Data</p>
           <p class="text-sm text-base-content/70 mt-1">
-            The water quality values displayed in this portal are <strong>representative sample data</strong> modeled after
-            documented conditions in Laguna de Bay. They are not live sensor readings. Station coordinates and bay
-            designations are based on LLDA monitoring station references. Trend data covers a simulated six-month
-            period (June–November). The lake boundary polygon is sourced from OpenStreetMap (relation 79348).
+            All readings come from the LLDA Quarterly Water Quality Monitoring Report for April to June 2026
+            (Environmental Laboratory and Research Division). The map and station status use the <strong>June 2026</strong>
+            reading; the trend charts plot the April, May and June monthly readings. Values reported as
+            &ldquo;&lt;0.1&rdquo; are below the laboratory detection limit and are shown as reported.
+            Station coordinates are approximate positions within each named bay, because the report lists station
+            names but not coordinates. The lake boundary polygon is from OpenStreetMap (relation 79348).
           </p>
-          <p class="text-xs text-base-content/50 mt-2">Data source: LLDA Q2 2026 Water Quality Monitoring Report (April–June 2026). Built for WITM 101 Advanced Web Design and Programming.</p>
+          <p class="text-sm text-base-content/70 mt-2">
+            The map, charts and table focus on 6 core parameters (DO, BOD, pH, Nitrate, Phosphate, TSS). Ammonia,
+            Chloride and Fecal Coliform are shown in station details, and all 9 count toward each station&rsquo;s status. Limits follow DENR DAO 2016-08, and
+            DAO 2021-19 for ammonia, phosphate and fecal coliform. Archived Stations III, VI and VII are not in the
+            Q2 2026 report and have no readings.
+          </p>
+          <p class="text-xs text-base-content/50 mt-2">Built for WITM 101 Advanced Web Design and Programming.</p>
         </div>
       </div>
     </section>
@@ -353,11 +361,11 @@
 
     const PARAM_ICONS = {
       do: 'droplets', ph: 'flask-conical', bod: 'bug',
-      cod: 'zap', turbidity: 'eye', temperature: 'thermometer'
+      nitrate: 'leaf', phosphate: 'sprout', tss: 'eye'
     };
     const PARAM_COLOR = {
       do: 'info', ph: 'primary', bod: 'warning',
-      cod: 'secondary', turbidity: 'accent', temperature: 'error'
+      nitrate: 'secondary', phosphate: 'error', tss: 'accent'
     };
 
     const container = document.getElementById('param-cards');
