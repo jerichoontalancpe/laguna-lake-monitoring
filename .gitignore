@@ -1,0 +1,6 @@
+# Exclude the Word documentation from deployment
+# (keep it locally but don't publish it)
+Documentation.docx
+
+# macOS junk
+.DS_Store

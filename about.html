@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — LLDA Water Quality Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="font-inter bg-base-200 min-h-screen">
+
+  <!-- NAVBAR -->
+  <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50 border-b border-base-300">
+    <div class="navbar-start">
+      <div class="flex items-center gap-2 px-2">
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+          <i data-lucide="droplets" class="w-5 h-5 text-primary-content"></i>
+        </div>
+        <span class="font-bold text-base-content text-lg"><span class="hidden sm:inline">Laguna Lake Water Quality <span class="text-primary">Monitoring Portal</span></span><span class="sm:hidden">LLWQM <span class="text-primary">Portal</span></span></span>
+      </div>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1">
+        <li><a href="index.html" class="font-medium">Dashboard</a></li>
+        <li><a href="map.html" class="font-medium">Live Map</a></li>
+        <li><a href="stations.html" class="font-medium">Stations</a></li>
+        <li><a href="about.html" class="font-medium text-primary bg-primary/10 rounded-lg">About</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square btn-sm mr-2">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-lg border border-base-300">
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="map.html">Live Map</a></li>
+          <li><a href="stations.html">Stations</a></li>
+          <li><a href="about.html" class="text-primary font-medium">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;min-height:100vh;background:url('assets/bg-pattern.jpg') center/cover no-repeat;background-attachment:fixed;">
+    <div style="position:absolute;inset:0;background:rgba(255,255,255,0.90);pointer-events:none;z-index:0;"></div>
+    <div class="container mx-auto px-6 py-10 max-w-5xl" style="position:relative;z-index:1;">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-base-content/50 mb-6">
+      <a href="index.html" class="hover:text-primary transition-colors">Dashboard</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <span>About</span>
+    </div>
+
+    <!-- Page hero -->
+    <div class="card bg-primary text-primary-content shadow-lg mb-10 overflow-hidden relative">
+      <div class="card-body p-8 lg:p-12 relative z-10">
+        <div class="badge badge-outline border-primary-content/30 text-primary-content mb-3">DENR DAO 2016-08</div>
+        <h1 class="text-3xl lg:text-4xl font-black leading-tight mb-3">About This Portal</h1>
+        <p class="text-primary-content/80 max-w-2xl leading-relaxed">
+          This portal visualizes water quality monitoring data from Laguna de Bay, the largest freshwater lake in the Philippines,
+          managed by the Laguna Lake Development Authority (LLDA). All parameter thresholds follow
+          DENR Administrative Order 2016-08 Class C standards.
+        </p>
+      </div>
+      <div class="absolute right-0 top-0 bottom-0 w-64 opacity-10 flex items-center justify-end pr-8">
+        <i data-lucide="droplets" class="w-48 h-48"></i>
+      </div>
+    </div>
+
+    <!-- About LLDA -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="landmark" class="w-5 h-5 text-primary"></i>
+        Laguna Lake Development Authority (LLDA)
+      </h2>
+      <div class="card bg-base-100 border border-base-300 shadow-sm p-6">
+        <p class="text-base-content/70 leading-relaxed mb-4">
+          The LLDA is the government agency mandated to manage, preserve, and develop Laguna de Bay and its watershed.
+          It conducts regular water quality monitoring across the lake's major bays to track compliance with
+          national environmental standards and to guide regulatory action.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <div class="text-center p-4 bg-base-200 rounded-xl">
+            <div class="text-2xl font-black text-primary">900 km²</div>
+            <div class="text-xs text-base-content/60 mt-1">Lake Surface Area</div>
+          </div>
+          <div class="text-center p-4 bg-base-200 rounded-xl">
+            <div class="text-2xl font-black text-primary">5</div>
+            <div class="text-xs text-base-content/60 mt-1">Monitoring Stations</div>
+          </div>
+          <div class="text-center p-4 bg-base-200 rounded-xl">
+            <div class="text-2xl font-black text-primary">6</div>
+            <div class="text-xs text-base-content/60 mt-1">Water Quality Parameters</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAO 2016-08 -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
+        DENR DAO 2016-08 Class C Standards
+      </h2>
+      <div class="card bg-base-100 border border-base-300 shadow-sm p-6 mb-4">
+        <p class="text-base-content/70 leading-relaxed">
+          DENR Administrative Order No. 2016-08 establishes Water Quality Guidelines and General Effluent Standards
+          for the Philippines. <strong class="text-base-content">Class C</strong> waters are designated for fisheries,
+          recreation (Class II), and other inland waters — which applies to Laguna de Bay. This portal evaluates
+          all monitored parameters against these Class C thresholds.
+        </p>
+      </div>
+    </section>
+
+    <!-- Parameter reference cards -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="beaker" class="w-5 h-5 text-primary"></i>
+        Parameter Reference
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="param-cards"></div>
+    </section>
+
+    <!-- Status evaluation -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="gauge" class="w-5 h-5 text-primary"></i>
+        Status Evaluation Logic
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="card bg-success/10 border border-success/20 p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="check-circle" class="w-5 h-5 text-success"></i>
+            <span class="font-bold text-base-content">Pass</span>
+            <span class="badge badge-success badge-sm">Good</span>
+          </div>
+          <p class="text-sm text-base-content/70">Value is within the acceptable threshold defined by DAO 2016-08 Class C.</p>
+        </div>
+        <div class="card bg-warning/10 border border-warning/20 p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-warning"></i>
+            <span class="font-bold text-base-content">Alert</span>
+            <span class="badge badge-warning badge-sm">Fair</span>
+          </div>
+          <p class="text-sm text-base-content/70">Value is borderline — near the threshold boundary and may deteriorate without intervention.</p>
+        </div>
+        <div class="card bg-error/10 border border-error/20 p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="x-circle" class="w-5 h-5 text-error"></i>
+            <span class="font-bold text-base-content">Fail</span>
+            <span class="badge badge-error badge-sm">Poor</span>
+          </div>
+          <p class="text-sm text-base-content/70">Value exceeds the allowable limit — corrective action and regulatory review are required.</p>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 border border-base-300 p-5">
+        <h3 class="font-bold text-base-content mb-3">Overall Station Status</h3>
+        <div class="overflow-x-auto">
+          <table class="table table-sm text-sm">
+            <thead><tr class="text-base-content/60">
+              <th>Overall Status</th><th>Criteria</th>
+            </tr></thead>
+            <tbody>
+              <tr><td><span class="badge badge-success font-semibold">Good</span></td><td>All 6 parameters pass</td></tr>
+              <tr><td><span class="badge badge-warning font-semibold">Fair</span></td><td>1–2 parameters at Alert, or one at Fail</td></tr>
+              <tr><td><span class="badge badge-error font-semibold">Poor</span></td><td>2+ parameters at Fail, or 3+ at Alert</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data methodology -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="database" class="w-5 h-5 text-primary"></i>
+        Data Methodology
+      </h2>
+      <div class="alert bg-base-100 border border-base-300 shadow-sm">
+        <i data-lucide="info" class="w-5 h-5 text-info flex-shrink-0"></i>
+        <div>
+          <p class="font-semibold text-base-content">Representative Sample Data</p>
+          <p class="text-sm text-base-content/70 mt-1">
+            The water quality values displayed in this portal are <strong>representative sample data</strong> modeled after
+            documented conditions in Laguna de Bay. They are not live sensor readings. Station coordinates and bay
+            designations are based on LLDA monitoring station references. Trend data covers a simulated six-month
+            period (June–November). The lake boundary polygon is sourced from OpenStreetMap (relation 79348).
+          </p>
+          <p class="text-xs text-base-content/50 mt-2">Built for WITM 101 Advanced Web Design and Programming — educational purposes only.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech stack -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="code-2" class="w-5 h-5 text-primary"></i>
+        Technology Stack
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div class="card bg-base-100 border border-base-300 p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="map" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-base-content">Leaflet.js 1.9.4</div>
+                <div class="text-xs text-base-content/50 mt-0.5">Interactive mapping, GeoJSON layers</div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-base-100 border border-base-300 p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-base-content">Chart.js 4.4.1</div>
+                <div class="text-xs text-base-content/50 mt-0.5">Dual Y-axis trend visualization</div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-base-100 border border-base-300 p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="layout" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-base-content">daisyUI v5</div>
+                <div class="text-xs text-base-content/50 mt-0.5">Component library on Tailwind CSS</div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-base-100 border border-base-300 p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="type" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-base-content">Inter (Google Fonts)</div>
+                <div class="text-xs text-base-content/50 mt-0.5">Typography</div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-base-100 border border-base-300 p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="database" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-base-content">GeoJSON</div>
+                <div class="text-xs text-base-content/50 mt-0.5">Station &amp; boundary data format</div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-base-100 border border-base-300 p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="boxes" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-base-content">ES Modules</div>
+                <div class="text-xs text-base-content/50 mt-0.5">import/export, no bundler</div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- References -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+        <i data-lucide="book-open" class="w-5 h-5 text-primary"></i>
+        References
+      </h2>
+      <div class="card bg-base-100 border border-base-300 p-5 space-y-2">
+          <div class="flex items-start gap-2 text-sm text-base-content/70">
+            <i data-lucide="dot" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+            <span>DENR Administrative Order No. 2016-08: Water Quality Guidelines and General Effluent Standards of the Philippines</span>
+          </div>
+          <div class="flex items-start gap-2 text-sm text-base-content/70">
+            <i data-lucide="dot" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+            <span>Laguna Lake Development Authority (LLDA): Water Quality Monitoring Program</span>
+          </div>
+          <div class="flex items-start gap-2 text-sm text-base-content/70">
+            <i data-lucide="dot" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+            <span>OpenStreetMap: Laguna de Bay boundary (relation 79348), licensed under ODbL</span>
+          </div>
+          <div class="flex items-start gap-2 text-sm text-base-content/70">
+            <i data-lucide="dot" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+            <span>Leaflet.js — Open-source JavaScript library for interactive maps</span>
+          </div>
+          <div class="flex items-start gap-2 text-sm text-base-content/70">
+            <i data-lucide="dot" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+            <span>Chart.js — Free open-source JavaScript charting library</span>
+          </div>
+          <div class="flex items-start gap-2 text-sm text-base-content/70">
+            <i data-lucide="dot" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+            <span>daisyUI — Free open-source component library for Tailwind CSS</span>
+          </div>
+      </div>
+    </section>
+
+  </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer footer-center bg-base-100 border-t border-base-300 p-6 text-base-content/50 text-xs">
+    <p>Laguna Lake Development Authority &middot; DENR DAO 2016-08 Class C Standards &middot; WITM 101</p>
+  </footer>
+
+  <script type="module">
+    import { PARAMETERS } from './js/data.js';
+
+    const PARAM_ICONS = {
+      do: 'droplets', ph: 'flask-conical', bod: 'bug',
+      cod: 'zap', turbidity: 'eye', temperature: 'thermometer'
+    };
+    const PARAM_COLOR = {
+      do: 'info', ph: 'primary', bod: 'warning',
+      cod: 'secondary', turbidity: 'accent', temperature: 'error'
+    };
+
+    const container = document.getElementById('param-cards');
+    container.innerHTML = Object.entries(PARAMETERS).map(([k, p]) => {
+      const col = PARAM_COLOR[k] || 'primary';
+      const threshold =
+        p.direction === 'above' ? `>= ${p.min} ${p.unit}` :
+        p.direction === 'below' ? `<= ${p.max} ${p.unit}` :
+        `${p.min} – ${p.max} ${p.unit || ''}`;
+      const dirLabel =
+        p.direction === 'above' ? 'Higher is better' :
+        p.direction === 'below' ? 'Lower is better'  : 'Acceptable range';
+      return `
+        <div class="card bg-base-100 border border-base-300 shadow-sm p-5">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-${col}/15 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${PARAM_ICONS[k]}" class="w-6 h-6 text-${col}"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <h3 class="font-bold text-base-content">${p.label}</h3>
+                <span class="badge badge-sm badge-ghost font-mono">${p.short}</span>
+              </div>
+              <p class="text-sm text-base-content/60 leading-relaxed mb-3">${p.description}</p>
+              <div class="flex items-center gap-2 flex-wrap">
+                <div class="badge badge-${col} badge-outline gap-1 font-semibold text-xs">
+                  <i data-lucide="target" class="w-3 h-3"></i>
+                  DAO Limit: ${threshold}
+                </div>
+                <div class="badge badge-ghost text-xs">${dirLabel}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

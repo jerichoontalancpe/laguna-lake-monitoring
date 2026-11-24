@@ -1,0 +1,375 @@
+/* ================================================
+   Laguna Lake Water Quality Monitoring Portal
+   Global Styles — daisyUI forest theme + custom
+   ================================================ */
+
+.font-inter { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+/* --- Hero photo + Ken Burns pan animation --- */
+@keyframes heroPan {
+  0%   { transform: scale(1.08) translate(0%, 0%); }
+  25%  { transform: scale(1.10) translate(-1.5%, -1%); }
+  50%  { transform: scale(1.12) translate(1%, -2%); }
+  75%  { transform: scale(1.10) translate(0.5%, 1%); }
+  100% { transform: scale(1.08) translate(-1%, 0.5%); }
+}
+
+/* --- Animated wave at bottom of hero --- */
+.wave-1 {
+  animation: waveSlide 8s linear infinite;
+  position: absolute;
+  bottom: 0;
+}
+
+.wave-2 {
+  animation: waveSlide 12s linear infinite reverse;
+}
+
+@keyframes waveSlide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* --- Parameter Info Icon --- */
+.param-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+  color: rgba(0,0,0,0.5);
+  font-size: 9px;
+  font-weight: 700;
+  cursor: help;
+  position: relative;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.param-info-icon:hover { background: rgba(0,0,0,0.22); }
+
+.param-info-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: #f8fafc;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.param-info-icon:hover::after { opacity: 1; }
+
+/* --- Parameter Cards --- */
+.param-card {
+  background: #ffffff0d;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.6rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  transition: box-shadow 0.2s;
+}
+
+/* daisyUI base-100 context */
+[data-theme] .param-card {
+  background: oklch(var(--b1, 100% 0 0));
+  border-color: oklch(var(--bc, 20% 0 0) / 0.1);
+}
+
+.param-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+.param-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.param-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.param-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+.param-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.param-unit {
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.4;
+}
+
+/* --- Progress Bars --- */
+.param-bar-track {
+  height: 7px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 9999px;
+  overflow: visible;
+  position: relative;
+}
+
+.param-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+  animation: growBar 0.8s ease-out;
+}
+
+@keyframes growBar { from { width: 0 !important; } }
+
+.param-bar-fill.pass  { background: linear-gradient(90deg, #4ade80, #22c55e); }
+.param-bar-fill.alert { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+.param-bar-fill.fail  { background: linear-gradient(90deg, #f87171, #ef4444); }
+
+.param-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+  font-size: 0.68rem;
+  opacity: 0.45;
+}
+
+.param-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+  flex-shrink: 0;
+}
+
+.param-status-dot.pass  { background: #22c55e; }
+.param-status-dot.alert { background: #f59e0b; }
+.param-status-dot.fail  { background: #ef4444; }
+
+.param-bar-threshold-marker {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 13px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 1px;
+  z-index: 2;
+}
+
+.param-bar-threshold-marker::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -3px;
+  width: 8px;
+  height: 4px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 2px 2px 0 0;
+}
+
+/* --- Chart --- */
+.chart-wrapper {
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  position: relative;
+  height: 220px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.07);
+}
+
+/* --- Leaflet Marker --- */
+.wq-divicon { background: transparent !important; border: none !important; }
+
+.wq-marker {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+
+.wq-marker:hover {
+  transform: scale(1.2);
+  box-shadow: 0 5px 18px rgba(0,0,0,0.35);
+}
+
+.wq-marker-good { background: #22c55e; border-color: #16a34a; }
+.wq-marker-fair { background: #f59e0b; border-color: #d97706; }
+.wq-marker-poor { background: #ef4444; border-color: #dc2626; }
+
+.wq-marker-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.wq-marker.selected::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: -4px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 3px solid #3b82f6;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(2.6); opacity: 0;   }
+}
+
+.wq-bubble {
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  opacity: 0.88;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.wq-bubble:hover { opacity: 1; transform: scale(1.12); }
+
+.wq-bubble-label {
+  font-size: 10px;
+  font-weight: 800;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- Leaflet popup --- */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content { margin: 0 !important; }
+
+.popup-inner {
+  padding: 0.9rem 1rem;
+  font-family: 'Inter', sans-serif;
+  min-width: 180px;
+}
+
+.popup-name { font-weight: 700; font-size: 0.9rem; color: #1e293b; margin-bottom: 2px; }
+.popup-bay  { font-size: 0.72rem; color: #64748b; margin-bottom: 0.5rem; }
+
+/* --- Sidebar scrollbar --- */
+#sidebar::-webkit-scrollbar       { width: 5px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 3px; }
+#sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.22); }
+
+/* --- Section divider --- */
+.section-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: 1.1rem 0;
+}
+
+/* --- Fade-in --- */
+.fade-in { animation: fadeIn 0.35s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+/* --- Back to overview --- */
+.back-to-overview {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0.4rem;
+  color: rgba(0,0,0,0.6);
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: 0.9rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.back-to-overview:hover { background: rgba(0,0,0,0.09); }
+
+/* --- Overview sidebar --- */
+.overview-stats-row     { display: flex; gap: 0.5rem; }
+.overview-avg-grid      { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+.overview-avg-item {
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.overview-avg-label     { font-size: 0.7rem;  font-weight: 600; opacity: 0.55; margin-bottom: 0.1rem; }
+.overview-avg-value     { font-size: 1.1rem;  font-weight: 800; }
+.overview-avg-unit      { font-size: 0.65rem; font-weight: 400; opacity: 0.4; }
+.overview-avg-threshold { font-size: 0.62rem; opacity: 0.35; margin-top: 0.1rem; }
+
+.overview-station-list { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.overview-station-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.overview-station-item:hover, .overview-station-item:focus {
+  background: rgba(0,0,0,0.05);
+  outline: none;
+}
+
+.overview-station-item:focus-visible { box-shadow: 0 0 0 2px #3b82f6; }
+
+.overview-station-name { font-size: 0.8rem;  font-weight: 600; }
+.overview-station-bay  { font-size: 0.68rem; opacity: 0.4; margin-left: auto; }
+
+/* --- Leaflet z-index fixes for daisyUI modals --- */
+.leaflet-pane           { z-index: 1 !important; }
+.leaflet-tile-pane      { z-index: 2 !important; }
+.leaflet-overlay-pane   { z-index: 3 !important; }
+.leaflet-marker-pane    { z-index: 4 !important; }
+.leaflet-popup-pane     { z-index: 5 !important; }
+.leaflet-top,
+.leaflet-bottom         { z-index: 10 !important; }

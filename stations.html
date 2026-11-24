@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stations — LLDA Water Quality Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="font-inter bg-base-200 min-h-screen">
+
+  <!-- NAVBAR -->
+  <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50 border-b border-base-300">
+    <div class="navbar-start">
+      <div class="flex items-center gap-2 px-2">
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+          <i data-lucide="droplets" class="w-5 h-5 text-primary-content"></i>
+        </div>
+        <span class="font-bold text-base-content text-lg"><span class="hidden sm:inline">Laguna Lake Water Quality <span class="text-primary">Monitoring Portal</span></span><span class="sm:hidden">LLWQM <span class="text-primary">Portal</span></span></span>
+      </div>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1">
+        <li><a href="index.html" class="font-medium">Dashboard</a></li>
+        <li><a href="map.html" class="font-medium">Live Map</a></li>
+        <li><a href="stations.html" class="font-medium text-primary bg-primary/10 rounded-lg">Stations</a></li>
+        <li><a href="about.html" class="font-medium">About</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square btn-sm">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-lg border border-base-300">
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="map.html">Live Map</a></li>
+          <li><a href="stations.html" class="text-primary font-medium">Stations</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;min-height:100vh;background:url('assets/bg-pattern.jpg') center/cover no-repeat;background-attachment:fixed;">
+    <div style="position:absolute;inset:0;background:rgba(255,255,255,0.90);pointer-events:none;z-index:0;"></div>
+    <div class="container mx-auto px-6 py-10 max-w-7xl" style="position:relative;z-index:1;">
+
+    <!-- Page header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2 text-sm text-base-content/50 mb-2">
+        <a href="index.html" class="hover:text-primary transition-colors">Dashboard</a>
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        <span>Stations</span>
+      </div>
+      <h1 class="text-3xl font-black text-base-content">Monitoring Stations</h1>
+      <p class="text-base-content/60 mt-1">All 5 LLDA stations with current parameter readings and compliance status</p>
+    </div>
+
+    <!-- Summary stat row -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="summary-stats"></div>
+
+    <!-- Tabs -->
+    <div role="tablist" class="tabs tabs-border mb-6">
+      <button role="tab" class="tab tab-active font-semibold" id="tab-table" onclick="showTab('table')">
+        <i data-lucide="table-2" class="w-4 h-4 mr-1"></i> Parameter Table
+      </button>
+      <button role="tab" class="tab font-semibold" id="tab-cards" onclick="showTab('cards')">
+        <i data-lucide="layout-grid" class="w-4 h-4 mr-1"></i> Station Cards
+      </button>
+    </div>
+
+    <!-- TABLE VIEW -->
+    <div id="view-table">
+      <div class="card bg-base-100 border border-base-300 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="table table-pin-rows">
+            <thead>
+              <tr class="bg-base-200 text-base-content/70 text-xs uppercase tracking-wider">
+                <th class="font-bold cursor-pointer hover:text-primary select-none" onclick="sortTable('name')">
+                  Station <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none" onclick="sortTable('status')">
+                  Status <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('do')">
+                  DO <span class="normal-case font-normal">(mg/L)</span>
+                  <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('ph')">
+                  pH <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('bod')">
+                  BOD <span class="normal-case font-normal">(mg/L)</span>
+                  <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('cod')">
+                  COD <span class="normal-case font-normal">(mg/L)</span>
+                  <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('turbidity')">
+                  Turbidity <span class="normal-case font-normal">(NTU)</span>
+                  <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th class="font-bold cursor-pointer hover:text-primary select-none text-center" onclick="sortTable('temperature')">
+                  Temp <span class="normal-case font-normal">(°C)</span>
+                  <i data-lucide="arrow-up-down" class="w-3 h-3 inline ml-1"></i>
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="station-table-body" class="text-sm"></tbody>
+          </table>
+        </div>
+        <!-- Legend row -->
+        <div class="border-t border-base-300 px-6 py-3 bg-base-200/50 flex flex-wrap gap-4 text-xs text-base-content/60">
+          <span class="flex items-center gap-1.5"><span class="badge badge-success badge-xs"></span> Pass — within standard</span>
+          <span class="flex items-center gap-1.5"><span class="badge badge-warning badge-xs"></span> Alert — borderline</span>
+          <span class="flex items-center gap-1.5"><span class="badge badge-error badge-xs"></span> Fail — exceeds limit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS VIEW -->
+    <div id="view-cards" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="station-card-grid"></div>
+    </div>
+
+  </div>
+  </div>
+
+  <!-- STATION DETAIL MODAL -->
+  <dialog id="detail-modal" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+      <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 flex items-start justify-between z-10">
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-lg font-bold text-base-content" id="detail-title"></h3>
+            <span class="badge badge-sm" id="detail-badge"></span>
+          </div>
+          <p class="text-xs text-base-content/50 mt-0.5" id="detail-subtitle"></p>
+        </div>
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </form>
+      </div>
+      <div class="p-5 space-y-4" id="detail-body"></div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+  </dialog>
+
+  <!-- Footer -->
+  <footer class="footer footer-center bg-base-100 border-t border-base-300 p-6 text-base-content/50 text-xs mt-10">
+    <p>DENR DAO 2016-08 Class C &middot; Laguna Lake Development Authority &middot; WITM 101</p>
+  </footer>
+
+  <script type="module">
+    import { PARAMETERS, loadStations, getParameterStatus, getStatusColor, getStatusClass } from './js/data.js';
+    import { renderParameterBars, initTrendChart, updateTrendChart, renderTrendToggles, setCurrentStation } from './js/charts.js';
+
+    const STATUS_COLOR = { Good: 'success', Fair: 'warning', Poor: 'error' };
+    const STATUS_ICON  = { Good: 'check-circle', Fair: 'alert-triangle', Poor: 'x-circle' };
+
+    let allStations = [];
+    let sortKey = null;
+    let sortAsc = true;
+
+    async function init() {
+      const data = await loadStations();
+      allStations = data.features;
+      renderSummary();
+      renderTable();
+      renderCardGrid();
+      lucide.createIcons();
+    }
+
+    function renderSummary() {
+      let good = 0, fair = 0, poor = 0;
+      allStations.forEach(f => {
+        const s = f.properties.overallStatus;
+        if (s === 'Good') good++;
+        else if (s === 'Fair') fair++;
+        else poor++;
+      });
+      const el = document.getElementById('summary-stats');
+      el.innerHTML = [
+        { icon: 'map-pin',      val: allStations.length, label: 'Total Stations', color: 'primary' },
+        { icon: 'check-circle', val: good,                label: 'Good Quality',  color: 'success' },
+        { icon: 'alert-triangle',val: fair,               label: 'Fair Quality',  color: 'warning' },
+        { icon: 'x-circle',     val: poor,                label: 'Poor Quality',  color: 'error'   },
+      ].map(s => `
+        <div class="card bg-base-100 border border-base-300 shadow-sm p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-${s.color}/15 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${s.icon}" class="w-5 h-5 text-${s.color}"></i>
+            </div>
+            <div>
+              <div class="text-2xl font-black text-base-content">${s.val}</div>
+              <div class="text-xs text-base-content/60 font-medium">${s.label}</div>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function getSorted() {
+      if (!sortKey) return [...allStations];
+      return [...allStations].sort((a, b) => {
+        const pa = a.properties, pb = b.properties;
+        let va, vb;
+        if (sortKey === 'name')   { va = pa.name; vb = pb.name; }
+        else if (sortKey === 'status') { const o = {Good:0,Fair:1,Poor:2}; va = o[pa.overallStatus]; vb = o[pb.overallStatus]; }
+        else { va = pa.parameters[sortKey]?.value ?? 0; vb = pb.parameters[sortKey]?.value ?? 0; }
+        if (va < vb) return sortAsc ? -1 : 1;
+        if (va > vb) return sortAsc ?  1 : -1;
+        return 0;
+      });
+    }
+
+    window.sortTable = function(key) {
+      if (sortKey === key) sortAsc = !sortAsc;
+      else { sortKey = key; sortAsc = true; }
+      renderTable();
+      lucide.createIcons();
+    };
+
+    function paramCell(paramKey, value) {
+      const status = getParameterStatus(paramKey, value);
+      const cls = status === 'Pass' ? 'badge-success' : status === 'Alert' ? 'badge-warning' : 'badge-error';
+      return `<td class="text-center"><span class="badge ${cls} badge-sm font-semibold">${value}</span></td>`;
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('station-table-body');
+      tbody.innerHTML = getSorted().map(f => {
+        const p = f.properties;
+        const sc = STATUS_COLOR[p.overallStatus] || 'neutral';
+        return `
+          <tr class="hover:bg-base-200/50 transition-colors cursor-pointer" onclick="openDetail('${p.id}')">
+            <td>
+              <div class="font-semibold text-base-content">${p.name}</div>
+              <div class="text-xs text-base-content/50">${p.bay}</div>
+            </td>
+            <td><span class="badge badge-${sc} gap-1 font-semibold text-xs">
+              <i data-lucide="${STATUS_ICON[p.overallStatus]}" class="w-3 h-3"></i>
+              ${p.overallStatus}
+            </span></td>
+            ${paramCell('do',          p.parameters.do.value)}
+            ${paramCell('ph',          p.parameters.ph.value)}
+            ${paramCell('bod',         p.parameters.bod.value)}
+            ${paramCell('cod',         p.parameters.cod.value)}
+            ${paramCell('turbidity',   p.parameters.turbidity.value)}
+            ${paramCell('temperature', p.parameters.temperature.value)}
+            <td>
+              <button class="btn btn-xs btn-ghost text-primary" onclick="event.stopPropagation();openDetail('${p.id}')">
+                Details <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              </button>
+            </td>
+          </tr>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderCardGrid() {
+      const grid = document.getElementById('station-card-grid');
+      grid.innerHTML = allStations.map(f => {
+        const p = f.properties;
+        const sc = STATUS_COLOR[p.overallStatus] || 'neutral';
+        const params = Object.entries(p.parameters);
+        return `
+          <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" onclick="openDetail('${p.id}')">
+            <div class="card-body p-5">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-base-content">${p.name}</h3>
+                  <p class="text-xs text-base-content/50">${p.bay} &middot; ${p.location}</p>
+                </div>
+                <span class="badge badge-${sc} font-semibold">${p.overallStatus}</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 mb-4">
+                ${params.map(([k, v]) => {
+                  const st = getParameterStatus(k, v.value);
+                  const bc = st === 'Pass' ? 'success' : st === 'Alert' ? 'warning' : 'error';
+                  return `<div class="text-center bg-base-200 rounded-lg py-2 px-1">
+                    <div class="text-[10px] font-bold uppercase tracking-wide text-base-content/50">${PARAMETERS[k]?.short}</div>
+                    <div class="font-bold text-sm text-${bc}">${v.value}</div>
+                    <div class="text-[10px] text-base-content/40">${v.unit || '—'}</div>
+                  </div>`;
+                }).join('')}
+              </div>
+              <button class="btn btn-sm btn-primary w-full gap-1">View Details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></button>
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    window.showTab = function(tab) {
+      document.getElementById('view-table').classList.toggle('hidden', tab !== 'table');
+      document.getElementById('view-cards').classList.toggle('hidden', tab !== 'cards');
+      document.getElementById('tab-table').classList.toggle('tab-active', tab === 'table');
+      document.getElementById('tab-cards').classList.toggle('tab-active', tab === 'cards');
+      lucide.createIcons();
+    };
+
+    window.openDetail = function(stationId) {
+      const f = allStations.find(s => s.properties.id === stationId);
+      if (!f) return;
+      const p = f.properties;
+      const sc = STATUS_COLOR[p.overallStatus];
+
+      document.getElementById('detail-title').textContent = p.name;
+      document.getElementById('detail-subtitle').textContent = `${p.bay} · ${p.location}`;
+      document.getElementById('detail-badge').className = `badge badge-${sc} badge-sm font-semibold`;
+      document.getElementById('detail-badge').textContent = p.overallStatus;
+
+      document.getElementById('detail-body').innerHTML = `
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-3">Water Quality Parameters</h4>
+          <div id="detail-param-bars"></div>
+        </div>
+        <div class="section-divider"></div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-wider text-base-content/60 mb-1">6-Month Historical Trends</h4>
+          <p class="text-xs text-base-content/40 mb-3">Dashed lines mark DAO 2016-08 limits</p>
+          <div id="detail-trend-toggles" class="flex flex-wrap gap-2 mb-3"></div>
+          <div class="rounded-xl border border-base-300 bg-base-200/50 p-3" style="height:220px">
+            <canvas id="detail-trend-chart"></canvas>
+          </div>
+        </div>`;
+
+      document.getElementById('detail-param-bars').innerHTML = renderParameterBars(p.parameters);
+
+      const modal = document.getElementById('detail-modal');
+      modal.showModal();
+
+      setCurrentStation(p);
+      initTrendChart('detail-trend-chart');
+      updateTrendChart(p);
+      renderTrendToggles('detail-trend-toggles');
+      lucide.createIcons();
+    };
+
+    init();
+  </script>
+</body>
+</html>
