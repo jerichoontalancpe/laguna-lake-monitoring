@@ -37,21 +37,33 @@ function initMap() {
   map = L.map("map", {
     center: [14.35, 121.25],
     zoom: 11,
-    minZoom: 10,
-    maxZoom: 16,
+    minZoom: 2,
+    maxZoom: 19,
     zoomControl: true,
     attributionControl: true
   });
 
-  const bounds = L.latLngBounds([14.10, 121.00], [14.60, 121.50]);
-  map.setMaxBounds(bounds);
-  map.on("drag", () => map.panInsideBounds(bounds, { animate: true }));
+  // No bounds restriction — users can pan freely like a real portal
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  const streetLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     subdomains: "abc",
     maxZoom: 19
-  }).addTo(map);
+  });
+
+  const satelliteLayer = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    attribution: "Tiles &copy; Esri &mdash; Source: Esri, USGS, AGA, GeoEye",
+    maxZoom: 19
+  });
+
+  streetLayer.addTo(map);
+
+  L.control.layers(
+    { "Street": streetLayer, "Satellite": satelliteLayer },
+    {},
+    { position: "topright" }
+  ).addTo(map);
 
   map.zoomControl.setPosition("topright");
 
