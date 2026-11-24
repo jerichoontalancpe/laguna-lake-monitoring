@@ -211,10 +211,28 @@
     hTimer=setInterval(function(){goSlide((hCurrent+1)%hSlides.length);},5500);
   </script>
 
-  <!-- ── STAT COUNTERS ─────────────────────────── -->
+  <!-- ── STAT COUNTERS + DONUT CHART ──────────── -->
   <section class="container mx-auto px-6 -mt-2 pb-12">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="stat-cards">
-      <!-- filled by JS -->
+    <div class="flex flex-col lg:flex-row gap-6 items-stretch">
+
+      <!-- Stat cards grid -->
+      <div class="flex-1 grid grid-cols-2 gap-4" id="stat-cards">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Donut chart card -->
+      <div class="card bg-base-100 border border-base-300 shadow-sm flex-shrink-0 lg:w-72 p-5 flex flex-col items-center justify-center gap-3">
+        <div class="text-sm font-bold text-base-content uppercase tracking-wide opacity-60">Station Status</div>
+        <div class="relative" style="width:160px;height:160px;">
+          <canvas id="status-donut"></canvas>
+          <div id="donut-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
+            <div id="donut-total" style="font-size:1.6rem;font-weight:900;color:#1e293b;line-height:1;"></div>
+            <div style="font-size:0.6rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;">Active</div>
+          </div>
+        </div>
+        <div id="donut-legend" class="flex flex-col gap-1.5 w-full text-sm"></div>
+      </div>
+
     </div>
   </section>
 
@@ -346,24 +364,82 @@
         bodSum += f.properties.parameters.bod.value;
       });
 
-      // ── Stat cards
+      // ── Stat cards with animated counter
       const statEl = document.getElementById('stat-cards');
+      const nActive = activeFeatures.length;
+      const doAvg = (doSum / nActive).toFixed(1);
+      const bodAvg = (bodSum / nActive).toFixed(1);
+
       const stats = [
-        { icon: 'map-pin',        value: activeFeatures.length,       label: 'Active Stations',  color: 'primary'  },
-        { icon: 'check-circle',   value: good,                       label: 'Good Quality',     color: 'success'  },
-        { icon: 'droplets',       value: (doSum/activeFeatures.length).toFixed(1) + ' mg/L', label: 'Avg. DO Level', color: 'info' },
-        { icon: 'activity',       value: (bodSum/ activeFeatures.length).toFixed(1) + ' mg/L', label: 'Avg. BOD Level', color: 'warning' },
+        { icon: 'map-pin',      numVal: nActive,              label: 'Active Stations', color: 'primary', suffix: '' },
+        { icon: 'check-circle', numVal: good,                  label: 'Good Quality',    color: 'success', suffix: '' },
+        { icon: 'droplets',     numVal: parseFloat(doAvg),     label: 'Avg. DO Level',   color: 'info',    suffix: 'mg/L' },
+        { icon: 'activity',     numVal: parseFloat(bodAvg),    label: 'Avg. BOD Level',  color: 'warning', suffix: 'mg/L' },
       ];
-      statEl.innerHTML = stats.map(s => `
-        <div class="card bg-base-100 border border-base-300 shadow-sm animate__animated animate__fadeInUp">
-          <div class="card-body p-6 py-8 flex flex-col items-center justify-center text-center gap-3">
-            <div class="w-16 h-16 rounded-2xl bg-${s.color}/15 flex items-center justify-center">
-              <i data-lucide="${s.icon}" class="w-10 h-10 text-${s.color}"></i>
+
+      statEl.innerHTML = stats.map((s, idx) => `
+        <div class="card bg-base-100 border border-base-300 shadow-sm animate__animated animate__fadeInUp" style="animation-delay:${idx*80}ms">
+          <div class="card-body p-5 py-7 flex flex-col items-center justify-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-${s.color}/15 flex items-center justify-center">
+              <i data-lucide="${s.icon}" class="w-9 h-9 text-${s.color}"></i>
             </div>
-            <div style="font-size:2.8rem;line-height:1;font-weight:900;" class="text-base-content">${s.value}</div>
+            <div class="stat-counter text-base-content"
+                 data-target="${s.numVal}" data-suffix="${s.suffix}"
+                 style="font-size:2.5rem;line-height:1;font-weight:900;">0</div>
             <div class="text-sm text-base-content/60 font-semibold">${s.label}</div>
           </div>
         </div>`).join('');
+
+      // Animated counter via IntersectionObserver
+      function animateCounter(el) {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const isFloat = !Number.isInteger(target);
+        const duration = 1200;
+        const start = performance.now();
+        function step(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = eased * target;
+          el.textContent = (isFloat ? current.toFixed(1) : Math.round(current)) + (suffix ? ' ' + suffix : '');
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      const cObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); cObserver.unobserve(e.target); } });
+      }, { threshold: 0.4 });
+      document.querySelectorAll('.stat-counter').forEach(el => cObserver.observe(el));
+
+      // Donut chart
+      const donutCtx = document.getElementById('status-donut');
+      if (donutCtx && typeof Chart !== 'undefined') {
+        new Chart(donutCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Good','Fair','Poor','Archived'],
+            datasets: [{ data: [good, fair, poor, archivedFe.length],
+              backgroundColor: ['#16a34a','#f59e0b','#dc2626','#94a3b8'],
+              borderColor: ['#fff','#fff','#fff','#fff'], borderWidth: 3, hoverOffset: 6 }]
+          },
+          options: { responsive: false, cutout: '72%',
+            plugins: { legend: { display: false },
+              tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.raw + ' stations' } } },
+            animation: { duration: 1000, easing: 'easeOutQuart' } }
+        });
+        document.getElementById('donut-total').textContent = nActive;
+        document.getElementById('donut-legend').innerHTML = [
+          { label:'Good',    val:good,              color:'#16a34a' },
+          { label:'Fair',    val:fair,              color:'#f59e0b' },
+          { label:'Poor',    val:poor,              color:'#dc2626' },
+          { label:'Archived',val:archivedFe.length, color:'#94a3b8' },
+        ].map(item => '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">' +
+          '<div style="display:flex;align-items:center;gap:0.4rem;">' +
+          '<span style="width:10px;height:10px;border-radius:50%;background:' + item.color + ';flex-shrink:0;display:inline-block;"></span>' +
+          '<span style="font-size:0.75rem;color:#475569;">' + item.label + '</span></div>' +
+          '<span style="font-size:0.8rem;font-weight:700;color:#1e293b;">' + item.val + '</span></div>'
+        ).join('');
+      }
 
       // ── Station cards
       const cardsEl = document.getElementById('station-cards');
