@@ -50,7 +50,7 @@
     <div class="navbar-end gap-2">
       <div class="badge badge-success gap-1 hidden sm:flex text-xs">
         <span class="w-1.5 h-1.5 rounded-full bg-success-content animate-pulse"></span>
-        Live Data
+        Q2 2026 Data
       </div>
       <div class="dropdown dropdown-end lg:hidden">
         <div tabindex="0" role="button" class="btn btn-ghost btn-square btn-sm">
@@ -278,7 +278,7 @@
           <i data-lucide="map-pin" class="w-8 h-8 text-primary"></i>
         </div>
         <h2 class="text-2xl font-bold text-base-content mb-2">Explore the Interactive Map</h2>
-        <p class="text-base-content/60 mb-6">Click any monitoring station to view real-time parameter readings, 6-month historical trends, and compliance status against national standards.</p>
+        <p class="text-base-content/60 mb-6">Click any monitoring station to view its June 2026 readings, April&ndash;June monthly trends, and compliance status against national standards.</p>
         <a href="map.html" class="btn btn-primary btn-wide mx-auto gap-2">
           <i data-lucide="map" class="w-5 h-5"></i>
           Enter Map Portal
@@ -364,7 +364,7 @@
             </div>
             <div class="stat-counter text-base-content"
                  data-target="${s.numVal}" data-suffix="${s.suffix}"
-                 style="font-size:2.5rem;line-height:1;font-weight:900;">0</div>
+                 style="font-size:2.5rem;line-height:1;font-weight:900;">${s.numVal}${s.suffix ? ' ' + s.suffix : ''}</div>
             <div class="text-sm text-base-content/60 font-semibold">${s.label}</div>
           </div>
         </div>`).join('');
