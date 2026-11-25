@@ -9,6 +9,7 @@ import {
   geoJSONToLatLng,
   getStatusColor,
   getStatusClass,
+  getThresholdText,
   displayValue,
   loadStations,
   loadLakeBoundary
@@ -116,12 +117,16 @@ function createMarker(feature, filterMode) {
     } else {
       const status = getParameterStatus(filterMode, pd.value);
       const color  = getStatusColor(status);
-      let size = 38;
-      if (pc.direction === "above") size = Math.max(26, Math.min(58, 26 + (pd.value / 10) * 32));
-      else if (pc.direction === "below") size = Math.max(26, Math.min(58, 26 + (pd.value / (pc.max || 1)) * 32));
-      iconHtml = `<div class="wq-bubble" data-id="${props.id}"
-        style="width:${size}px;height:${size}px;background:${color}33;border-color:${color};">
-        <span class="wq-bubble-label" style="color:${color};">${displayValue(pd)}</span></div>`;
+      // Bubble size grows with the reading (42–54 px): large enough for the text,
+      // small enough that neighbouring stations overlap as little as possible
+      let size = 48;
+      if (pc.direction === "above") size = Math.max(42, Math.min(54, 42 + (pd.value / 10) * 12));
+      else if (pc.direction === "below") size = Math.max(42, Math.min(54, 42 + Math.min(pd.value / (pc.dMax || pc.max || 1), 1) * 12));
+      const ink = status === "Alert" ? "#1e293b" : "#ffffff";   // dark text on amber, white elsewhere
+      iconHtml = `<div class="wq-bubble" data-id="${props.id}" title="${props.name}: ${displayValue(pd)} ${pc.unit} (${status})"
+        style="width:${size}px;height:${size}px;background:${color};color:${ink};">
+        <span class="wq-bubble-station">${props.name.replace("Station ", "")}</span>
+        <span class="wq-bubble-label">${displayValue(pd)}</span></div>`;
       iconSize = [size, size];
     }
   }
@@ -133,7 +138,7 @@ function createMarker(feature, filterMode) {
     iconAnchor: [iconSize[0] / 2, iconSize[1] / 2]
   });
 
-  const marker = L.marker(latLng, { icon });
+  const marker = L.marker(latLng, { icon, riseOnHover: true, riseOffset: 1000 });
   marker._props = props;
   marker._id    = props.id;
 
@@ -484,9 +489,30 @@ function buildFilterMenu() {
       document.getElementById("filter-label").textContent =
         currentFilter === "overall" ? "Overall Status" : PARAMETERS[currentFilter]?.label || "Overall Status";
       renderMarkers(stationData, currentFilter);
+      updateLegend(currentFilter);
       buildFilterMenu();
     });
   });
+}
+
+// ── Legend (changes with the Display Mode filter)
+function updateLegend(filterMode) {
+  const el = document.getElementById("legend-body");
+  const title = document.getElementById("legend-title");
+  if (!el || !title) return;
+  const row = (color, text) =>
+    `<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background:${color};"></span><span class="text-xs text-base-content/80">${text}</span></div>`;
+  if (filterMode === "overall") {
+    title.textContent = "Water Quality";
+    el.innerHTML = row("#22c55e", "Good — all meet Class C") + row("#f59e0b", "Fair — 1 outside Class C") +
+      row("#ef4444", "Poor — 2+ outside Class C") + row("#94a3b8", "Archived — no Q2 2026 data");
+    return;
+  }
+  const p = PARAMETERS[filterMode];
+  title.textContent = p.label + (p.unit ? " (" + p.unit + ")" : "");
+  el.innerHTML = row("#22c55e", "Pass — meets Class C") + row("#f59e0b", "Alert — Class D range") +
+    row("#ef4444", "Fail — beyond Class D") + row("#94a3b8", "Archived — no data") +
+    `<div class="text-xs text-base-content/60 mt-1.5 pt-1.5 border-t border-base-300">Number in circle = June 2026 value<br/>Class C limit: ${getThresholdText(filterMode)}</div>`;
 }
 
 // ── Mobile sheet toggle ───────────────────────

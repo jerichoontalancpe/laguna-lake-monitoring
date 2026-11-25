@@ -209,7 +209,7 @@ function validateGeoJSON(geojson, expectedGeometryType, label) {
  */
 export async function loadStations() {
   try {
-    const response = await fetch("assets/stations.json");
+    const response = await fetch("assets/stations.json?v=7");
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }

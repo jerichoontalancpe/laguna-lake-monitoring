@@ -104,25 +104,26 @@
 }
 
 .param-name {
-  font-size: 0.8rem;
-  font-weight: 600;
-  opacity: 0.65;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
 }
 
 .param-value {
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
 }
 
 .param-unit {
-  font-size: 0.7rem;
-  font-weight: 400;
-  opacity: 0.4;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748b;
 }
 
 /* --- Progress Bars --- */
 .param-bar-track {
-  height: 6px;
+  height: 8px;
   background: rgba(0,0,0,0.08);
   border-radius: 9999px;
   overflow: visible;
@@ -131,7 +132,7 @@
 
 .param-bar-fill {
   height: 100%;
-  max-height: 6px;
+  max-height: 8px;
   border-radius: 9999px;
   transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
   animation: growBar 0.8s ease-out;
@@ -149,9 +150,9 @@
 .param-bar-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.3rem;
-  font-size: 0.68rem;
-  opacity: 0.45;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #475569;
 }
 
 .param-status-dot {
@@ -243,7 +244,7 @@
 .wq-marker-archived .wq-marker-label { color: #fff; }
 
 .wq-marker-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   color: #fff;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
@@ -268,23 +269,31 @@
 
 .wq-bubble {
   border-radius: 50%;
-  border: 2.5px solid #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-  opacity: 0.88;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.35);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  line-height: 1.05;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.15s;
+  transition: transform 0.15s;
+  font-family: 'Inter', sans-serif;
 }
 
-.wq-bubble:hover { opacity: 1; transform: scale(1.12); }
+.wq-bubble:hover { transform: scale(1.12); z-index: 1000; }
+
+.wq-bubble-station {
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.9;
+  pointer-events: none;
+}
 
 .wq-bubble-label {
-  font-size: 10px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 900;
   pointer-events: none;
-  font-family: 'Inter', sans-serif;
 }
 
 /* --- Leaflet popup --- */

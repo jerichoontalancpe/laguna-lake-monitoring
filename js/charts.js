@@ -310,7 +310,7 @@ export function renderParameterBars(parameters) {
           <span>${hint}</span>
         </div>
         <div class="param-bar-labels" style="margin-top:0.1rem;">
-          <span style="color:${getStatusColor(status)};font-weight:700;">${status} &middot; ${STATUS_MEANING[status] || ""}</span>
+          <span style="color:${getStatusColor(status)};font-weight:800;font-size:0.85rem;">${status} &middot; ${STATUS_MEANING[status] || ""}</span>
           ${data.belowDetection ? '<span>Below detection limit</span>' : ''}
         </div>
       </div>`;
@@ -338,7 +338,7 @@ export function renderExtraParameters(extra) {
     </tr>`;
   }).join("");
   return `<div style="border:1px solid rgba(0,0,0,0.08);border-radius:0.6rem;overflow:hidden;">
-    <table style="width:100%;font-size:0.75rem;border-collapse:collapse;">
+    <table style="width:100%;font-size:0.85rem;border-collapse:collapse;">
       <thead><tr style="background:rgba(0,0,0,0.04);text-align:left;">
         <th style="padding:0.35rem 0.5rem;">Parameter</th><th style="padding:0.35rem 0.5rem;text-align:right;">June</th>
         <th style="padding:0.35rem 0.5rem;">Class C</th><th style="padding:0.35rem 0.5rem;">Status</th>
